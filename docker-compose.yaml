@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  mysql:
+    image: 'mysql:8.1.0'
+    working_dir: /application
+    environment:
+      MYSQL_DATABASE: 'service'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    volumes:
+      - '.:/application'
+
+  node:
+    image: "node:20.0-alpine3.17"
+    working_dir: /application
+    volumes:
+      - '.:/application'
