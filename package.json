@@ -12,5 +12,8 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "nuxt": "^3.7.3"
+  },
+  "dependencies": {
+    "mysql2": "^3.6.1"
   }
 }
