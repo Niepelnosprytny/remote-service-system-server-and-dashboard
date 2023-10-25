@@ -1,11 +1,12 @@
 version: '3.3'
-
 services:
   nuxt:
-    build: docker/nuxt
-    working_dir: /application
-    restart: unless-stopped
+    image: node:20.0-alpine3.17
+    command: sh -c "yarn install & yarn run dev"
+    working_dir: /nuxt
     links:
+      - mysql
+    depends_on:
       - mysql
     environment:
       - GFC_BACKEND_API="http://localhost:3000"
@@ -15,11 +16,11 @@ services:
     expose:
       - 3000
     volumes:
-      - ./:/application
+      - ./:/nuxt
 
   mysql:
     image: mysql:8.1.0
-    working_dir: /application
+    working_dir: /mysql
     environment:
       MYSQL_DATABASE: service
       MYSQL_USER: user
@@ -28,4 +29,4 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./:/application
+      - ./:/mysql
