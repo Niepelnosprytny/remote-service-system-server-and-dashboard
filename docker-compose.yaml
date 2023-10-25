@@ -1,21 +1,31 @@
 version: '3.3'
 
 services:
+  nuxt:
+    build: docker/nuxt
+    working_dir: /application
+    restart: unless-stopped
+    links:
+      - mysql
+    environment:
+      - GFC_BACKEND_API="http://localhost:3000"
+      - NUXT_HOST="0.0.0.0"
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    volumes:
+      - ./:/application
+
   mysql:
-    image: 'mysql:8.1.0'
+    image: mysql:8.1.0
     working_dir: /application
     environment:
-      MYSQL_DATABASE: 'service'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: service
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
     ports:
-      - '3306:3306'
+      - 3306:3306
     volumes:
-      - '.:/application'
-
-  node:
-    image: "node:20.0-alpine3.17"
-    working_dir: /application
-    volumes:
-      - '.:/application'
+      - ./:/application
