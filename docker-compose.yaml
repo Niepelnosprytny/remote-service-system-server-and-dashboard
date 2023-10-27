@@ -14,11 +14,12 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./:/nuxt
+      - .:/nuxt
 
   mysql:
     image: mysql:8.1.0
     working_dir: /mysql
+    restart: always
     environment:
       MYSQL_DATABASE: service
       MYSQL_USER: user
@@ -27,4 +28,4 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./:/mysql
+      - .:/mysql
