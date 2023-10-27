@@ -2,6 +2,7 @@ version: '3.3'
 services:
   nuxt:
     image: node:20.0-alpine3.17
+    restart: unless-stopped
     command: sh -c "yarn install & yarn run dev"
     working_dir: /nuxt
     links:
@@ -13,8 +14,6 @@ services:
       - NUXT_HOST="0.0.0.0"
     ports:
       - 3000:3000
-    expose:
-      - 3000
     volumes:
       - ./:/nuxt
 

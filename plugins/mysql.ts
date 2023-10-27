@@ -3,7 +3,7 @@ import mysql from 'mysql2';
 export default defineNuxtPlugin(() => {
 
     const connection = mysql.createConnection({
-        host: 'localhost',
+        host: 'mysql',
         user: 'root',
         password: 'password',
         database: 'service',
