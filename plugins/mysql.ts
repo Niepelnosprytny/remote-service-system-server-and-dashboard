@@ -181,7 +181,7 @@ export default defineNuxtPlugin(() => {
     //REPORT_HANDLED_BY
     // A junction table linking reports and users to track who handled a specific report
     connection.query(`
-        CREATE TABLE report_handled_by (
+        CREATE TABLE IF NOT EXISTS report_handled_by (
             report_id INT,
             user_id INT,
             PRIMARY KEY (report_id, user_id),
