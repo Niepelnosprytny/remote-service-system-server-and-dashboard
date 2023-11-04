@@ -14,7 +14,9 @@ export const createTables = (connection) => {
         CREATE TABLE IF NOT EXISTS location (
             id INT PRIMARY KEY AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
-            address VARCHAR(255) NOT NULL,
+            street VARCHAR(255) NOT NULL,
+            city VARCHAR(255) NOT NULL,
+            postcode VARCHAR(10) NOT NULL,
             client INT NOT NULL,
             FOREIGN KEY (client) REFERENCES client(id)
         );`
@@ -30,7 +32,7 @@ export const createTables = (connection) => {
             name VARCHAR(50) NOT NULL,
             surname VARCHAR(50) NOT NULL,
             role ENUM('ROLE_ADMIN', 'ROLE_OFFICE', 'ROLE_USER') NOT NULL,
-            employer INT NOT NULL,
+            employer INT,
             FOREIGN KEY (employer) REFERENCES client(id)
         );`
     );
@@ -57,6 +59,7 @@ export const createTables = (connection) => {
         CREATE TABLE IF NOT EXISTS notification (
             id INT PRIMARY KEY AUTO_INCREMENT,
             content VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             report_id INT NOT NULL,
             FOREIGN KEY (report_id) REFERENCES report(id)
         );`
