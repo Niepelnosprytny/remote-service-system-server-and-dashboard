@@ -1,6 +1,4 @@
 import mysql from 'mysql2';
-import {createTables} from "~/schema";
-import {insertInitialData} from "~/data";
 
 export default defineNuxtPlugin(() => {
 
@@ -12,10 +10,6 @@ export default defineNuxtPlugin(() => {
     });
 
     connection.connect();
-
-    createTables(connection);
-
-    insertInitialData(connection);
 
     return {
         provide: {
