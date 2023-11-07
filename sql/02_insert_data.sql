@@ -1,4 +1,3 @@
--- Begin Transaction
 START TRANSACTION;
 
 -- CLIENT
@@ -360,5 +359,4 @@ WHERE NOT EXISTS (
     FROM report_handled_by
 );
 
--- Commit Transaction
 COMMIT;
