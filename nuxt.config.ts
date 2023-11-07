@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'path';
+import fs from 'fs';
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
   server: {
     https: {
-      key: path.resolve(__dirname, 'key.pem'),
-      cert: path.resolve(__dirname, 'cert.pem')
+      key: fs.readFileSync(path.resolve(__dirname, 'ssl', 'key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'ssl', 'cert.pem'))
     }
   }
 });
