@@ -2,13 +2,16 @@ import pool from '../../mysql';
 
 export default defineEventHandler(async (event) => {
     try {
-        const results = await pool.query('SELECT * FROM user');
+        const id = getRouterParam(event, 'id');
+
+        // Delete user
+        await pool.query('DELETE FROM user WHERE id = ?', [id]);
+
         return {
-            status: 200,
-            body: { data: results },
+            status: 204,
         };
     } catch (error) {
-        console.error('Error executing query:', error);
+        console.error('Error deleting user:', error);
         return {
             status: 500,
             body: { error: 'Internal Server Error' },

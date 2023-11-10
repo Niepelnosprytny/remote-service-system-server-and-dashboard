@@ -10,5 +10,4 @@ export default defineNuxtConfig({
       cert: fs.readFileSync(path.resolve(__dirname, 'ssl', 'cert.pem'))
     }
   },
-  buildModules: ['@nuxtjs/axios']
 });
