@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import UserTest from "~/components/test/UserTest.vue";
+import UserTest from "~/components/test/ApiTest.vue";
 
 const users = ref([]);
 

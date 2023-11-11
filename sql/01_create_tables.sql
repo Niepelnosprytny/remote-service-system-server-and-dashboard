@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS user (
     surname VARCHAR(50) NOT NULL,
     role ENUM('ROLE_ADMIN', 'ROLE_OFFICE', 'ROLE_USER') NOT NULL,
     employer INT,
-    FOREIGN KEY (employer) REFERENCES client(id) ON DELETE SET NULL
+    FOREIGN KEY (employer) REFERENCES client(id) ON DELETE CASCADE
 );
 
 -- REPORT

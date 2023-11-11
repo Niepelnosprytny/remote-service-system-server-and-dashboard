@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
     try {
         const id = getRouterParam(event, 'id');
 
-        // Delete user
         await pool.query('DELETE FROM user WHERE id = ?', [id]);
 
         return {

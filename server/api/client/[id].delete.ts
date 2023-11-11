@@ -1,18 +1,13 @@
 import pool from '../../mysql';
-import handleRequest from '../../handleRequest';
 
 export default defineEventHandler(async (event) => {
     try {
-        const body = await handleRequest(event.node.req);
+        const id = getRouterParam(event, 'id');
 
-        const results = await pool.query(
-            'INSERT INTO client (name) VALUES (?)',
-            [body.client.name]
-        );
+        await pool.query('DELETE FROM client WHERE id = ?', [id]);
 
         return {
-            status: 201,
-            body: { data: results }
+            status: 204
         };
     } catch (error) {
         console.error('Error executing query:', error);

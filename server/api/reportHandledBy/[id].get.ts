@@ -4,12 +4,12 @@ export default defineEventHandler(async (event) => {
     try {
         const id = getRouterParam(event, 'id');
 
-        const results = await pool.query('SELECT * FROM comment WHERE id = ?', [id]);
+        const results = await pool.query('SELECT * FROM report_handled_by WHERE id = ?', [id]);
 
         if (results.length === 0) {
             return {
                 status: 404,
-                body: { error: 'Comment not found' }
+                body: { error: 'Report handling not found' }
             };
         }
 

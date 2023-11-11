@@ -4,18 +4,18 @@ export default defineEventHandler(async (event) => {
     try {
         const id = getRouterParam(event, 'id');
 
-        const results = await pool.query('SELECT * FROM comment WHERE id = ?', [id]);
+        const results = await pool.query('SELECT * FROM user_notification WHERE id = ?', [id]);
 
         if (results.length === 0) {
             return {
                 status: 404,
-                body: { error: 'Comment not found' }
+                body: { error: 'User Notification not found' }
             };
         }
 
         return {
             status: 200,
-            body: { data: results[0] }
+            body: { data: results[0] },
         };
     } catch (error) {
         console.error('Error executing query:', error);

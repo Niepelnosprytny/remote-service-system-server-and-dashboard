@@ -6,8 +6,11 @@ export default defineEventHandler(async (event) => {
         const body = await handleRequest(event.node.req);
 
         const results = await pool.query(
-            'INSERT INTO client (name) VALUES (?)',
-            [body.client.name]
+            'INSERT INTO user_notification (user_id, notification_id) VALUES (?, ?)',
+            [
+                body.userNotification.userId,
+                body.userNotification.notificationId,
+            ]
         );
 
         return {

@@ -4,9 +4,9 @@ export default defineEventHandler(async (event) => {
     try {
         const id = getRouterParam(event, 'id');
 
-        const results = await pool.query('SELECT * FROM comment WHERE id = ?', [id]);
+        const results = await pool.query('DELETE FROM comment WHERE id = ?', [id]);
 
-        if (results.length === 0) {
+        if (results.affectedRows === 0) {
             return {
                 status: 404,
                 body: { error: 'Comment not found' }
@@ -14,8 +14,7 @@ export default defineEventHandler(async (event) => {
         }
 
         return {
-            status: 200,
-            body: { data: results[0] }
+            status: 204
         };
     } catch (error) {
         console.error('Error executing query:', error);

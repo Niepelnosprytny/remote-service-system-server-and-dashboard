@@ -7,6 +7,13 @@ export default defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id');
         const body = await handleRequest(event.node.req);
 
+        if (!body.user) {
+            return {
+                status: 400,
+                body: { error: 'Bad Request. Missing required user fields in the request body.' },
+            };
+        }
+
         if (body.user.password) {
             body.user.password = crypto.createHash('sha256').update(body.user.password).digest('hex');
         }
