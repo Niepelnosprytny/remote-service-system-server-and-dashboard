@@ -9,13 +9,13 @@ export default defineEventHandler(async (event) => {
 
         return {
             status: 200,
-            body: { data: results },
+            body: { data: results[0] }
         };
     } catch (error) {
         console.error('Error executing query:', error);
         return {
             status: 500,
-            body: { error: 'Internal Server Error' },
+            body: { error: `Internal Server Error - ${error.message}` },
         };
     }
 });

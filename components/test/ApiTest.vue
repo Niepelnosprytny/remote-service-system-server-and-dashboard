@@ -4,8 +4,17 @@
     <button v-for="table in tables" :key="table" @click="setActiveTable(table)">
       {{ table }}
     </button>
+    <button @click="showGeneralQuery">General query</button>
 
-    <details v-if="activeTable">
+    <details v-if="toggleGeneralQuery">
+      <summary>General query</summary>
+      <textarea v-model="json" placeholder="SQL query" rows="20" cols="100"/>
+      <br>
+      <button @click="sendGeneralQuery">Send</button>
+      <pre v-if="generalQuery">{{ generalQuery }}</pre>
+    </details>
+
+    <details v-if="activeTable && !toggleGeneralQuery">
       <summary>{{ activeTable }}</summary>
       <details>
         <summary>Get all {{ activeTable }}</summary>
@@ -53,8 +62,12 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 
-let id = ref();
-const json = ref(``);
+let id = ref(1);
+const json = ref(`{
+    "user": {
+      "field": "value"
+    }
+  }`);
 
 const tables = ref(['user', 'client', 'location', 'report', 'notification', 'comment', 'file', 'userNotification', 'reportHandledBy']);
 
@@ -64,8 +77,11 @@ const itemData = ref();
 const createItemData = ref();
 const updateItemData = ref();
 const deleteItemData = ref();
+const generalQuery = ref();
+let toggleGeneralQuery = false;
 
 const setActiveTable = (table) => {
+  toggleGeneralQuery = false;
   activeTable.value = table;
   allItems.value = null;
   itemData.value = null;
@@ -108,4 +124,18 @@ const deleteItem = async () => {
     method: 'DELETE',
   }).catch((error) => error.data);
 };
+
+const showGeneralQuery = () => {
+  toggleGeneralQuery = true;
+  json.value = JSON.stringify({
+    query: 'SELECT * FROM user, report WHERE user.id = report.created_by AND user.id = 5;'
+  });
+}
+
+const sendGeneralQuery = async () => {
+  generalQuery.value = await $fetch('/api', {
+    method: 'POST',
+    body: json.value,
+  }).catch((error) => error.data);
+}
 </script>

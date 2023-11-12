@@ -74,18 +74,18 @@ CREATE TABLE IF NOT EXISTS file (
 
 -- USER_NOTIFICATION
 CREATE TABLE IF NOT EXISTS user_notification (
-    user_id INT,
-    notification_id INT,
-    PRIMARY KEY (user_id, notification_id),
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    notification_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (notification_id) REFERENCES notification(id) ON DELETE CASCADE
 );
 
 -- REPORT_HANDLED_BY
 CREATE TABLE IF NOT EXISTS report_handled_by (
-    report_id INT,
-    user_id INT,
-    PRIMARY KEY (report_id, user_id),
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    report_id INT NOT NULL,
+    user_id INT NOT NULL,
     FOREIGN KEY (report_id) REFERENCES report(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
