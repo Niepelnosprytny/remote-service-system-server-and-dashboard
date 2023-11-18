@@ -1,25 +1,23 @@
-import handleRequest from "./handleRequest";
 import pool from './mysql';
 import crypto from 'crypto';
 
 const createItem = (tableName: string) =>
     defineEventHandler(async (event) => {
         try {
-            const body: any = await handleRequest(event.node.req);
+            const body = await readBody(event);
 
-            if (!body[tableName]) {
+            if (!body) {
                 return {
                     status: 400,
-                    body: { error: `Bad Request. Missing ${tableName} data in the request body` }
+                    body: 'Bad Request. Missing request body'
                 };
             }
 
-            const fields = Object.keys(body[tableName]);
-            let values = Object.values(body[tableName]);
+            const fields = Object.keys(body);
+            const values = Object.values(body);
 
             if (tableName === 'user' && fields.includes('password')) {
-                const hashedPassword = crypto.createHash('sha256').update(body[tableName].password).digest('hex');
-                values = values.map((value, index) => (fields[index] === 'password' ? hashedPassword : value));
+                values[fields.indexOf('password')] = crypto.createHash('sha256').update(body.password).digest('hex');
             }
 
             const query = `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fields.map(() => '?').join(', ')})`;
@@ -28,13 +26,13 @@ const createItem = (tableName: string) =>
 
             return {
                 status: 201,
-                body: { data: results[0] }
+                body: `${tableName} created successfully`
             };
         } catch (error) {
             console.error(`Error executing query for ${tableName}:`, error);
             return {
                 status: 500,
-                body: { error: `Internal Server Error - ${error.message}` }
+                body: `Internal Server Error - ${error.message}`
             };
         }
     });

@@ -1,21 +1,27 @@
 import pool from '../mysql';
-import handleRequest from '../handleRequest';
 
 export default defineEventHandler(async (event) => {
     try {
-        const body = await handleRequest(event.node.req);
+        const body = await readBody(event);
 
-        const results = await pool.query(body.query);
+        if(!body) {
+            return {
+                status: 400,
+                body: 'Bad request. Missing request body'
+            };
+        }
+
+        const results = await pool.query(body);
 
         return {
             status: 200,
-            body: { data: results[0] }
+            body: results[0]
         };
     } catch (error) {
         console.error('Error executing query:', error);
         return {
             status: 500,
-            body: { error: `Internal Server Error - ${error.message}` },
+            body: `Internal Server Error - ${error.message}`
         };
     }
 });
