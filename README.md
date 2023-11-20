@@ -8,6 +8,8 @@ To run the project, first generate self-signed certificates using this command:
 openssl req -x509 -newkey rsa:4096 -keyout ./ssl/key.pem -out ./ssl/cert.pem -days 365
 ```
 
+Create .env file and copy contents from .env.example into it.
+
 Now, install Docker and Docker Compose if you don't have them already.
 
 Then use this command to create the database with initial tables, populate it with data, install all dependencies, and run the dev server:

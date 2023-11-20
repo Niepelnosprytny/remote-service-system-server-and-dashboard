@@ -54,7 +54,7 @@ INSERT INTO user (email, password, name, surname, role, employer)
 SELECT email, password, name, surname, role, employer FROM (
     SELECT
         'admin@admin.admin' as email,
-        '69d2f03e75ab7ef4908c4da0d41ca2f8ea6cdab5c5c5ef3ff6cbbdcd16fbd3e8' as password,
+        '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918' as password,
         'Szymon' as name,
         'Bułak' as surname,
         'ROLE_ADMIN' as role,

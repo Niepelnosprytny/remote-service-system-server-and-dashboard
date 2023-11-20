@@ -4,6 +4,7 @@
   "compilerOptions": {
     "types": [
       "@nuxt/types",
+      "@nuxtjs/auth-next",
       "@nuxtjs/axios"
     ]
   }
