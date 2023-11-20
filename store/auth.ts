@@ -1,27 +1,34 @@
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore('auth', {
+const useAuthStore = defineStore('auth', {
     state: () => {
         return {
-            token: process.client ? localStorage.getItem('auth-token') : null
+            token: process.client ? localStorage.getItem('token') : null,
+            user: null
         }
     },
     getters: {
+        getToken: (state) => state.token,
+        getUser: (state ) => state.user,
         isAuthenticated: (state) => !!state.token
     },
     actions: {
-        login(token) {
+        login(token, user) {
             this.token = token;
+            this.user = user;
             if(process.client) {
-                localStorage.setItem('auth-token', token);
+                localStorage.setItem('token', token);
             }
         },
         logout() {
             this.token = '';
+            this.user = null;
             if(process.client) {
-                localStorage.removeItem('auth-token');
+                localStorage.removeItem('token');
             }
         },
     },
     persist: true
 });
+
+export default useAuthStore;

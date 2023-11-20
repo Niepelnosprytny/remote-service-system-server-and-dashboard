@@ -6,8 +6,6 @@ export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event);
 
-        console.log(body);
-
         if (!body) {
             return {
                 status: 400,
@@ -18,8 +16,6 @@ export default defineEventHandler(async (event) => {
         const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
 
         const hashedPassword = crypto.createHash('sha256').update(body.password).digest('hex');
-
-        console.log(hashedPassword);
 
         const results = await pool.query(query, [body.email, hashedPassword]);
 
@@ -36,7 +32,7 @@ export default defineEventHandler(async (event) => {
             status: 200,
             body: {
                 token: token,
-                user: results[0]
+                user: results[0][0]
             }
         };
     }

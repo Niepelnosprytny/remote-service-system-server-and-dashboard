@@ -62,7 +62,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'jacek.walikokoski69@gmail.com' as email,
-        'd2a46270d6a418dff5113b4c7e5a7a30f70c4c4b47e38840c7e542739c390b9' as password,
+        'f1a8892e707454ba3794491979da9cb7b120ff3aa3fdedd3aa2d3998cd05e18d' as password,
         'Jacek' as name,
         'Walikokoski' as surname,
         'ROLE_OFFICE' as role,
@@ -70,7 +70,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'komputerowiec10@wp.pl' as email,
-        '34e054dc396953e29762c89a4e14283ff23f634883bf22c42d1220ecdd8da8c8' as password,
+        'b2c55ae7e64e01c92bc561678f98e19a9fde275f85f680500d6ee6f7dedaf722' as password,
         'Bartłomiej' as name,
         'Komis' as surname,
         'ROLE_USER' as role,
@@ -78,7 +78,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'cotoemail@onet.pl' as email,
-        '1f24c077782fb83dceadd3dd832011ecf44097aa2ae9f909387320a4e1c3ae3' as password,
+        '397200da2aca4201edd0fd86cd3ef81b80c2a1715ff34794efaeca7c98afc4a7' as password,
         'Bartek' as name,
         'Miotek' as surname,
         'ROLE_USER' as role,
@@ -86,7 +86,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'prezes@icloud.com' as email,
-        'e8a61baa104b6f9373cc1966d5ad43d1bd83ec84c848e62c0a154f1015c8520a' as password,
+        'ab59f2db271b7a53df33008a53943667ae6d787e5260475d32a0c639cb511fe7' as password,
         'Kacper' as name,
         'Śmigieło' as surname,
         'ROLE_USER' as role,
@@ -94,7 +94,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'piotr.troczki@outlook.com' as email,
-        '7a9b930beaee772c524b21e1f34be30e6f0b6897c369b9c727ec6f7a1f2bea9' as password,
+        'c088a4dcc64abcb1fe8234afab5988fbd56dcde45f2989b5be9aa29395e3e4b8' as password,
         'Piotr' as name,
         'Troczki' as surname,
         'ROLE_USER' as role,
@@ -102,7 +102,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'kamil.furas@gmail.com' as email,
-        '9f33e1a747e11a80be68b9811097004f44ff200dfab1247da5ee7e3dcca2a50' as password,
+        '97f3292ad21e8f4feb64dc4f0006678f722dbabeb69ef749d061bac36bf28e50' as password,
         'Kamil' as name,
         'Furas' as surname,
         'ROLE_USER' as role,
@@ -110,7 +110,7 @@ SELECT email, password, name, surname, role, employer FROM (
     UNION ALL
     SELECT
         'kacper.zabijaka@gmail.com' as email,
-        'f344bfc4b1b1a61018781577de309f03722aa2005bc45832e259620f4b883fe' as password,
+        '1c7377b2917c5261e9f1a0914412101a323af5bfe74ce46e4759b3d9b613aa9b' as password,
         'Kacper' as name,
         'Zabijaka' as surname,
         'ROLE_USER' as role,

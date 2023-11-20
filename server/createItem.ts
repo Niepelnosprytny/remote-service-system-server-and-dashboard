@@ -16,10 +16,6 @@ const createItem = (tableName: string) =>
             const fields = Object.keys(body);
             const values = Object.values(body);
 
-            if (tableName === 'user' && fields.includes('password')) {
-                values[fields.indexOf('password')] = crypto.createHash('sha256').update(body.password).digest('hex');
-            }
-
             const query = `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fields.map(() => '?').join(', ')})`;
 
             const results = await pool.query(query, values);

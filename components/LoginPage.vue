@@ -1,43 +1,47 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useStore } from '~/store/auth';
+import useAuthStore from '~/store/auth';
 
-const store = useStore();
-const login = ref({
+const store = useAuthStore();
+const credentials = ref({
   email: '',
   password: '',
 });
-let token = ref();
 
-const userLogin = async () => {
+const login = async () => {
   try {
-    token.value = await ($fetch('/api/auth/login', {
+    const response = await $fetch('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
-        email: login.value.email,
-        password: login.value.password
+        email: credentials.value.email,
+        password: credentials.value.password
 
       })
-    }));
-    store.login(token);
-    console.log('Login successful');
+    });
+
+    store.login(response.body.token, response.body.user);
+
+    alert(`Login successful`);
+
+    reloadNuxtApp({
+      path: `/`
+    });
   } catch (error) {
-    console.error('Login error', error);
+    alert(`Login error - ${error.message}`);
+    console.log(`Login error - ${error}`);
   }
 };
 </script>
 
 <template>
-  <pre>{{ token }}</pre>
-
-  <form @submit.prevent="userLogin">
+  <form @submit.prevent="login">
     <div>
       <label>Email</label>
-      <input type="text" v-model="login.email" />
+      <input type="text" v-model="credentials.email" />
     </div>
     <div>
       <label>Password</label>
-      <input type="password" v-model="login.password" />
+      <input type="password" v-model="credentials.password" />
     </div>
     <div>
       <button type="submit">Submit</button>
