@@ -8,7 +8,6 @@ const credentials = ref({
 });
 
 const login = async () => {
-  try {
     const response = await useApi('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
@@ -18,17 +17,17 @@ const login = async () => {
       })
     });
 
-    store.login(response.body.token, response.body.user);
+    if(response.statusCode === 200) {
+      store.login(response.body.token, response.body.user);
 
-    alert(`Login successful`);
+      alert(`Login successful`);
 
-    reloadNuxtApp({
-      path: `/`
-    });
-  } catch (error) {
-    alert(`Login error - ${error.message}`);
-    console.log(`Login error - ${error}`);
-  }
+      reloadNuxtApp({
+        path: `/`,
+        force: true
+      });
+    } else {
+      alert(`Login error - ${JSON.stringify(response.body)}`);}
 };
 </script>
 

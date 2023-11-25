@@ -1,16 +1,21 @@
-import {verifyToken} from '~/server/jwtUtils';
+import { verifyToken } from '~/server/jwtUtils';
 
 export default defineEventHandler(async (event) => {
-    const path = getRequestURL(event).pathname;
+    const URL = getRequestURL(event);
 
-    if (path.startsWith('/api') && !path.startsWith('/api/auth')) {
+    if (URL.protocol === 'http') {
+        URL.protocol = 'https';
+        await sendRedirect(event, URL.href);
+    }
+
+    if (URL.pathname.startsWith('/api') && !URL.pathname.startsWith('/api/auth')) {
         const authorizationHeader = getRequestHeaders(event).authorization;
 
         if (authorizationHeader) {
             const token = getRequestHeaders(event).authorization.split(' ')[1] ?? '';
 
             try {
-                await verifyToken(token);
+                const { id, role, iat } = await verifyToken(token);
             } catch (error) {
                 return {
                     status: 401,

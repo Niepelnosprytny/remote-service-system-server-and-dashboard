@@ -15,23 +15,23 @@ const user = ref({
 const { body: employers } = await useApi('/api/client');
 
 const register = async () => {
-  try {
-    const response = await $fetch('/api/auth/register', {
+    const response = await useApi('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify(user.value)
     });
 
-    store.login(response.body.token, response.body.user);
+    if(response.statusCode === 201) {
+      store.login(response.body.token, response.body.user);
 
-    alert(`Registration successful`);
+      alert(`Registration successful`);
 
-    reloadNuxtApp({
-      path: `/`
-    });
-  } catch (error) {
-    alert(`Registration error - ${error.message}`);
-    console.error(`Registration error - ${error}`);
-  }
+      reloadNuxtApp({
+        path: `/`,
+        force: true
+      });
+    } else {
+      alert(`Registration error - ${JSON.stringify(response.body)}`);
+    }
 };
 </script>
 
@@ -63,9 +63,9 @@ const register = async () => {
     </div>
     <div>
       <label>Employer</label>
-      <select>
+      <select v-model="user.employer">
         <option value="null" selected>Brak</option>
-        <option v-for="employer in employers" :value="employer.id">{{ employer.name }}</option>
+        <option v-for="employer in employers" :key="employer.id" :value="employer.id">{{ employer.name }}</option>
       </select>
     </div>
     <div>

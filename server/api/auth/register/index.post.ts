@@ -1,6 +1,6 @@
 import pool from '~/server/mysql';
 import { signToken } from '~/server/jwtUtils';
-import crypto from 'crypto';
+import { hashPassword } from "~/server/passwordUtils";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -13,23 +13,23 @@ export default defineEventHandler(async (event) => {
             };
         }
 
-        const hashedPassword = crypto.createHash('sha256').update(body.password).digest('hex');
 
-        const query = `INSERT INTO user (email, password, name, surname, role, employer) VALUES (?, ?, ?, ?, ?, ?)`;
+        const { hash, salt } = hashPassword(body.password);
 
-        const results = await pool.query(query, [body.email, hashedPassword, body.name, body.surname, body.role, body.employer]);
+        const query = `INSERT INTO user (email, password, salt, name, surname, role, employer) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-        const token = signToken({ id: body.id, role: body.role });
+        const results = await pool.query(query, [body.email, hash, salt, body.name, body.surname, body.role, body.employer]);
+
+        const token = signToken({ id: results[0]?.insertId, role: body.role });
 
         return {
             status: 201,
             body: {
                 token: token,
-                user: results[0][0]
+                user: { id: results[0]?.insertId, ...body }
             },
         };
     } catch (error) {
-        console.error('Error executing query for user registration:', error);
         return {
             status: 500,
             body: `Internal Server Error - ${error.message}`

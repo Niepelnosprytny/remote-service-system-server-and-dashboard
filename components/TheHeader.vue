@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import useAuthStore from "~/stores/auth";
 import { storeToRefs } from "pinia";
 
@@ -31,10 +30,6 @@ const register = () => {
 </script>
 
 <template>
-
-    <pre>{{ token }}</pre>
-    <pre>{{ user }}</pre>
-
   <a href="/"><h1>Dashboard</h1></a>
     <div v-if="!user">
       <button @click="login">Login</button>

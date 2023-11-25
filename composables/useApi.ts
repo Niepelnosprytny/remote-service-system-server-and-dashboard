@@ -5,7 +5,7 @@ export const useApi = async (url, fetchOptions = {}, useAsyncOptions = {}) => {
     const store = useAuthStore();
     const { token } = storeToRefs(store);
 
-    const response = await useFetch(url, {
+    const { data, pending, refresh, error} = await useFetch(url, {
         method: fetchOptions.method,
         query: fetchOptions.query,
         params: fetchOptions.params,
@@ -20,7 +20,11 @@ export const useApi = async (url, fetchOptions = {}, useAsyncOptions = {}) => {
 
 
     return {
-        body: response.data.value.body,
-        status: response.data.value.status
+        body: data.value.body,
+        statusCode: data.value.status,
+        data: data,
+        pending: pending,
+        refresh: refresh,
+        error: error,
     };
 };

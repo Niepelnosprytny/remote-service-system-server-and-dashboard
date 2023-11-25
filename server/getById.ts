@@ -21,7 +21,6 @@ const getById = (tableName: string) =>
                 body: results[0][0]
             };
         } catch (error) {
-            console.error(`Error executing query for ${tableName} by ID:`, error);
             return {
                 status: 500,
                 body: `Internal Server Error - ${error.message}`

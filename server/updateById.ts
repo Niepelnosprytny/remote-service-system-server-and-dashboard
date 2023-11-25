@@ -17,11 +17,6 @@ const updateById = (tableName: string) =>
             const fields = Object.keys(body);
             let values = Object.values(body);
 
-            if (tableName === 'user' && fields.includes('password')) {
-                const hashedPassword = crypto.createHash('sha256').update(body.password).digest('hex');
-                values = values.map((value, index) => (fields[index] === 'password' ? hashedPassword : value));
-            }
-
             const setPart = fields.map((field) => `${field} = ?`).join(', ');
             const query = `UPDATE ${tableName} SET ${setPart} WHERE id = ?`;
 
@@ -39,7 +34,6 @@ const updateById = (tableName: string) =>
                 body: `${tableName} with id ${id} updated successfully`
             };
         } catch (error) {
-            console.error(`Error executing update for ${tableName}:`, error);
             return {
                 status: 500,
                 body: `Internal Server Error - ${error.message}`

@@ -21,7 +21,6 @@ const deleteById = (tableName: string) =>
                 body: `${tableName} with id ${id} deleted successfully`
             };
         } catch (error) {
-            console.error(`Error deleting ${tableName}:`, error);
             return {
                 status: 500,
                 body: `Internal Server Error - ${error.message}`

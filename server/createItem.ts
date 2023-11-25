@@ -25,7 +25,6 @@ const createItem = (tableName: string) =>
                 body: `${tableName} created successfully`
             };
         } catch (error) {
-            console.error(`Error executing query for ${tableName}:`, error);
             return {
                 status: 500,
                 body: `Internal Server Error - ${error.message}`

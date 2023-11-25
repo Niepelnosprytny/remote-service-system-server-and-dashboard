@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
             body: results[0]
         };
     } catch (error) {
-        console.error('Error executing query:', error);
         return {
             status: 500,
             body: `Internal Server Error - ${error.message}`
