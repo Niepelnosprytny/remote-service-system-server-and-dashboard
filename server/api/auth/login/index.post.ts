@@ -1,5 +1,5 @@
-import pool from '../../mysql';
-import jwt from 'jsonwebtoken';
+import pool from '~/server/mysql';
+import { signToken } from "~/server/jwtUtils";
 import crypto from "crypto";
 
 export default defineEventHandler(async (event) => {
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
             };
         }
 
-        const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
+        const query = 'SELECT id, email, name, surname, role, employer FROM user WHERE email = ? AND password = ?';
 
         const hashedPassword = crypto.createHash('sha256').update(body.password).digest('hex');
 
@@ -21,12 +21,12 @@ export default defineEventHandler(async (event) => {
 
         if (results[0].length === 0) {
             return {
-                status: 401,
-                body: 'Invalid credentials'
+                status: 404,
+                body: 'User not found'
             };
         }
 
-        const token = jwt.sign({ email: body.email }, process.env.JWT_SECRET_KEY);
+        const token = signToken({ id: results[0][0].id, role: results[0][0].role });
 
         return {
             status: 200,

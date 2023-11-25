@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 let id = ref(1);
 const json = ref(`{
   "field": "value"
@@ -46,29 +44,29 @@ const setActiveTable = (table) => {
 };
 
 const getAllItems = async () => {
-  allItems.value = await $fetch(`/api/${activeTable.value}`).catch((error) => error.data);
+  allItems.value = await useApi(`/api/${activeTable.value}`).catch((error) => error.data);
 };
 
 const getItem = async () => {
-  itemData.value = await $fetch(`/api/${activeTable.value}/${id.value}`).catch((error) => error.data);
+  itemData.value = await useApi(`/api/${activeTable.value}/${id.value}`).catch((error) => error.data);
 };
 
 const createItem = async () => {
-  createItemData.value = await $fetch(`/api/${activeTable.value}`, {
+  createItemData.value = await useApi(`/api/${activeTable.value}`, {
     method: 'POST',
     body: json.value,
   }).catch((error) => error.data);
 };
 
 const updateItem = async () => {
-  updateItemData.value = await $fetch(`/api/${activeTable.value}/${id.value}`, {
+  updateItemData.value = await useApi(`/api/${activeTable.value}/${id.value}`, {
     method: 'PATCH',
     body: json.value,
   }).catch((error) => error.data);
 };
 
 const deleteItem = async () => {
-  deleteItemData.value = await $fetch(`/api/${activeTable.value}/${id.value}`, {
+  deleteItemData.value = await useApi(`/api/${activeTable.value}/${id.value}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
 };
@@ -79,9 +77,9 @@ const showGeneralQuery = () => {
 };
 
 const sendGeneralQuery = async () => {
-  generalQuery.value = await $fetch('/api', {
+  generalQuery.value = await useApi('/api', {
     method: 'POST',
-    body: json.value,
+    body: JSON.stringify(json.value),
   }).catch((error) => error.data);
 };
 </script>

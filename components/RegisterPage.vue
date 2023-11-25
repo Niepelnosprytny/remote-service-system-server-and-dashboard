@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import useAuthStore from '~/store/auth';
+import useAuthStore from '~/stores/auth';
 
 const store = useAuthStore();
 
@@ -13,9 +12,7 @@ const user = ref({
   employer: null
 });
 
-const employers = ref([]);
-
-employers.value = (await $fetch('/api/client')).body;
+const { body: employers } = await useApi('/api/client');
 
 const register = async () => {
   try {

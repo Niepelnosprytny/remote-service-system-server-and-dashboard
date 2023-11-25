@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import useAuthStore from '~/store/auth';
+import useAuthStore from '~/stores/auth';
 
 const store = useAuthStore();
 const credentials = ref({
@@ -10,7 +9,7 @@ const credentials = ref({
 
 const login = async () => {
   try {
-    const response = await $fetch('/api/auth/login', {
+    const response = await useApi('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
         email: credentials.value.email,

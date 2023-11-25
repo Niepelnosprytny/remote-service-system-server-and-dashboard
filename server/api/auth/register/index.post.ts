@@ -1,6 +1,6 @@
-import pool from '../../mysql';
+import pool from '~/server/mysql';
+import { signToken } from '~/server/jwtUtils';
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
         const results = await pool.query(query, [body.email, hashedPassword, body.name, body.surname, body.role, body.employer]);
 
-        const token = jwt.sign({ email: body.email }, process.env.JWT_SECRET_KEY);
+        const token = signToken({ id: body.id, role: body.role });
 
         return {
             status: 201,
