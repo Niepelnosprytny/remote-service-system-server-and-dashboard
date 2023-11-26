@@ -22,10 +22,7 @@ const login = async () => {
 
       alert(`Login successful`);
 
-      reloadNuxtApp({
-        path: `/`,
-        force: true
-      });
+      await navigateTo('/');
     } else {
       alert(`Login error - ${JSON.stringify(response.body)}`);}
 };

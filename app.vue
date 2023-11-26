@@ -8,7 +8,7 @@ const cookie = await useCookie('auth', {
   default: () => {
     return null
   },
-  maxAge: 259200,
+  maxAge: 86400,  //1 day in seconds
   sameSite: true
 });
 

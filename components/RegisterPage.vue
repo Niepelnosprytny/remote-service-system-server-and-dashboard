@@ -25,10 +25,7 @@ const register = async () => {
 
       alert(`Registration successful`);
 
-      reloadNuxtApp({
-        path: `/`,
-        force: true
-      });
+      await navigateTo('/');
     } else {
       alert(`Registration error - ${JSON.stringify(response.body)}`);
     }
