@@ -15,7 +15,10 @@ export default defineEventHandler(async (event) => {
             const token = getRequestHeaders(event).authorization.split(' ')[1] ?? '';
 
             try {
-                const { id, role, iat } = await verifyToken(token);
+                //exp is expiration time
+                //data contains bearer's ID and role
+                //iat is "issued at" date
+                const { exp, data, iat } = await verifyToken(token);
             } catch (error) {
                 return {
                     status: 401,

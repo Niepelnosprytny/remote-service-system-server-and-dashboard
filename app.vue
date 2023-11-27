@@ -14,7 +14,8 @@ const cookie = await useCookie('auth', {
 
 if (cookie.value) {
   token.value = cookie.value;
-  user.value = (await useApi('/api/auth')).body;
+  const { body } = await useApi('/api/auth');
+  store.login(body.token, body.user);
 }
 
 store.$subscribe(async (mutation, state) => {

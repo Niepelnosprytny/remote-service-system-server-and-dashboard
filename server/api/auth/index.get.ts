@@ -1,4 +1,4 @@
-import { verifyToken } from '~/server/jwtUtils';
+import { signToken, verifyToken } from '~/server/jwtUtils';
 import pool from '~/server/mysql';
 
 export default defineEventHandler(async (event) => {
@@ -8,11 +8,11 @@ export default defineEventHandler(async (event) => {
         const token = authorizationHeader.split(' ')[1] ?? '';
 
         try {
-            const { id } = await verifyToken(token);
+            const { data } = await verifyToken(token);
 
             const query = 'SELECT id, email, name, surname, role, employer FROM user WHERE id = ?';
 
-            const results = await pool.query(query, [id]);
+            const results = await pool.query(query, [data.id]);
 
             if (results[0].length === 0) {
                 return {
@@ -21,9 +21,14 @@ export default defineEventHandler(async (event) => {
                 };
             }
 
+            const newToken = signToken({ id: results[0][0].id, role: results[0][0].role });
+
             return {
                 status: 200,
-                body: results[0][0]
+                body: {
+                    token: newToken,
+                    user: results[0][0]
+                }
             };
         } catch (error) {
             return {
