@@ -4,7 +4,13 @@ Server & dashboard for remote service system. The server shall store all necessa
 
 To run the project, first create .env file and copy contents from .env.example into it.
 
-Then, install Docker and Docker Compose if you don't have them already.
+When it's done, create SSL keys using this command
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout ./ssl/key.pem -out ./ssl/cert.pem -days 365
+```
+
+Now, install Docker and Docker Compose if you don't have them already.
 
 Then use this command to create the database with initial tables, populate it with data, install all dependencies, and run the dev server:
 
