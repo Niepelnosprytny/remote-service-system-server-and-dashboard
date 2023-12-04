@@ -16,14 +16,14 @@ const logout = async () => {
   <NuxtLink to="/"><h1>Dashboard</h1></NuxtLink>
   <div v-if="!user">
     <NuxtLink to="/login">
-      <button>Login</button>
+      <v-btn>Login</v-btn>
     </NuxtLink>
   </div>
   <div v-else>
     <h4>{{ `${user.name} ${user.surname}` }}</h4>
-    <button @click="logout">Logout</button>
+    <v-btn @click="logout">Logout</v-btn>
     <NuxtLink to="/register" v-if="user.role === 'ROLE_ADMIN'">
-      <button>Register</button>
+      <v-btn>Register</v-btn>
     </NuxtLink>
   </div>
 </template>

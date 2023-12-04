@@ -29,17 +29,17 @@ const login = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="login">
+  <v-form @submit.prevent="login">
     <div>
-      <label>Email</label>
-      <input type="text" v-model="credentials.email" />
+      <v-label>Email</v-label>
+      <v-text-field type="text" v-model="credentials.email" />
     </div>
     <div>
-      <label>Password</label>
-      <input type="password" v-model="credentials.password" />
+      <v-label>Password</v-label>
+      <v-text-field type="password" v-model="credentials.password" />
     </div>
     <div>
-      <button type="submit">Submit</button>
+      <v-btn type="submit">Submit</v-btn>
     </div>
-  </form>
+  </v-form>
 </template>

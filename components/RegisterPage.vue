@@ -33,25 +33,25 @@ const register = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="register">
+  <v-form @submit.prevent="register">
     <div>
-      <label>Email</label>
-      <input type="text" v-model="user.email" />
+      <v-label>Email</v-label>
+      <v-text-field type="text" v-model="user.email" />
     </div>
     <div>
-      <label>Password</label>
-      <input type="password" v-model="user.password" />
+      <v-label>Password</v-label>
+      <v-text-field type="password" v-model="user.password" />
     </div>
     <div>
-      <label>Name</label>
-      <input type="text" v-model="user.name" />
+      <v-label>Name</v-label>
+      <v-text-field type="text" v-model="user.name" />
     </div>
     <div>
-      <label>Surname</label>
-      <input type="text" v-model="user.surname" />
+      <v-label>Surname</v-label>
+      <v-text-field type="text" v-model="user.surname" />
     </div>
     <div>
-      <label>Role</label>
+      <v-label>Role</v-label>
       <select v-model="user.role">
         <option selected>ROLE_USER</option>
         <option>ROLE_OFFICE</option>
@@ -59,14 +59,14 @@ const register = async () => {
       </select>
     </div>
     <div>
-      <label>Employer</label>
+      <v-label>Employer</v-label>
       <select v-model="user.employer">
         <option value="null" selected>Brak</option>
         <option v-for="employer in employers" :key="employer.id" :value="employer.id">{{ employer.name }}</option>
       </select>
     </div>
     <div>
-      <button type="submit">Register</button>
+      <v-btn type="submit">Register</v-btn>
     </div>
-  </form>
+  </v-form>
 </template>

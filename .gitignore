@@ -25,3 +25,6 @@ logs
 
 # SSL
 ssl/*
+
+# .gitignore
+!.gitignore

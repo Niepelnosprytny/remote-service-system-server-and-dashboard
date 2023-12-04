@@ -87,60 +87,59 @@ const sendGeneralQuery = async () => {
 <template>
   <div>
     <h1>API Tests</h1>
-    <button v-for="table in tables" :key="table" @click="setActiveTable(table)">
+    <v-btn v-for="table in tables" :key="table" @click="setActiveTable(table)">
       {{ table }}
-    </button>
-    <button @click="showGeneralQuery">General query</button>
+    </v-btn>
+    <v-btn @click="showGeneralQuery">General query</v-btn>
 
-    <details v-if="toggleGeneralQuery">
-      <summary>General query</summary>
-      <textarea v-model="json" placeholder="SQL query" rows="20" cols="100" />
+    <v-expansion-panel title="General query" v-if="toggleGeneralQuery">
+      <v-textarea v-model="json" placeholder="SQL query" rows="20" cols="100" />
       <br />
-      <button @click="sendGeneralQuery">Send</button>
+      <v-btn @click="sendGeneralQuery">Send</v-btn>
       <pre v-if="generalQuery">{{ generalQuery }}</pre>
-    </details>
+    </v-expansion-panel>
 
-    <details v-if="activeTable && !toggleGeneralQuery">
-      <summary>{{ activeTable }}</summary>
+    <div v-if="activeTable && !toggleGeneralQuery">
+      <h3>{{ activeTable }}</h3>
       <details>
         <summary>Get all {{ activeTable }}</summary>
-        <button @click="getAllItems">Get all {{ activeTable }}</button>
+        <v-btn @click="getAllItems">Get all {{ activeTable }}</v-btn>
         <pre v-if="allItems">{{ allItems }}</pre>
       </details>
 
       <details>
         <summary>Get {{ activeTable }}</summary>
-        <input v-model="id" type="number" placeholder="ID" />
+        <v-text-field v-model="id" type="number" placeholder="ID" />
         <br />
-        <button @click="getItem">Get {{ activeTable }}</button>
+        <v-btn @click="getItem">Get {{ activeTable }}</v-btn>
         <pre v-if="itemData">{{ itemData }}</pre>
       </details>
 
       <details>
         <summary>Create {{ activeTable }}</summary>
-        <textarea v-model="json" placeholder="object" rows="10" cols="50" />
+        <v-textarea v-model="json" placeholder="object" rows="10" cols="50" />
         <br />
-        <button @click="createItem">Create {{ activeTable }}</button>
+        <v-btn @click="createItem">Create {{ activeTable }}</v-btn>
         <pre v-if="createItemData">{{ createItemData }}</pre>
       </details>
 
       <details>
         <summary>Update {{ activeTable }}</summary>
-        <input v-model="id" type="number" placeholder="ID" />
+        <v-text-field v-model="id" type="number" placeholder="ID" />
         <br />
-        <textarea v-model="json" placeholder="object" rows="10" cols="50" />
+        <v-textarea v-model="json" placeholder="object" rows="10" cols="50" />
         <br />
-        <button @click="updateItem">Update {{ activeTable }}</button>
+        <v-btn @click="updateItem">Update {{ activeTable }}</v-btn>
         <pre v-if="updateItemData">{{ updateItemData }}</pre>
       </details>
 
       <details>
         <summary>Delete {{ activeTable }}</summary>
-        <input v-model="id" type="number" placeholder="ID" />
+        <v-text-field v-model="id" type="number" placeholder="ID" />
         <br />
-        <button @click="deleteItem">Delete {{ activeTable }}</button>
+        <v-btn @click="deleteItem">Delete {{ activeTable }}</v-btn>
         <pre v-if="deleteItemData">{{ deleteItemData }}</pre>
       </details>
-    </details>
+    </div>
   </div>
 </template>

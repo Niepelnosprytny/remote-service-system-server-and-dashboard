@@ -2,7 +2,7 @@ version: '3.3'
 services:
   nuxt:
     image: node:20.0-alpine3.17
-    command: sh -c "yarn install && yarn run dev"
+    command: sh -c "openssl req -x509 -newkey rsa:4096 -keyout ./ssl/key.pem -out ./ssl/cert.pem -days 365 && yarn install && yarn run dev"
     working_dir: /nuxt
     restart: always
     tmpfs: /tmp
@@ -11,8 +11,8 @@ services:
     environment:
       - NUXT_HOST='0.0.0.0'
     ports:
-      - 3000:3000
-      - 443:443
+      - "3000:3000"
+      - "443:443"
     volumes:
       - .:/nuxt
 
@@ -25,7 +25,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
       - ./mysql-config:/etc/mysql/conf.d
