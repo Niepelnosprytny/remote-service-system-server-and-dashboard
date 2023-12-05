@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
         URL.protocol = 'https';
         await sendRedirect(event, URL.href);
     }
-
     if (URL.pathname.startsWith('/api') && !URL.pathname.startsWith('/api/auth')) {
         const authorizationHeader = getRequestHeaders(event).authorization;
 

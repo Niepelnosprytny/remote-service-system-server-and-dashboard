@@ -8,7 +8,7 @@ const {user, token} = storeToRefs(store);
 
 const logout = async () => {
   store.logout();
-  await navigateTo('/');
+  await navigateTo('/login');
 }
 </script>
 
@@ -22,8 +22,8 @@ const logout = async () => {
   <div v-else>
     <h4>{{ `${user.name} ${user.surname}` }}</h4>
     <v-btn @click="logout">Logout</v-btn>
-    <NuxtLink to="/register" v-if="user.role === 'ROLE_ADMIN'">
-      <v-btn>Register</v-btn>
+    <NuxtLink to="/new/user" v-if="user.role === 'ROLE_ADMIN'">
+      <v-btn>New user</v-btn>
     </NuxtLink>
   </div>
 </template>

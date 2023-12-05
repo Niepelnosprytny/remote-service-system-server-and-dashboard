@@ -9,6 +9,9 @@ const useAuthStore = defineStore('auth', {
         };
     },
     actions: {
+        isLoggedIn(){
+          return this.user !== null
+        },
         login(token, user) {
             this.token = token;
             this.user = user;
@@ -17,6 +20,7 @@ const useAuthStore = defineStore('auth', {
             this.token = null;
             this.user = null;
         },
+
     }
 });
 

@@ -21,6 +21,7 @@ if (cookie.value) {
 store.$subscribe(async (mutation, state) => {
   cookie.value = state.token;
 });
+
 </script>
 
 <template>
