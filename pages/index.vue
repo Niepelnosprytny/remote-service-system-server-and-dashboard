@@ -2,7 +2,8 @@
 
 import useAuthStore from "~/stores/auth.js";
 import {storeToRefs} from "pinia";
-import ReportList from "~/components/dashboard/ReportList.vue";
+import ReportList from "~/components/dashboard/report/ReportList.vue";
+import ReportListFilters from "~/components/dashboard/report/ReportListFilters.vue";
 
 const store = useAuthStore();
 const user = storeToRefs(store);
@@ -13,5 +14,5 @@ if (!store.isLoggedIn()) {
 
 </script>
 <template>
-<ReportList></ReportList>
+      <report-list></report-list>
 </template>

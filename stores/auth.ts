@@ -12,6 +12,9 @@ const useAuthStore = defineStore('auth', {
         isLoggedIn(){
           return this.user !== null
         },
+        isAdmin(){
+            return this.user.role === 'ROLE_ADMIN'
+        },
         login(token, user) {
             this.token = token;
             this.user = user;
