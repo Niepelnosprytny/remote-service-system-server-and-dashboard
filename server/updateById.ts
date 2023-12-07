@@ -1,5 +1,4 @@
 import pool from './mysql';
-import crypto from 'crypto';
 
 const updateById = (tableName: string) =>
     defineEventHandler(async (event) => {

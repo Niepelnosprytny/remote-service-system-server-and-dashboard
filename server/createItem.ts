@@ -1,5 +1,4 @@
 import pool from './mysql';
-import crypto from 'crypto';
 
 const createItem = (tableName: string) =>
     defineEventHandler(async (event) => {
@@ -18,7 +17,7 @@ const createItem = (tableName: string) =>
 
             const query = `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fields.map(() => '?').join(', ')})`;
 
-            const results = await pool.query(query, values);
+            await pool.query(query, values);
 
             return {
                 status: 201,

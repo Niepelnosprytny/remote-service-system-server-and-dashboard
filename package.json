@@ -19,8 +19,11 @@
     "@nuxt/http": "^0.6.4",
     "@nuxt/types": "^2.17.2",
     "@pinia/nuxt": "^0.5.1",
+    "@types/uuid": "^9.0.7",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.1",
-    "pinia": "^2.1.7"
+    "nuxt-socket-io": "^3.0.13",
+    "pinia": "^2.1.7",
+    "uuid": "^9.0.1"
   }
 }
