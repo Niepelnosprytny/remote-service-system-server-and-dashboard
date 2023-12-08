@@ -1,17 +1,11 @@
 <script setup lang="ts">
 
-import useAuthStore from "~/stores/auth.js";
-import {storeToRefs} from "pinia";
 import ReportList from "~/components/dashboard/report/ReportList.vue";
-import ReportListFilters from "~/components/dashboard/report/ReportListFilters.vue";
-
-const store = useAuthStore();
-const user = storeToRefs(store);
-
-if (!store.isLoggedIn()) {
-  navigateTo('/login')
+import useAuthStore from "~/stores/auth";
+const store = useAuthStore()
+if (!store.isLoggedIn()){
+  navigateTo('/')
 }
-
 </script>
 <template>
       <report-list></report-list>

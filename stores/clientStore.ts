@@ -13,7 +13,9 @@ const useClientStore = defineStore('client', {
         },
         async updateClientList() {
             const info = await useApi(`/api/client`).catch((error) => error.data)
+            if(info){
             this.clientList = info.body;
+                }
         },
 
     }
