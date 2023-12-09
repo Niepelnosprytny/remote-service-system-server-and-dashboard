@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useClientStore from "~/stores/clientStore";
 import statusEnum from "~/enums/modules/StatusEnum";
-import useAuthStore from "~/stores/auth";
+import useAuthStore from "~/stores/authStore";
 const clientStore = useClientStore();
 clientStore.updateClientList();
 const store = useAuthStore();

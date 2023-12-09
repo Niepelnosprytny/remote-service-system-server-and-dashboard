@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import useAuthStore from "~/stores/auth.js";
+import useAuthStore from "~/stores/authStore.js";
 import {storeToRefs} from "pinia";
 import AdminPanelBox from "~/components/dashboard/AdminPanelBox.vue";
 

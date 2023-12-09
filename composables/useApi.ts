@@ -1,4 +1,4 @@
-import useAuthStore from "~/stores/auth";
+import useAuthStore from "~/stores/authStore";
 import {storeToRefs} from "pinia";
 
 export const useApi = async (url, fetchOptions = {}, useAsyncOptions = {}) => {

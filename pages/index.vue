@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import useAuthStore from "~/stores/auth.js";
+import useAuthStore from "~/stores/authStore.js";
 import {storeToRefs} from "pinia";
 import ReportList from "~/components/dashboard/report/ReportList.vue";
 import ReportListFilters from "~/components/dashboard/report/ReportListFilters.vue";

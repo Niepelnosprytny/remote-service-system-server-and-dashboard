@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import ReportList from "~/components/dashboard/report/ReportList.vue";
-import useAuthStore from "~/stores/auth";
+import useAuthStore from "~/stores/authStore";
 import {storeToRefs} from "pinia";
 import ReportListFilters from "~/components/dashboard/report/ReportListFilters.vue";
 import LocationList from "~/components/dashboard/location/LocationList.vue";
