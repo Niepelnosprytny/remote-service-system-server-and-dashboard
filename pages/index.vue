@@ -1,3 +1,18 @@
+<script setup lang="ts">
+
+import useAuthStore from "~/stores/auth.js";
+import {storeToRefs} from "pinia";
+import ReportList from "~/components/dashboard/report/ReportList.vue";
+import ReportListFilters from "~/components/dashboard/report/ReportListFilters.vue";
+
+const store = useAuthStore();
+const user = storeToRefs(store);
+
+if (!store.isLoggedIn()) {
+  navigateTo('/login')
+}
+
+</script>
 <template>
-  <img src="https://i.ytimg.com/vi/Y7MI_vvRYvk/maxresdefault.jpg" alt="Hello there">
+      <report-list></report-list>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useAuthStore from "~/stores/auth";
 
+
 const store = useAuthStore();
 const {token, user} = storeToRefs(store);
 
@@ -21,6 +22,7 @@ if (cookie.value) {
 store.$subscribe(async (mutation, state) => {
   cookie.value = state.token;
 });
+
 </script>
 
 <template>

@@ -9,6 +9,12 @@ const useAuthStore = defineStore('auth', {
         };
     },
     actions: {
+        isLoggedIn(){
+          return this.user !== null
+        },
+        isAdmin(){
+            return this.user.role === 'ROLE_ADMIN'
+        },
         login(token, user) {
             this.token = token;
             this.user = user;
@@ -17,6 +23,7 @@ const useAuthStore = defineStore('auth', {
             this.token = null;
             this.user = null;
         },
+
     }
 });
 
