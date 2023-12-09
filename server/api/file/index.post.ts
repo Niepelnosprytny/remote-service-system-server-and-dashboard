@@ -19,15 +19,10 @@ export default defineEventHandler(async (event) => {
                 const report_id = parseInt(formData.find((item) => item.name === 'report_id').data.toString()) || null;
                 const comment_id = parseInt(formData.find((item) => item.name === 'comment_id').data.toString()) || null;
 
-                console.log(`File: ${Object.keys(item)}`);
-                console.log(`Filename: ${filename}`);
-                console.log(`Report ID: ${report_id}`);
-                console.log(`Comment ID: ${comment_id}`);
-
                 const query = 'INSERT INTO file (filename, report_id, comment_id) VALUES (?, ?, ?)';
 
                 await pool.query(query, [filename, report_id, comment_id]);
-                await writeFile(`./files/${filename}`, item.data);
+                await writeFile(`./public/files/${filename}`, item.data);
             }
         });
 

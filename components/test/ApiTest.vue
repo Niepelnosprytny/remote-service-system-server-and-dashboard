@@ -77,12 +77,19 @@ const deleteItem = async () => {
 };
 
 const uploadFile = async (event) => {
-  console.log(new FormData(event.currentTarget));
   let { body } = await useApi(`/api/file`, {
     method: 'POST',
     body: new FormData(event.currentTarget)
   }).catch((error) => console.log(`Error: ${error}`));
   createItemData.value = body;
+}
+
+const updateFile = async () => {
+  let { body } = await useApi(`/api/file/${id.value}`, {
+    method: 'PATCH',
+    body: new FormData(event.currentTarget)
+  }).catch((error) => console.log(`Error: ${error}`));
+  updateItemData.value = body;
 }
 
 const showGeneralQuery = () => {
@@ -128,6 +135,7 @@ const sendGeneralQuery = async () => {
         <v-text-field v-model="id" type="number" placeholder="ID" />
         <br />
         <v-btn @click="getItem">Get {{ activeTable }}</v-btn>
+        <img v-if="activeTable === 'file' && itemData" :src="`https://localhost:3000/files/${itemData.filename}`" :alt="itemData.filename">
         <pre v-if="itemData">{{ itemData }}</pre>
       </details>
 
@@ -160,11 +168,12 @@ const sendGeneralQuery = async () => {
       </details>
       <details v-else>
         <summary>Update file</summary>
-        <v-form enctype="multipart/form-data" @submit.prevent="uploadFile">
-          <v-file-input name="file" label="File input" :multiple="true" />
-          <v-text-field name="report_id" type="number" placeholder="Report ID" />
-          <v-text-field name="comment_id" type="number" placeholder="Comment ID" />
-          <v-btn>Submit</v-btn>
+        <v-text-field v-model="id" type="number" placeholder="ID" />
+        <v-form enctype="multipart/form-data" @submit.prevent="updateFile">
+          <v-file-input name="file" label="File input" />
+          <v-text-field name="report_id" placeholder="Report ID" />
+          <v-text-field name="comment_id" placeholder="Comment ID" />
+          <v-btn type="submit">Submit</v-btn>
         </v-form>
         <pre v-if="updateItemData">{{ updateItemData }}</pre>
       </details>

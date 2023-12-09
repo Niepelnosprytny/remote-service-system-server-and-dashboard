@@ -23,11 +23,10 @@ logs
 .env.*
 !.env.example
 
-# SSL
+# others
 ssl/*
-
-#files
-files/*
+public/files/*
+mysql/data/*
 
 # .gitignore
 !.gitignore

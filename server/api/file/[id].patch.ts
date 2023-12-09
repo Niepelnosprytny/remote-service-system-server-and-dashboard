@@ -1,44 +1,53 @@
 import pool from '~/server/mysql';
+import { writeFile, unlink } from 'fs/promises';
+import { v4 } from 'uuid';
 
 export default defineEventHandler(async (event) => {
     try {
         const id = getRouterParam(event, 'id');
-        const body = await readBody(event);
+        const formData = await readMultipartFormData(event);
 
-        if (!body) {
+        if (!formData || formData.length === 0) {
             return {
                 status: 400,
-                body: 'Bad Request. Missing request body'
+                body: 'Bad Request. Missing or empty request body'
             };
         }
 
-        const { filename, report_id, comment_id } = body;
+        const file = formData.find((item) => item.name === 'file');
+        const existingFile = (await pool.query('SELECT * FROM file WHERE id = ?', [id]))[0][0];
+        const existingFilename = existingFile.filename;
+        let newFilename = existingFilename;
+        let report_id = formData.find((item) => item.name === 'report_id').data.toString();
+        let comment_id = formData.find((item) => item.name === 'comment_id').data.toString();
 
-        if (!filename && report_id === undefined && comment_id === undefined) {
-            return {
-                status: 400,
-                body: 'Bad Request. At least one field required for update'
-            };
+        if (report_id === "") {
+            report_id = existingFile.report_id;
+        } else if (report_id === "null") {
+            report_id = null;
         }
 
-        const fieldsToUpdate = Object.entries(body).filter(([key, value]) => value !== undefined);
-        const setPart = fieldsToUpdate.map(([field, value]) => `${field} = ?`).join(', ');
+        if (comment_id === "") {
+            comment_id = existingFile.comment_id;
+        } else if (comment_id === "null") {
+            comment_id = null;
+        }
+
+        if (file) {
+            newFilename = v4() + '.' + file.filename.split('.').pop();
+            await writeFile(`./public/files/${newFilename}`, file.data);
+            await unlink(`./public/files/${existingFilename}`);
+        }
 
         const query = `
-      UPDATE file
-      SET ${setPart}
-      WHERE id = ?
-    `;
+            UPDATE file
+            SET filename   = ?,
+                report_id  = ?,
+                comment_id = ?
+            WHERE id = ?
+        `;
 
-        const values = fieldsToUpdate.map(([_, value]) => value);
-        const results = await pool.query(query, [...values, id]);
-
-        if (results[0].affectedRows === 0) {
-            return {
-                status: 404,
-                body: `File with id ${id} not found`
-            };
-        }
+        await pool.query(query, [newFilename, report_id, comment_id, id]);
 
         return {
             status: 200,
