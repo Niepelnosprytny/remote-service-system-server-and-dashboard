@@ -2,6 +2,7 @@
 import useAuthStore from "~/stores/auth";
 import {storeToRefs} from "pinia";
 import useNotificationStore from "~/stores/notificationsStore";
+
 const route = useRoute()
 const store = useAuthStore();
 const {user, token} = storeToRefs(store);
@@ -15,7 +16,7 @@ const logout = async () => {
 }
 
 const notificationRedirect = async (notification) => {
-  await notificationStore.deleteNotification(notification,store.getId())
+  await notificationStore.deleteNotification(notification, store.getId())
   await navigateTo(`/report/${notification.report_id}`);
 }
 </script>
@@ -32,9 +33,11 @@ const notificationRedirect = async (notification) => {
       </NuxtLink>
     </v-card>
     <v-card style="margin-right: 15px">
-      <v-btn>
-        <v-icon v-if="notificationList.length==0" disabled="true">mdi-bell</v-icon>
-        <v-icon v-else>mdi-bell-badge</v-icon>
+      <v-btn  disabled="true" v-if="notificationList.length==0">
+        <v-icon>mdi-bell</v-icon>
+      </v-btn>
+      <v-btn v-else>
+        <v-icon>mdi-bell-badge</v-icon>
         <v-menu activator="parent">
           <v-list>
             <v-list-item v-for="notification in notificationList" @click="notificationRedirect(notification)">
@@ -47,28 +50,28 @@ const notificationRedirect = async (notification) => {
       </v-btn>
     </v-card>
     <v-card>
-    <v-btn
-        color="primary"
-    >
-      <p>
-      <v-icon style="padding-right: 5px">mdi-account</v-icon>
-      {{ `${user.name} ${user.surname}` }}
-      </p>
-      <v-menu activator="parent">
-        <v-list>
-          <v-list-item @click="logout">
-            <p>
-              <v-icon style="padding-right: 5px">mdi-logout</v-icon>
-              Logout
-            </p>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
+      <v-btn
+          color="primary"
+      >
+        <p>
+          <v-icon style="padding-right: 5px">mdi-account</v-icon>
+          {{ `${user.name} ${user.surname}` }}
+        </p>
+        <v-menu activator="parent">
+          <v-list>
+            <v-list-item @click="logout">
+              <p>
+                <v-icon style="padding-right: 5px">mdi-logout</v-icon>
+                Logout
+              </p>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-btn>
     </v-card>
 
   </v-toolbar>
-  <div >
+  <div>
 
   </div>
 

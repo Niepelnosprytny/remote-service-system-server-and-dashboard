@@ -13,10 +13,10 @@ const {clientList} = storeToRefs(clientStore)
 const filterStore = useFilterStore();
 const status = Object.values(statusEnum);
 const reportStore = useReportStore();
+reportStore.resetFilters()
 let filters = ref({reportClient: null, user: null, status: null})
 
 const resetFilters = function (){
-  filterStore.clearFilters()
   filters.reportClient = null
   filters.user = null
   filters.status = null

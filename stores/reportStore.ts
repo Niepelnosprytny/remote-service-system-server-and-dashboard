@@ -11,10 +11,7 @@ const useReportStore = defineStore('report', {
     actions: {
         async filterReportList() {
             const filterStore = useFilterStore()
-
             this.filteredReportList = await filterStore.filterList(this.reportList)
-            console.log('co za glupota')
-            console.log(this.filteredReportList)
         },
         async resetFilters() {
             const filterStore = useFilterStore()
