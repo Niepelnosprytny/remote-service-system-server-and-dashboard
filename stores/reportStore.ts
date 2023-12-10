@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
+import useFilterStore from "~/stores/filterStore";
 
 const useReportStore = defineStore('report', {
     state: () => {
@@ -8,12 +9,22 @@ const useReportStore = defineStore('report', {
         };
     },
     actions: {
-        filterList(filter){
-          return filter;
+        async filterReportList() {
+            const filterStore = useFilterStore()
+
+            this.filteredReportList = await filterStore.filterList(this.reportList)
+            console.log('co za glupota')
+            console.log(this.filteredReportList)
+        },
+        async resetFilters() {
+            const filterStore = useFilterStore()
+            await filterStore.clearFilters()
+            this.filteredReportList = this.reportList
         },
         async updateReportList() {
             const info = await useApi(`/api/report`).catch((error) => error.data)
             this.reportList = info.body;
+            this.filteredReportList = info.body
         },
 
     }

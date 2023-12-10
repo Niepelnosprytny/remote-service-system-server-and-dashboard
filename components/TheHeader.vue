@@ -21,7 +21,7 @@ const notificationRedirect = async (notification) => {
 </script>
 
 <template>
-  <v-toolbar style="padding-right: 15px; margin-bottom: 50px">
+  <v-toolbar style="padding-right: 15px;">
     <v-spacer></v-spacer>
     <v-card v-if="store.isAdmin()" style="margin-right: 25px">
       <NuxtLink v-if="route.path!=='/'" to="/">
