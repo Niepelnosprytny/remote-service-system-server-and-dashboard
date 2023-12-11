@@ -5,6 +5,12 @@ const props = defineProps({
   report: {required: true},
 })
 const store = useAuthStore();
+const deleteReport = async function(id){
+  await useApi(`/api/report/${id}`, {
+    method: 'DELETE',
+  }).catch((error) => error.data);
+}
+
 </script>
 
 <template>
@@ -19,7 +25,7 @@ const store = useAuthStore();
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
       <v-col>
-        <v-btn v-if="store.isAdmin()" icon="mdi-trash-can"></v-btn>
+        <v-btn @click="deleteReport(props.report.id)" v-if="store.isAdmin()" icon="mdi-trash-can"></v-btn>
       </v-col>
       </v-row>
     </v-card>

@@ -15,7 +15,6 @@ report = report.body
       <v-col>
         <comment-box :report="report"></comment-box>
       </v-col>
-      <v-spacer></v-spacer>
       <v-col>
         <report-description :report="report"></report-description>
       </v-col>
