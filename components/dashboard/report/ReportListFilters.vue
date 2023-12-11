@@ -6,7 +6,7 @@ import useFilterStore from "~/stores/filterStore";
 import useReportStore from "~/stores/reportStore";
 
 const clientStore = useClientStore();
-clientStore.updateClientList();
+await clientStore.updateClientList();
 const store = useAuthStore();
 const {user} = storeToRefs(store);
 const {clientList} = storeToRefs(clientStore)

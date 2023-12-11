@@ -1,7 +1,7 @@
 const FilterTypeEnum = Object.freeze({
-    ADMIN: "administrator",
-    OFFICE: "pracownik biurowy",
-    USER: "użytkownik",
+    ROLE_ADMIN: "administrator",
+    ROLE_OFFICE: "pracownik biurowy",
+    ROLE_USER: "użytkownik",
 });
 
 export default FilterTypeEnum;

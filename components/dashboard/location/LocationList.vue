@@ -12,10 +12,10 @@ const {filteredLocationList,locationList} = storeToRefs(store);
 </script>
 
 <template>
-  <admin-panel-list-filters :filter-type="FilterTypeEnum.LOCATION"></admin-panel-list-filters>>
-<h1 v-for="loc in locationList">
+  <admin-panel-list-filters :filter-type="FilterTypeEnum.LOCATION"></admin-panel-list-filters>
+<v-col v-for="loc in locationList">
   <location-list-item :location="loc"></location-list-item>
-</h1>
+</v-col>
 </template>
 
 <style scoped>

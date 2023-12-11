@@ -13,6 +13,9 @@ const useFilterStore = defineStore('filter', {
         };
     },
     actions: {
+        sortByName(list){
+            return list.sort((a, b) => a.name.localeCompare(b.name))
+        },
         setFilters(filters) {
             this.filters = filters
         },
