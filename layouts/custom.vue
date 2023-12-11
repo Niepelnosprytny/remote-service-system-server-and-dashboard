@@ -1,7 +1,16 @@
+<script setup lang="ts">
+import useAuthStore from "~/stores/auth";
+
+const store = useAuthStore()
+const route = useRoute()
+if(!store.isLoggedIn()&&route.path!=='/login'){
+  navigateTo('/login')
+}
+</script>
 <template>
-  <div>
-    <TheHeader />
+  <v-app style="background-color: antiquewhite;">
+    <TheHeader v-if="store.isLoggedIn()" />
     <slot />
-    <TheFooter />
-  </div>
+    <TheFooter v-if="store.isLoggedIn()" />
+  </v-app>
 </template>
