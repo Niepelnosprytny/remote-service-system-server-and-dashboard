@@ -1,12 +1,28 @@
 import { verifyToken } from '~/server/jwtUtils';
+import {hashPassword} from "~/server/passwordUtils";
 
 export default defineEventHandler(async (event) => {
     const URL = getRequestURL(event);
+
+    // const users = [
+    //     {
+    //         email: 'barlomiej.komis@example.com',
+    //         password: 'Komis'
+    //     }
+    // ];
+    //
+    // for(let i = 0; i < users.length; i++) {
+    //     const { hash, salt } = hashPassword(users[i].password);
+    //     console.log(`Email: ${users[i].email}`)
+    //     console.log(`Hash: ${hash}`);
+    //     console.log(`Salt: ${salt}`);
+    // }
 
     if (URL.protocol === 'http') {
         URL.protocol = 'https';
         await sendRedirect(event, URL.href);
     }
+
     if (URL.pathname.startsWith('/api') && !URL.pathname.startsWith('/api/auth')) {
         const authorizationHeader = getRequestHeaders(event).authorization;
 

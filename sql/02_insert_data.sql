@@ -3,11 +3,11 @@ START TRANSACTION;
 -- CLIENT
 INSERT INTO client (name)
 SELECT name FROM (
-    SELECT 'Bieda' as name
+    SELECT 'Gigamarket' as name
     UNION ALL
-    SELECT 'Obinic Nierobi' as name
+    SELECT 'Constructo' as name
     UNION ALL
-    SELECT 'Sklanki Mydła Wycieraczki' as name
+    SELECT 'Eleganckie meble' as name
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
@@ -17,23 +17,47 @@ WHERE NOT EXISTS (
 -- LOCATION
 INSERT INTO location (name, street, city, postcode, client)
 SELECT name, street, city, postcode, client FROM (
-    SELECT 'Sklep Obinic Nierobi' as name,
+    SELECT 'Hurtownia Constructo' as name,
            'Jana Pawła II' as street,
            'Słupsk' as city,
            '21/37' as postcode,
            2 as client
     UNION ALL
-    SELECT 'Magazyn Szklanki Mydła Wycieraczki' as name,
+    SELECT 'Magazyn Eleganckie meble' as name,
            'Długa' as street,
            'Warszawa' as city,
            '6/9' as postcode,
            3 as client
     UNION ALL
-    SELECT 'Bieda' as name,
+    SELECT 'Hipermarket Gigamarket' as name,
            'Szymona Buraka' as street,
            'Słupsk' as city,
            '6/6/6' as postcode,
            1 as client
+    UNION ALL
+    SELECT 'Hurtownia Constructo' as name,
+           'Krótka' as street,
+           'Warszawa' as city,
+           '12/34' as postcode,
+           2 as client
+    UNION ALL
+    SELECT 'Hipermarket Gigamarket' as name,
+           'Jana Pawła II' as street,
+           'Słupsk' as city,
+           '21/37' as postcode,
+           1 as client
+    UNION ALL
+    SELECT 'Salon Eleganckie meble' as name,
+           'Wolności' as street,
+           'Warszawa' as city,
+           '34/12' as postcode,
+           3 as client
+    UNION ALL
+    SELECT 'Hipermarket Gigamarket' as name,
+        'Napoleona Bonaparte' as street,
+        'Warszawa' as city,
+        '11' as postcode,
+        1 as client
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
@@ -42,83 +66,83 @@ WHERE NOT EXISTS (
 
 -- USER
 -- Credentials:
--- 1: admin@admin.admin - admin
--- 2: jacek.walikokoski69@gmail.com - walekokoski
--- 3: komputerowiec10@wp.pl - komputerowiec10
--- 4: cotoemail@onet.pl - Podaj hasło
--- 5: prezes@icloud.com - jestemHardkorem
--- 6: piotr.troczki@outlook.com - mommy69
--- 7: kamil.furas@gmail.com - furrasyUwU
--- 8: kacper.zabijaka@gmail.com - zabijeCie
+-- 1: szymon.bulak@example.com - Bułak
+-- 2: jacek.wolik@example.com - Wolik
+-- 3: bartlomiej.komis@example.com - Komis
+-- 4: bartek.miotek@example.com - Miotek
+-- 5: kacper.smigielo@example.com - Smigieło
+-- 6: piotr.troczki@example.com - Troczki
+-- 7: kamil.grafika@example.com - Grafika
+-- 8: kacper.zabijaka@example.com - Zabijaka
 INSERT INTO user (email, password, salt, name, surname, role, employer)
 SELECT email, password, salt, name, surname, role, employer FROM (
     SELECT
-        'admin@admin.admin' as email,
-        '370cec0f0214dcd402a20b583adbe8ed936aecc2e0df0e5c87af502a20b3d1014eefb642d2f06d65eeeb034ebc8a26b2e6e5aca7cd5b98a4f9c5f5ac21aee482' as password,
-        '93c5a1b74930756b6476b795348dbc2dc82fbd90198ae2286165ba044efc0b3f' as salt,
+        'szymon.bulak@example.com' as email,
+        'f50810de242e40526fcfaed7620b944272d2edc42fd6678a37088bf7c01ba322c58b79d877f1482513a6a3014f504f0fb7cb017b3b8068c1fa2c01e1bddde1bc' as password,
+        '9d58133212af0282b9bf906200af692724bfa8c64db72b8742d9b74d6079bffe' as salt,
         'Szymon' as name,
         'Bułak' as surname,
         'ROLE_ADMIN' as role,
         NULL as employer
     UNION ALL
     SELECT
-        'jacek.walikokoski69@gmail.com' as email,
-        '5b7cfc5e7eff31ff51db0270dd9f6246e9900d7af84cd4f30a8fbbd1463a2713917d0b421f94b662571e134977b3751b2f11284f3ac9152b933df5630722537e' as password,
-        '170953a2bd2975cf69f38d1dd53755ab577f5d4b1156e3b00f4c0f9a7b3dc259' as salt,
+        'jacek.wolik@example.com' as email,
+        'ac76a87310487eaa297caa6f8b71e88e1af89cf96c181b95f6c11c3a3e3496aeb0027c15aa9f7ac28cb832efefa24fc7c7a20be7cbee10bde92be80ee3a402a0' as password,
+        'da7bdcd2b2c32043a6e4f1c415d69d5c28b84614cfcd223619e2cedd18756c9e' as salt,
         'Jacek' as name,
-        'Walikokoski' as surname,
+        'Wolik' as surname,
         'ROLE_OFFICE' as role,
         NULL as employer
     UNION ALL
     SELECT
-        'komputerowiec10@wp.pl' as email,
-        '2bb114a0073ca97c4f9898c95757f76a92964b06794a2dd7b4ec93816476fce948527882d5721f32c8ee8636fef8c361049e98ff73f677e95d2a4ae0c21d63f0' as password,
-        '4ee8cc565b632755bb618cc5e0eec2defdd6d97225ab3b5ee368adfb167b0ca1' as salt,
+        'bartlomiej.komis@example.com' as email,
+        '8f462b66b78c2f87fc832af43a7feddaee3933806ac41f087b51213af11bd8a2144b367ed0698e9277f4e6eec68e65b8e284865d13042b666eff4f1ba415c55e' as password,
+        'af9faf9cdc901999305ca62b5eb982f763b398dfc26dbf9117fdebd98eb5dafc' as salt,
         'Bartłomiej' as name,
         'Komis' as surname,
         'ROLE_USER' as role,
         2 as employer
     UNION ALL
     SELECT
-        'cotoemail@onet.pl' as email,
-        '925e9d4a6058b749155c75b3a990e851428bdeb5680a95b73a28ea4b6e8c972ecb1dbd506b678f9299f31220dc43fd41deff862704dd37f268f60bb82e2b86f1' as password,
-        '98d649ff7288ae211418052fbf9854e0ce020e0258764b59156adbd34ce752b6' as salt,
+        'bartek.miotek@example.com' as email,
+        'a051c43bec1cc2a664389ad65ab4bcbd86277037ef58290a6421c1cb17b9800453a931a33ad77b4e4d711aa78cba6c32a8507293c845e22ae9d8966c05312937' as password,
+        'b56af599957e0792e1f3361501b1be7fb16e93d0dbfe44a196fed07f96fe7bfd' as salt,
         'Bartek' as name,
         'Miotek' as surname,
         'ROLE_USER' as role,
         2 as employer
     UNION ALL
     SELECT
-        'prezes@icloud.com' as email,
-        '67ef6c280ddea61a4b1f7be649b910c854f531fcc0feeacb8054db7969509f8b3c57d02c03762acf7c7354740cd29009787a54146029bf5c4f1d006bf6f2ba27' as password,
-        '4ddb7632c96358f33d057354f608d244f9be42fb0df60e7fdb0af3e686da236b' as salt,
+        'kacper.smigielo@example.com' as email,
+        '6e8f2aa78d6acf98c2f91071c853768e5dce3c21bd1ae370122b6e1899bb58ff41cda7074280aaa73ac0b900a9a44d4dfb4b7e223201b7fa401c4fcb1be638fb' as password,
+        '6e9c8b72f9ca04864f4f6b947269db304e5b1288cf265b18db841cb90b8d7a66' as salt,
         'Kacper' as name,
         'Śmigieło' as surname,
         'ROLE_USER' as role,
         3 as employer
     UNION ALL
     SELECT
-        'piotr.troczki@outlook.com' as email,
-        '3ca4ae66f8618c79cefa42a291ee7e978dcedfe7169253e6cc4f701d91aee6254b34bead443aef357e97f388097a8f9b7e40a72bb92d19da4036609c77121199' as password,
-        '194f9ad00f5f91261642b85aefa2d746b599b54ff7d2579b0372deeb6bf2a119' as salt,
+        'piotr.troczki@example.com' as email,
+        '3903892fa7dffc26029e9406964ed1e082dc604284d6dc0cb32c5f9eb8ced39adc1ff39b418de75b0752944de6a733978dc0e68ba0b60b4247031b299083375f' as password,
+        '28f6c2946ad762327816003475433f18e7e0867d03d6364e89bac866c26694da' as salt,
         'Piotr' as name,
         'Troczki' as surname,
         'ROLE_USER' as role,
         3 as employer
     UNION ALL
     SELECT
-        'kamil.furas@gmail.com' as email,
-        'c8faa6ff88bb0bf537c330276d0def68e48ab648479d1adbe356a6262f5b19d0f90cd0e1fa04d82728797ccfd0310c79b78e1b23a50a80c62a3264e0fd780e05' as password,
-        'edbbfd39b6cafb8993e9709eee92a64ab533e9583286b8eff746e5c6166a94f9' as salt,
+        'kamil.grafika@example.com' as email,
+        'e88622c7f9a6575b755e40c72bc1f08a6fa988b7739141ff3ccb3c41e41d7b58140f1136c4a755386bd893b6350acfdcc0ec2877f174adcb8a5f3122698f27cd' as password,
+        '56788d0a7811392ef9a08fda83dba6007d5cf3db4d41ed4e6226eab4273f7793' as salt,
         'Kamil' as name,
-        'Furas' as surname,
+        'Grafika' as surname,
         'ROLE_USER' as role,
         1 as employer
     UNION ALL
     SELECT
-        'kacper.zabijaka@gmail.com' as email,
-        'affc445f0bede657f2f901d572138a8cf86aa1b5cf72ceccb24b905e92bd7db908d41c49b39134180be1e193d161bd5414c4eaac26e49e872850c6c087bcb467' as password,
-        '9059e469a31b57deece2004ef3375eb4e37f1bdaba385384874f736a14392978' as salt,
+        'kacper.zabijaka@example.com' as email,
+        '6206d99e6667c27f42701bcd0d9f18f00a79fa535a9baf145ad0355c540cc67bcd22736b6b8a396022dca9ddc1c1baa987da42b3106e52da23a6857bc27ad2af' as password,
+        'c6c7a34d13d7f8f94ada1aeb92e9e344a1d5082625c1fca9283deeafb8c540ac' as salt,
         'Kacper' as name,
         'Zabijaka' as surname,
         'ROLE_USER' as role,

@@ -1,4 +1,4 @@
-START TRANSACTION;
+    START TRANSACTION;
 
 -- CLIENT
 CREATE TABLE IF NOT EXISTS client (
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS report (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
-    status ENUM('OPEN', 'IN_PROGRESS', 'RESOLVED', 'DUPLICATE') NOT NULL,
+    status ENUM('Otwarte', 'W trakcie realizacji', 'Rozwiązane', 'Duplikat') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     location_id INT NOT NULL,
     created_by INT NOT NULL,
@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS comment (
 CREATE TABLE IF NOT EXISTS file (
     id INT PRIMARY KEY AUTO_INCREMENT,
     filename VARCHAR(255) NOT NULL,
+    filetype ENUM('movie', 'image', 'document') NOT NULL,
     report_id INT,
     comment_id INT,
     FOREIGN KEY (report_id) REFERENCES report(id) ON DELETE CASCADE,

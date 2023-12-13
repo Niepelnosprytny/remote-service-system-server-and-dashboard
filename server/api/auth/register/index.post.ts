@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
             };
         }
 
-
         const { hash, salt } = hashPassword(body.password);
 
         const query = `INSERT INTO user (email, password, salt, name, surname, role, employer) VALUES (?, ?, ?, ?, ?, ?, ?)`;
