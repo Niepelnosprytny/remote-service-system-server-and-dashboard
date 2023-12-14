@@ -157,46 +157,67 @@ WHERE NOT EXISTS (
 INSERT INTO report (title, content, status, location_id, created_by)
 SELECT title, content, status, location_id, created_by FROM (
     SELECT
-        'Co to ma być!?' as title,
-        'Robić nam kazali, to jakiś skandal! Ja zawodówki nie zdałem, a robić mi każą...' as content,
-        'OPEN' as status,
+        'Niezadowolenie z warunków pracy' as title,
+        'Ostatnio wprowadzone zmiany w organizacji pracy są niezgodne z oczekiwaniami pracowników. Wymaga to pilnej interwencji.' as content,
+        'Rozwiązane' as status,
         2 as location_id,
         4 as created_by
     UNION ALL
     SELECT
-        'To są jakieś jaja' as title,
-        'Robić nam kazali! TOWAR PRZENOSIĆ! Ja komputerowcem jestem, a nie jakimś robolem, do cholery!' as content,
-        'IN_PROGRESS' as status,
+        'Problemy z nowym zadaniem' as title,
+        'Przydzielono nam zadanie, które wydaje się być poza zakresem naszych umiejętności. Wymagamy odpowiedniego wsparcia i szkoleń.' as content,
+        'Rozwiązane' as status,
         2 as location_id,
         3 as created_by
     UNION ALL
     SELECT
-        'Generalnie rzecz biorąc problem jest' as title,
-        'Piwo się na komputer wylało, płytę główną zalało, nie odpala się' as content,
-        'IN_PROGRESS' as status,
+        'Awaria regału' as title,
+        'Napotkaliśmy problem z regałem w magazynie. Konieczna jest natychmiastowa interwencja, aby minimalizować przestój pracy.' as content,
+        'Otwarte' as status,
         3 as location_id,
         6 as created_by
     UNION ALL
     SELECT
-        'Generalnie rzecz biorąc jest problem' as title,
-        'Piwo się na komputer wylało, płytę główną zalało, nie odpala się' as content,
-        'DUPLICATE' as status,
+        'Awaria regału' as title,
+        'Napotkaliśmy problem z regałem w magazynie. Konieczna jest natychmiastowa interwencja, aby minimalizować przestój pracy.' as content,
+        'Duplikat' as status,
         3 as location_id,
         5 as created_by
     UNION ALL
     SELECT
-        'Towar nie dotarł' as title,
-        'Pół roku temu zamówilismy u Państwa nowe półki sklepowe, bo nasze się już rozpadają (generalnie bieda), a dalej nie dotarły. Zróbcie coś z tym.' as content,
-        'RESOLVED' as status,
+        'Opóźnienie w dostawie zamówienia' as title,
+        'Przesłane zamówienie na półki sklepowe nie dotarło w oczekiwanym terminie, co powoduje utrudnienia w funkcjonowaniu sklepu.' as content,
+        'Otwarte' as status,
         1 as location_id,
         7 as created_by
     UNION ALL
     SELECT
         'Reklamacja' as title,
-        'Dzisiaj dotarły do nas nowe półki, rozpadły się godzinę po złożeniu, żądam zwrotu pieniędzy.' as content,
-        'RESOLVED' as status,
+        'Otrzymane półki sklepowe okazały się być niskiej jakości. Domagamy się zwrotu pieniędzy i pilnej reakcji w tej sprawie.' as content,
+        'Rozwiązane' as status,
         1 as location_id,
         8 as created_by
+    UNION ALL
+    SELECT
+        'Problemy z nowym zadaniem' as title,
+        'Przydzielono nam zadanie, które wydaje się być poza zakresem naszych umiejętności. Wymagamy odpowiedniego wsparcia i szkoleń.' as content,
+        'Duplikat' as status,
+        2 as location_id,
+        3 as created_by
+    UNION ALL
+    SELECT
+        'Instrukcja złożenia jest niejasna' as title,
+        'Już od 3 godzin siedzę nad częściami, które przysłaliście i nie mogę ich złożyć w regał. Wasza instrukcja z jakiegoś powodu jest po chińsku.' as content,
+        'W trakcie realizacji' as status,
+        2 as location_id,
+        3 as created_by
+    UNION ALL
+    SELECT
+        'To miał być regał, a nie krzesło' as title,
+        'Zrobiłem szybki kurs chińskiego, i z tego, co udało mi się zrozumieć z instrukcji złożyłem krzesło... Zdawało mi się, że to miał być regał. Jak mam go złożyć?' as content,
+        'Otwarte' as status,
+        2 as location_id,
+        3 as created_by
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
@@ -207,36 +228,36 @@ WHERE NOT EXISTS (
 INSERT INTO notification (content, report_id)
 SELECT content, report_id FROM (
     SELECT
-        'Status "To są jakieś jaja" został zmieniony na "W trakcie realizacji"' as content,
+        'Status "Niezadowolenie z warunków pracy" został zmieniony na "W trakcie realizacji"' as content,
+        1 as report_id
+    UNION ALL
+    SELECT
+        'Nowy komentarz przy "Niezadowolenie z warunków pracy"' as content,
+        1 as report_id
+    UNION ALL
+    SELECT
+        'Status "Niezadowolenie z warunków pracy" został zmieniony na "Rozwiązane"' as content,
+        1 as report_id
+    UNION ALL
+    SELECT
+        'Status "Problemy z nowym zadaniem" został zmieniony na "W trakcie realizacji"' as content,
         2 as report_id
     UNION ALL
     SELECT
-        'Nowy komentarz przy "To są jakieś jaja"' as content,
+        'Nowy komentarz przy "Problemy z nowym zadaniem"' as content,
         2 as report_id
     UNION ALL
     SELECT
-        'Status "Generalnie rzecz biorąc problem jest" został zmieniony na "W trakcie realizacji"' as content,
-        3 as report_id
+        'Status "Problemy z nowym zadaniem" został zmieniony na "Rozwiązane"' as content,
+        2 as report_id
     UNION ALL
     SELECT
-        'Status "Generalnie rzecz biorąc jest problem" został zmieniony na "W trakcie realizacji"' as content,
+        'Status "Awaria regału" został zmieniony na "W trakcie realizacji"' as content,
         4 as report_id
     UNION ALL
     SELECT
-        'Status "Generalnie rzecz biorąc jest problem" został zmieniony na "Duplikat"' as content,
+        'Status "Awaria regału" został zmieniony na "Duplikat"' as content,
         4 as report_id
-    UNION ALL
-    SELECT
-        'Status "Towar nie dotarł" został zmieniony na "W trakcie realizacji"' as content,
-        5 as report_id
-    UNION ALL
-    SELECT
-        'Nowy komentarz przy "Towar nie dotarł"' as content,
-        5 as report_id
-    UNION ALL
-    SELECT
-        'Status "Towar nie dotarł" został zmieniony na "Zrealizowane"' as content,
-        5 as report_id
     UNION ALL
     SELECT
         'Status "Reklamacja" został zmieniony na "W trakcie realizacji"' as content,
@@ -247,8 +268,32 @@ SELECT content, report_id FROM (
         6 as report_id
     UNION ALL
     SELECT
-        'Status "Reklamacja" został zmieniony na "Zrealizowane"' as content,
+        'Status "Reklamacja" został zmieniony na "Rozwiązane"' as content,
         6 as report_id
+    UNION ALL
+    SELECT
+        'Status "Problemy z nowym zadaniem" został zmieniony na "W trakcie realizacji"' as content,
+        7 as report_id
+    UNION ALL
+    SELECT
+        'Status "Problemy z nowym zadaniem" został zmieniony na "Duplikat"' as content,
+        7 as report_id
+    UNION ALL
+    SELECT
+        'Status "Instrukcja złożenia jest niejasna" został zmieniony na "W trakcie realizacji"' as content,
+        8 as report_id
+    UNION ALL
+    SELECT
+        'Nowy komentarz przy "Instrukcja złożenia jest niejasna"' as content,
+        8 as report_id
+    UNION ALL
+    SELECT
+        'Nowy komentarz przy "Instrukcja złożenia jest niejasna"' as content,
+        8 as report_id
+    UNION ALL
+    SELECT
+        'Nowy komentarz przy "Instrukcja złożenia jest niejasna"' as content,
+        8 as report_id
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
@@ -259,19 +304,34 @@ WHERE NOT EXISTS (
 INSERT INTO comment (content, report_id, created_by)
 SELECT content, report_id, created_by FROM (
     SELECT
-        'Zawsze możesz przenosić towary w komputerze' as content,
+        'Nie zajmujemy się tego typu problemami. Skontaktuj się w tej sprawie ze swoim pracodawcą.' as content,
+        1 as report_id,
+        1 as created_by
+    UNION ALL
+    SELECT
+        'Nie zajmujemy się tego typu problemami. Skontaktuj się w tej sprawie ze swoim pracodawcą.' as content,
         2 as report_id,
         2 as created_by
     UNION ALL
     SELECT
-        'To nie nasz problem, dzwoń do dostawcy' as content,
-        5 as report_id,
-        1 as created_by
-    UNION ALL
-    SELECT
-        'Zwrotów nie przyjmujemy' as content,
+        'Przyjmujemy tę reklamację, środki trafią na Wasze konto w ciągu 24h.' as content,
         6 as report_id,
         2 as created_by
+    UNION ALL
+    SELECT
+        'W przypadku tego produktu, nie skończyliśmy jeszcze prac nad tłumaczeniem. Spodziewamy się, że instukcja będzie dostępna po polsku online w ciagu kilku miesięcy.' as content,
+        8 as report_id,
+        2 as created_by
+    UNION ALL
+    SELECT
+        'Nie mam tyle czasu, co mogę zrobić?' as content,
+        8 as report_id,
+        3 as created_by
+    UNION ALL
+    SELECT
+        'Polecamy zrobić szybki kurs chińskiego.' as content,
+        8 as report_id,
+        1 as created_by
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
@@ -279,16 +339,24 @@ WHERE NOT EXISTS (
 );
 
 -- FILE
-INSERT INTO file (filename, report_id, comment_id)
-SELECT filename, report_id, comment_id FROM (
+INSERT INTO file (filename, filetype, report_id, comment_id)
+SELECT filename, filetype, report_id, comment_id FROM (
     SELECT
-        'comment_20231101_135700_1_2' as filename,
+        '048959b4-d2d8-49ab-afbb-56fa930a6fc2.png' as filename,
+        'image' as filetype,
         NULL as report_id,
-        1 as comment_id
+        6 as comment_id
     UNION ALL
     SELECT
-        'report_20231101_140200_6_8' as filename,
+        'd86adeb9-c990-4bfd-9d7b-3ba9110921c5.pdf' as filename,
+        'document' as filetype,
         6 as report_id,
+        NULL as comment_id
+    UNION ALL
+    SELECT
+        '18700f98-f7f7-49c1-8748-405d3e08693d.mp4' as filename,
+        'movie' as filetype,
+        3 as report_id,
         NULL as comment_id
 ) as source_data
 WHERE NOT EXISTS (
@@ -299,6 +367,8 @@ WHERE NOT EXISTS (
 -- USER_NOTIFICATION
 INSERT INTO user_notification (user_id, notification_id)
 SELECT user_id, notification_id FROM (
+
+    -- Notifications for User 1
     SELECT 1 as user_id, 1 as notification_id
     UNION ALL
     SELECT 1 as user_id, 2 as notification_id
@@ -307,8 +377,7 @@ SELECT user_id, notification_id FROM (
     UNION ALL
     SELECT 1 as user_id, 4 as notification_id
     UNION ALL
-    SELECT
-    1 as user_id, 5 as notification_id
+    SELECT 1 as user_id, 5 as notification_id
     UNION ALL
     SELECT 1 as user_id, 6 as notification_id
     UNION ALL
@@ -322,6 +391,23 @@ SELECT user_id, notification_id FROM (
     UNION ALL
     SELECT 1 as user_id, 11 as notification_id
     UNION ALL
+    SELECT 1 as user_id, 12 as notification_id
+    UNION ALL
+    SELECT 1 as user_id, 13 as notification_id
+    UNION ALL
+    SELECT 1 as user_id, 13 as notification_id
+    UNION ALL
+    SELECT 1 as user_id, 14 as notification_id
+    UNION ALL
+    SELECT 1 as user_id, 15 as notification_id
+    UNION ALL
+    SELECT 1 as user_id, 16 as notification_id
+    UNION ALL
+    SELECT 1 as user_id, 17 as notification_id
+
+    UNION ALL
+
+    -- Notifications for User 2
     SELECT 2 as user_id, 1 as notification_id
     UNION ALL
     SELECT 2 as user_id, 2 as notification_id
@@ -344,22 +430,58 @@ SELECT user_id, notification_id FROM (
     UNION ALL
     SELECT 2 as user_id, 11 as notification_id
     UNION ALL
-    SELECT 3 as user_id, 1 as notification_id
+    SELECT 2 as user_id, 12 as notification_id
     UNION ALL
-    SELECT 3 as user_id, 2 as notification_id
+    SELECT 2 as user_id, 13 as notification_id
     UNION ALL
-    SELECT 5 as user_id, 4 as notification_id
+    SELECT 2 as user_id, 13 as notification_id
     UNION ALL
-    SELECT 5 as user_id, 5 as notification_id
+    SELECT 2 as user_id, 14 as notification_id
     UNION ALL
-    SELECT 6 as user_id, 3 as notification_id
+    SELECT 2 as user_id, 15 as notification_id
     UNION ALL
-    SELECT 7 as user_id, 6 as notification_id
+    SELECT 2 as user_id, 16 as notification_id
     UNION ALL
-    SELECT 7 as user_id, 7 as notification_id
+    SELECT 2 as user_id, 17 as notification_id
+
     UNION ALL
-    SELECT 7 as user_id, 8 as notification_id
+
+    -- Notifications for User 3
+    SELECT 3 as user_id, 4 as notification_id
     UNION ALL
+    SELECT 3 as user_id, 5 as notification_id
+    UNION ALL
+    SELECT 3 as user_id, 6 as notification_id
+    UNION ALL
+    SELECT 3 as user_id, 12 as notification_id
+    UNION ALL
+    SELECT 3 as user_id, 13 as notification_id
+    UNION ALL
+    SELECT 3 as user_id, 14 as notification_id
+    UNION ALL
+    SELECT 3 as user_id, 15 as notification_id
+    UNION ALL
+    SELECT 3 as user_id, 17 as notification_id
+
+    UNION ALL
+
+    -- Notifications for User 4
+    SELECT 4 as user_id, 1 as notification_id
+    UNION ALL
+    SELECT 4 as user_id, 2 as notification_id
+    UNION ALL
+    SELECT 4 as user_id, 3 as notification_id
+
+    UNION ALL
+
+    -- Notifications for User 5
+    SELECT 5 as user_id, 7 as notification_id
+    UNION ALL
+    SELECT 5 as user_id, 8 as notification_id
+
+    UNION ALL
+
+    -- Notifications for User 8
     SELECT 8 as user_id, 9 as notification_id
     UNION ALL
     SELECT 8 as user_id, 10 as notification_id
@@ -374,17 +496,19 @@ WHERE NOT EXISTS (
 -- REPORT_HANDLED_BY
 INSERT INTO report_handled_by (report_id, user_id)
 SELECT report_id, user_id FROM (
+    SELECT 1 as report_id, 1 as user_id
+    UNION ALL
     SELECT 2 as report_id, 2 as user_id
-    UNION ALL
-    SELECT 3 as report_id, 2  as user_id
-    UNION ALL
-    SELECT 4 as report_id, 1 as user_id
     UNION ALL
     SELECT 4 as report_id, 2 as user_id
     UNION ALL
-    SELECT 5 as report_id, 1 as user_id
-    UNION ALL
     SELECT 6 as report_id, 2 as user_id
+    UNION ALL
+    SELECT 7 as report_id, 2 as user_id
+    UNION ALL
+    SELECT 8 as report_id, 1 as user_id
+    UNION ALL
+    SELECT 8 as report_id, 2 as user_id
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
