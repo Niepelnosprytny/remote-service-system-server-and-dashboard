@@ -13,9 +13,9 @@ const {filteredClientList,clientList} = storeToRefs(store);
 
 <template>
   <admin-panel-list-filters :filter-type="FilterTypeEnum.CLIENT"></admin-panel-list-filters>
-<h1 v-for="cl in clientList">
+<v-col v-for="cl in clientList">
   <client-list-item :client="cl"></client-list-item>
-</h1>
+</v-col>
 </template>
 
 <style scoped>
