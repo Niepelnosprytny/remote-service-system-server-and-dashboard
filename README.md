@@ -18,4 +18,12 @@ Then use this command to create the database with initial tables, populate it wi
 docker compose up
 ```
 
-You can find example user credentials in comment above user table in /sql/02_insert_data.sql file.
+Here are example user roles, emails and passwords:
+- **1**: ROLE_ADMIN - szymon.bulak@example.com - Bułak
+- **2**: ROLE_OFFICE - jacek.wolik@example.com - Wolik
+- **3**: ROLE_USER - bartlomiej.komis@example.com - Komis
+- **4**: ROLE_USER - bartek.miotek@example.com - Miotek
+- **5**: ROLE_USER - kacper.smigielo@example.com - Smigieło
+- **6**: ROLE_USER - piotr.troczki@example.com - Troczki
+- **7**: ROLE_USER - kamil.grafika@example.com - Grafika
+- **8**: ROLE_USER - kacper.zabijaka@example.com - Zabijaka
