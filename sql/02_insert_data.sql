@@ -65,15 +65,6 @@ WHERE NOT EXISTS (
 );
 
 -- USER
--- Credentials:
--- 1: szymon.bulak@example.com - Bułak
--- 2: jacek.wolik@example.com - Wolik
--- 3: bartlomiej.komis@example.com - Komis
--- 4: bartek.miotek@example.com - Miotek
--- 5: kacper.smigielo@example.com - Smigieło
--- 6: piotr.troczki@example.com - Troczki
--- 7: kamil.grafika@example.com - Grafika
--- 8: kacper.zabijaka@example.com - Zabijaka
 INSERT INTO user (email, password, salt, name, surname, role, employer)
 SELECT email, password, salt, name, surname, role, employer FROM (
     SELECT
