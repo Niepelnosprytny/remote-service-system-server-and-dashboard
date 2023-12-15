@@ -4,12 +4,6 @@ import fs from 'fs';
 
 export default defineNuxtConfig({
     devtools: { enabled: true },
-    server: {
-        https: {
-            key: fs.readFileSync(path.resolve(__dirname, 'ssl', 'key.pem')),
-            cert: fs.readFileSync(path.resolve(__dirname, 'ssl', 'cert.pem'))
-        }
-    },
     modules: [
         'nuxt-socket-io',
         '@invictus.codes/nuxt-vuetify',

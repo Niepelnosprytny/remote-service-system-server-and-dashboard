@@ -15,18 +15,3 @@ services:
       - "443:443"
     volumes:
       - .:/nuxt
-
-  mysql:
-    image: mysql:8.1.0
-    restart: always
-    environment:
-      MYSQL_DATABASE: service
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - "3307:3306"
-    volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-      - ./mysql/config:/etc/mysql/conf.d
-      - ./mysql/data:/var/lib/mysql
