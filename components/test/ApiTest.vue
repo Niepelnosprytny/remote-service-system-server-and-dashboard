@@ -135,7 +135,9 @@ const sendGeneralQuery = async () => {
         <v-text-field v-model="id" type="number" placeholder="ID" />
         <br />
         <v-btn @click="getItem">Get {{ activeTable }}</v-btn>
-        <img v-if="activeTable === 'file' && itemData" :src="`https://localhost:3000/files/${itemData.filename}`" :alt="itemData.filename">
+        <img v-if="activeTable === 'file' && itemData"
+             :src="`${useRequestURL().origin}/files/${itemData.filename}`"
+             :alt="itemData.filename">
         <pre v-if="itemData">{{ itemData }}</pre>
       </details>
 
@@ -152,6 +154,7 @@ const sendGeneralQuery = async () => {
           <v-file-input name="file" label="File input" :multiple="true" :required="true" />
           <v-text-field name="report_id" placeholder="Report ID" />
           <v-text-field name="comment_id" placeholder="Comment ID" />
+          <v-text-field name="filetype" placeholder="filetype" />
           <v-btn type="submit">Submit</v-btn>
         </v-form>
         <pre v-if="createItemData">{{ createItemData }}</pre>
@@ -173,6 +176,7 @@ const sendGeneralQuery = async () => {
           <v-file-input name="file" label="File input" />
           <v-text-field name="report_id" placeholder="Report ID" />
           <v-text-field name="comment_id" placeholder="Comment ID" />
+          <v-text-field name="filetype" placeholder="filetype" />
           <v-btn type="submit">Submit</v-btn>
         </v-form>
         <pre v-if="updateItemData">{{ updateItemData }}</pre>

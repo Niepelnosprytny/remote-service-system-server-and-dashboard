@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
         let newFilename = existingFilename;
         let report_id = formData.find((item) => item.name === 'report_id').data.toString();
         let comment_id = formData.find((item) => item.name === 'comment_id').data.toString();
+        const filetype = formData.find((item) => item.name === 'filetype').data.toString();
 
         if (report_id === "") {
             report_id = existingFile.report_id;
@@ -43,11 +44,12 @@ export default defineEventHandler(async (event) => {
             UPDATE file
             SET filename   = ?,
                 report_id  = ?,
-                comment_id = ?
+                comment_id = ?,
+                filetype = ?
             WHERE id = ?
         `;
 
-        await pool.query(query, [newFilename, report_id, comment_id, id]);
+        await pool.query(query, [newFilename, report_id, comment_id, filetype, id]);
 
         return {
             status: 200,

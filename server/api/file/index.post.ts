@@ -18,8 +18,9 @@ export default defineEventHandler(async (event) => {
                 const filename = v4() + '.' + item.filename.split('.').pop();
                 const report_id = parseInt(formData.find((item) => item.name === 'report_id').data.toString()) || null;
                 const comment_id = parseInt(formData.find((item) => item.name === 'comment_id').data.toString()) || null;
+                const filetype = formData.find((item) => item.name === 'filetype').data.toString();
 
-                const query = 'INSERT INTO file (filename, report_id, comment_id) VALUES (?, ?, ?)';
+                const query = 'INSERT INTO file (filename, report_id, comment_id, filetype) VALUES (?, ?, ?, ?)';
 
                 await pool.query(query, [filename, report_id, comment_id]);
                 await writeFile(`./public/files/${filename}`, item.data);
