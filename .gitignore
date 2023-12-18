@@ -24,9 +24,7 @@ logs
 !.env.example
 
 # others
-ssl/*
 public/files/*
-mysql/data/*
 
 # .gitignore
 !.gitignore

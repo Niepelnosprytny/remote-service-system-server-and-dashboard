@@ -3,15 +3,10 @@ services:
   nuxt:
     image: node:20.0-alpine3.17
     command: sh -c "yarn install && yarn run dev"
-    working_dir: /nuxt
-    restart: always
-    tmpfs: /tmp
-    depends_on:
-      - mysql
-    environment:
-      - NUXT_HOST='0.0.0.0'
     ports:
       - "3000:3000"
-      - "443:443"
+    working_dir: /nuxt
+    restart: always
+    tmpfs: /tmp"
     volumes:
       - .:/nuxt
