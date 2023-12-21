@@ -154,7 +154,6 @@ const sendGeneralQuery = async () => {
           <v-file-input name="file" label="File input" :multiple="true" :required="true" />
           <v-text-field name="report_id" placeholder="Report ID" />
           <v-text-field name="comment_id" placeholder="Comment ID" />
-          <v-text-field name="filetype" placeholder="filetype" />
           <v-btn type="submit">Submit</v-btn>
         </v-form>
         <pre v-if="createItemData">{{ createItemData }}</pre>
@@ -176,7 +175,6 @@ const sendGeneralQuery = async () => {
           <v-file-input name="file" label="File input" />
           <v-text-field name="report_id" placeholder="Report ID" />
           <v-text-field name="comment_id" placeholder="Comment ID" />
-          <v-text-field name="filetype" placeholder="filetype" />
           <v-btn type="submit">Submit</v-btn>
         </v-form>
         <pre v-if="updateItemData">{{ updateItemData }}</pre>

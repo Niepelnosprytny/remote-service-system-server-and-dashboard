@@ -1,6 +1,7 @@
 import pool from '~/server/mysql';
 import { writeFile } from 'fs/promises';
 import { v4 } from 'uuid';
+import * as fileType from 'file-type';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -13,16 +14,21 @@ export default defineEventHandler(async (event) => {
             };
         }
 
+        const IDs = [];
+
         const insertPromises = formData.map(async (item) => {
             if (item.name === 'file') {
                 const filename = v4() + '.' + item.filename.split('.').pop();
                 const report_id = parseInt(formData.find((item) => item.name === 'report_id').data.toString()) || null;
                 const comment_id = parseInt(formData.find((item) => item.name === 'comment_id').data.toString()) || null;
-                const filetype = formData.find((item) => item.name === 'filetype').data.toString();
+                const filetype = await getFileType(item.data);
+
+                console.log(`Filetype: ${JSON.stringify(filetype)}`);
 
                 const query = 'INSERT INTO file (filename, report_id, comment_id, filetype) VALUES (?, ?, ?, ?)';
+                const results = await pool.query(query, [filename, report_id, comment_id, filetype]);
 
-                await pool.query(query, [filename, report_id, comment_id]);
+                IDs.push(results[0].insertId)
                 await writeFile(`./public/files/${filename}`, item.data);
             }
         });
@@ -31,7 +37,7 @@ export default defineEventHandler(async (event) => {
 
         return {
             status: 201,
-            body: 'Files created successfully'
+            body: IDs
         };
     } catch (error) {
         return {
@@ -40,3 +46,15 @@ export default defineEventHandler(async (event) => {
         };
     }
 });
+
+async function getFileType(fileBuffer) {
+    const type = await fileType.fileTypeFromBuffer(fileBuffer);
+    if (type) {
+        const mime = type.mime.split('/')[0];
+        if (['image', 'document', 'video'].includes(mime)) {
+            return mime;
+        }
+    }
+
+    return 'document';
+}

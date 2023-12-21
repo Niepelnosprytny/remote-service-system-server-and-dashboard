@@ -17,11 +17,11 @@ const createItem = (tableName: string) =>
 
             const query = `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fields.map(() => '?').join(', ')})`;
 
-            await pool.query(query, values);
+            const results = await pool.query(query, values);
 
             return {
                 status: 201,
-                body: `${tableName} created successfully`
+                body: results[0].insertId
             };
         } catch (error) {
             return {

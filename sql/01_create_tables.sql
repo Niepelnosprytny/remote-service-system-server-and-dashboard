@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS comment (
 CREATE TABLE IF NOT EXISTS file (
     id INT PRIMARY KEY AUTO_INCREMENT,
     filename VARCHAR(255) NOT NULL,
-    filetype ENUM('movie', 'image', 'document') NOT NULL,
+    filetype ENUM('video', 'image', 'document') NOT NULL,
     report_id INT,
     comment_id INT,
     FOREIGN KEY (report_id) REFERENCES report(id) ON DELETE CASCADE,

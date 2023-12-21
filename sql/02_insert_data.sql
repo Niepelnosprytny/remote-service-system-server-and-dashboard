@@ -346,7 +346,7 @@ SELECT filename, filetype, report_id, comment_id FROM (
     UNION ALL
     SELECT
         '18700f98-f7f7-49c1-8748-405d3e08693d.mp4' as filename,
-        'movie' as filetype,
+        'video' as filetype,
         3 as report_id,
         NULL as comment_id
 ) as source_data
