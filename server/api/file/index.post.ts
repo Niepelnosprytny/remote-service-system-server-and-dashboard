@@ -55,7 +55,7 @@ async function getFileType(buffer) {
 
         if(mime === 'image') {
             console.log("started image");
-            const result = await optimizeImageBuffer(buffer.buffer);
+            const result = await optimizeImageBuffer(buffer);
             console.log(`Image result: ${result}`);
         }
 
