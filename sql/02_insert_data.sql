@@ -333,19 +333,19 @@ WHERE NOT EXISTS (
 INSERT INTO file (filename, filetype, report_id, comment_id)
 SELECT filename, filetype, report_id, comment_id FROM (
     SELECT
-        '048959b4-d2d8-49ab-afbb-56fa930a6fc2.png' as filename,
+        'b72de6d6_f868_4b49_9be5_e361b328dd0c.webp' as filename,
         'image' as filetype,
         NULL as report_id,
         6 as comment_id
     UNION ALL
     SELECT
-        'd86adeb9-c990-4bfd-9d7b-3ba9110921c5.pdf' as filename,
+        '3a7e99c4_84ff_4ace_ace1_1367d495ca3c.pdf' as filename,
         'document' as filetype,
         6 as report_id,
         NULL as comment_id
     UNION ALL
     SELECT
-        '18700f98-f7f7-49c1-8748-405d3e08693d.mp4' as filename,
+        '5a3c03f2_4de7_4ad6_87cd_0315f999cad4.webm' as filename,
         'video' as filetype,
         3 as report_id,
         NULL as comment_id

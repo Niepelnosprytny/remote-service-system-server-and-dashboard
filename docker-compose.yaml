@@ -2,7 +2,9 @@ version: '3.3'
 services:
   nuxt:
     image: node:20
-    command: sh -c "apt-get update && apt-get install -y ffmpeg && yarn install && yarn run dev"
+    command: sh -c "apt-get update &&
+      apt-get install -y ffmpeg graphicsmagick && 
+      yarn install && yarn run dev"
     tty: true
     ports:
       - "3000:3000"

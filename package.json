@@ -23,7 +23,7 @@
     "@types/uuid": "^9.0.7",
     "file-type": "^18.7.0",
     "fluent-ffmpeg": "^2.1.2",
-    "jimp": "^0.22.10",
+    "gm": "^1.25.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.1",
     "nuxt-socket-io": "^3.0.13",
