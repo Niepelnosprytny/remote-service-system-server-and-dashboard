@@ -23,7 +23,9 @@ const resetFilters = function (){
   reportStore.resetFilters()
 }
 const setUserFilter = function (){
-  filters.user = user;
+  filters.value.user = user.value;
+  filters.value.status = null;
+  filters.value.reportClient = null;
 }
 watch(
     filters,
@@ -48,7 +50,7 @@ watch(
     </v-col>
     <v-col cols="5" align-self="center">
     <v-btn style="margin-left: 25px;margin-right: 25px" @click="resetFilters" value="all">wszystkie</v-btn>
-    <v-btn v-model="filters.user" @click="setUserFilter()" v-if="!store.isAdmin()">przypisane do mnie</v-btn>
+    <v-btn v-model="filters.user" @click="setUserFilter" v-if="!store.isAdmin()">przypisane do mnie</v-btn>
     </v-col>
     </v-row>
   </v-card>

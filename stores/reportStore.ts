@@ -15,7 +15,7 @@ const useReportStore = defineStore('report', {
         },
         async resetFilters() {
             const filterStore = useFilterStore()
-            await filterStore.clearFilters()
+            filterStore.clearFilters()
             this.filteredReportList = this.reportList
         },
         async updateReportList() {

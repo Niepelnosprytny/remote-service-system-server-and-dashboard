@@ -18,7 +18,6 @@ const useClientStore = defineStore('client', {
             if (info) {
                 this.clientList = info.body;
             }
-            this.filteredClientList = this.clientList
         },
         async getClient(id) {
             if(id === null){

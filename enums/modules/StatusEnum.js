@@ -1,8 +1,8 @@
 const StatusEnum = Object.freeze({
-    DUPLICATE: "duplicate",
-    RESOLVED: "resolved",
-    OPEN: "open",
-    IN_PROGRESS: "in progress",
+    DUPLICATE: "Duplikat",
+    RESOLVED: "Rozwiązane",
+    OPEN: "Otwarte",
+    IN_PROGRESS: "W trakcie realizacji",
 });
 
 export default StatusEnum;

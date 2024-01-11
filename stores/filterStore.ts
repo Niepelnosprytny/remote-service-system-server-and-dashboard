@@ -1,5 +1,4 @@
 import {defineStore} from 'pinia';
-import statusEnum from "~/enums/modules/StatusEnum";
 
 const useFilterStore = defineStore('filter', {
     state: () => {
@@ -13,21 +12,40 @@ const useFilterStore = defineStore('filter', {
         };
     },
     actions: {
-        sortByName(list){
-            return list.sort((a, b) => a.name.localeCompare(b.name))
+        sortByName(list,type){
+            if(type == true){
+                return list.sort((a, b) => a.name.localeCompare(b.name))
+            }else if(type == false){
+                return list.sort(function (a, b) {
+                    if (a.name > b.name) {
+                        return -1;
+                    }
+                    if (a.name < b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
         },
         setFilters(filters) {
             this.filters = filters
+        },
+        filterUserListByRole(list, role){
+            return list.filter((listItem) => listItem.role == role)
+        },
+        async searchbarUserFilter(list,search){
+            let filteredList = []
+            filteredList = list.filter(item => {
+                return item.name
+            })
+            return filteredList
         },
         async filterList(list) {
             let helperList = []
             let filteredList = list
             this.filtered = false
             if (this.filters.status !== null) {
-                const indexOfS = Object.values(statusEnum).indexOf(this.filters.status as unknown as statusEnum);
-
-                const key = Object.keys(statusEnum)[indexOfS];
-                filteredList = filteredList.filter((listItem) => listItem.status == key)
+                filteredList = filteredList.filter((listItem) => listItem.status == this.filters.status)
                 helperList = filteredList
                 this.filtered = true
             }
@@ -43,7 +61,7 @@ const useFilterStore = defineStore('filter', {
                                             AND client.id = ${this.filters.reportClient}`),
                 }).catch((error) => error.data);
                 filteredList = filteredList.body
-                if (this.filtered == true) {
+                if (this.filtered) {
                     const secArray = []
                     filteredList.forEach((rep) => {
                         helperList.forEach((help) => {
@@ -53,6 +71,8 @@ const useFilterStore = defineStore('filter', {
                         })
                     })
                     filteredList = secArray
+                }else {
+                    this.filtered = true
                 }
                 helperList = filteredList
             }
@@ -63,14 +83,15 @@ const useFilterStore = defineStore('filter', {
                                           FROM report,
                                                report_handled_by
                                           WHERE report_handled_by.report_id = report.id
-                                            AND report_handled_by.report_id = ${this.filters.user.id}`),
+                                            AND report_handled_by.user_id = ${this.filters.user.id}`),
                 }).catch((error) => error.data);
+                filteredList = filteredList.body
                 if (this.filtered === true) {
                     const secArray = []
                     filteredList.forEach((rep) => {
                         helperList.forEach((help) => {
                             if (rep.id == help.id) {
-                                halp.push(rep)
+                                secArray.push(rep)
                             }
                         })
                     })
@@ -78,6 +99,7 @@ const useFilterStore = defineStore('filter', {
                 } else {
                     this.filtered = true
                 }
+                helperList = filteredList
             }
             return filteredList
         },

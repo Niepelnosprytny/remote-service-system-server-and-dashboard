@@ -14,9 +14,11 @@ const {clientList} = storeToRefs(clientStore)
 const roles = Object.keys(rolesEnum).map(key => rolesEnum[key]);
 const props = defineProps({
   filterType: { required: true },
-  filteredList: { },
+  update: {required: true}
 })
-const search = '';
+const search = ref('');
+let role = ref('');
+let sortByName = ref(false);
 let client = ref({
   name: null
 })
@@ -40,8 +42,8 @@ const newClient = async function (){
     method: 'POST',
     body: {name: client.value.name},
   }).catch((error) => error.data);
-  userDialogControl.value = false
-  await clientStore.updateClientList()
+  clientDialogControl.value = false
+  await props.update()
 }
 const newUser = async function (){
   const dev = await useApi(`/api/auth/register`, {
@@ -49,21 +51,30 @@ const newUser = async function (){
     body: {email: user.value.email,name: user.value.name,password: user.value.password,surname: user.value.surname,role: Object.entries(rolesEnum).find(([key, val]) => val === user.value.role)?.[0], employer: user.value.employer},
   }).catch((error) => error.data);
   userDialogControl.value = false
-  await userStore.updateUserList()
+  await props.update()
 }
 const newLocation = async function (){
   const dev = await useApi(`/api/location`, {
     method: 'POST',
     body: {name: location.value.name,street: location.value.street, city: location.value.city, postcode: location.value.postcode, client: location.value.client},
   }).catch((error) => error.data);
-  console.log(dev)
-  userDialogControl.value = false
-  await locationStore.updateLocationList()
-
+  locationDialogControl.value = false
+  await props.update()
 }
 const toggleUser = async function (){
   clientDialogControl.value=true
   await clientStore.updateClientList()
+}
+let emits = defineEmits(['searchData','roleFilter','sortByName'])
+watch(search, (newValue, oldValue) => {
+  emits("searchData",search.value)
+}, {deep: true})
+watch(role, (newValue, oldValue) => {
+  emits("roleFilter",role.value)
+}, {deep: true})
+let sort = async function (){
+  sortByName.value = !sortByName.value
+  emits("sortByName",sortByName.value)
 }
 </script>
 
@@ -73,8 +84,8 @@ const toggleUser = async function (){
       <v-text-field v-model="search" placeholder="szukaj">
       </v-text-field>
     </v-toolbar>
-    <v-select :items="roles" label="roles" v-if="props.filterType == 'user'"></v-select>
-    <v-btn>sort by name</v-btn>
+    <v-select v-model="role" :items="roles" label="roles" v-if="props.filterType == filterTypeEnum.USER"></v-select>
+    <v-btn @click="sort">sort by name</v-btn>
     <v-btn @click="()=>userDialogControl=true" v-if="props.filterType == filterTypeEnum.USER">
       new user
     </v-btn>

@@ -4,7 +4,6 @@ const useUserStore = defineStore('user', {
     state: () => {
         return {
             userList: [],
-            filteredUserList: []
         };
     },
     actions: {

@@ -4,6 +4,7 @@ import useClientStore from "~/stores/clientStore";
 
 const props = defineProps({
   client: {required: true},
+  update: {required: true},
 })
 const clientStore = useClientStore()
 let dialogControl = ref(false)
@@ -14,14 +15,14 @@ const deleteClient = async function (id) {
   await useApi(`/api/client/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
-  await clientStore.updateClientList()
+  await props.update()
 }
 const editClient = async function (id) {
   await useApi(`/api/client/${id}`, {
     method: 'PATCH',
     body: {name: client.value.name},
   }).catch((error) => error.data);
-  await clientStore.updateClientList()
+  await props.update()
   dialogControl.value = false
 }
 const editDialog = function () {

@@ -5,8 +5,8 @@ import useClientStore from "~/stores/clientStore";
 
 const props = defineProps({
   location: { required: true },
+  update: {required: true}
 })
-const locationStore = useLocationStore()
 const clientStore = useClientStore()
 const {clientList} = storeToRefs(clientStore)
 let dialogControl = ref(false)
@@ -21,14 +21,17 @@ const deleteLocation = async function (id) {
   await useApi(`/api/location/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
-  await locationStore.updateLocationList()
+  await props.update()
 }
 const editLocation = async function (id) {
+  if(location.value.client.id){
+    location.value.client = location.value.client.id
+  }
   await useApi(`/api/location/${id}`, {
     method: 'PATCH',
     body: {street: location.value.street, name: location.value.name, city: location.value.city, postcode: location.value.postcode, client: location.value.client},
   }).catch((error) => error.data);
-  await locationStore.updateLocationList()
+  await props.update()
   dialogControl.value = false
 }
 const editDialog = async function () {

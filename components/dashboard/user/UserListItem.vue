@@ -5,16 +5,16 @@ import useClientStore from "~/stores/clientStore";
 
 const clientStore = useClientStore()
 const {clientList} = storeToRefs(clientStore)
-const userStore = useUserStore()
 const roles = Object.keys(rolesEnum).map(key => rolesEnum[key]);
 const props = defineProps({
   user: {required: true},
+  update: {required: true}
 })
 const deleteUser = async function (id) {
   await useApi(`/api/user/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
-  await userStore.updateUserList()
+  await props.update()
 }
 let dialogControl = ref(false)
 let user = ref({
@@ -25,11 +25,15 @@ let user = ref({
   employer: null
 })
 const editUser = async function (id) {
-  await useApi(`/api/user/${id}`, {
+  if(user.value.employer.id){
+    user.value.employer = user.value.employer.id
+  }
+  let dev = await useApi(`/api/user/${id}`, {
     method: 'PATCH',
     body: {email: user.value.email, name: user.value.name, surname: user.value.surname, role: Object.entries(rolesEnum).find(([key, val]) => val === user.value.role)?.[0], employer: user.value.employer},
   }).catch((error) => error.data);
-  await userStore.updateUserList()
+  console.log(dev)
+  await props.update()
   dialogControl.value = false
 }
 const editDialog = async function () {
@@ -39,9 +43,7 @@ const editDialog = async function () {
   user.value.role = rolesEnum[props.user.role]
   user.value.employer = await clientStore.getClient(props.user.employer)
   dialogControl.value = true
-  console.log(props.user.role)
   await clientStore.updateClientList()
-
 }
 </script>
 

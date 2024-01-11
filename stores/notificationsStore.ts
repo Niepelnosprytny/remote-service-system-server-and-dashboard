@@ -34,14 +34,16 @@ const useNotificationStore = defineStore('notification', {
                     method: 'DELETE',
                 }).catch((error) => error.data);
             } else {
-                await useApi('/api', {
+                let dev =await useApi('/api', {
                     method: 'POST',
-                    body: JSON.stringify(`DELETE
-                                          FROM user_notification
+                    body: JSON.stringify(`DELETE user_notification
+                                          FROM user_notification,notification
                                           WHERE user_notification.user_id = ${userId}
-                                            AND user_notification.notification_id = ${notification.id};`),
+                                            AND user_notification.notification_id = notification.id
+                                            AND notification.report_id = ${notification.report_id};`),
                 }).catch((error) => error.data);
             }
+            await this.getNotificationList(userId)
         }
 
     }

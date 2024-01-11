@@ -24,11 +24,11 @@ const notificationRedirect = async (notification) => {
 <template>
   <v-toolbar style="padding-right: 15px;">
     <v-spacer></v-spacer>
-    <v-card v-if="store.isAdmin()" style="margin-right: 25px">
+    <v-card style="margin-right: 25px">
       <NuxtLink v-if="route.path!=='/'" to="/">
         <v-btn style="padding-right: 15px">Dashboard</v-btn>
       </NuxtLink>
-      <NuxtLink v-else to="/admin">
+      <NuxtLink v-if="store.isAdmin() && route.path == '/'" to="/admin">
         <v-btn>Admin panel</v-btn>
       </NuxtLink>
     </v-card>
