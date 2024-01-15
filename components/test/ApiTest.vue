@@ -77,6 +77,7 @@ const deleteItem = async () => {
 };
 
 const uploadFile = async (event) => {
+  console.log(new FormData(event.currentTarget))
   let { body } = await useApi(`/api/file`, {
     method: 'POST',
     body: new FormData(event.currentTarget)

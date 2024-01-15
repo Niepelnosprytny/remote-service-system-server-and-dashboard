@@ -8,11 +8,11 @@ const useFileStore = defineStore('file', {
         };
     },
     actions: {
-        async getFilesForComments() {
+        async getFilesForComments(report_id) {
             let fileArr = []
             const files = await useApi(`/api/file`).catch((error) => error.data)
                 files.body.forEach((file) => {
-                    if (file.comment_id) {
+                    if (file.comment_id && file.report_id == report_id) {
                         fileArr.push(file)
                     }
                 });

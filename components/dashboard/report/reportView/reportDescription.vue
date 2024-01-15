@@ -9,6 +9,7 @@ const deleteReport = async function(){
   await useApi(`/api/report/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
+  await navigateTo(`/`);
 }
 
 </script>

@@ -14,7 +14,7 @@ export const saveFile = async (buffer) => {
         mime = type.mime.split('/')[0];
 
         if(mime === 'image') {
-            const result = await optimizeImage(buffer);
+            name = await optimizeImage(buffer);
         } else if(mime === 'video') {
             name = await optimizeVideo(buffer);
         } else {
