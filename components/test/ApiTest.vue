@@ -24,6 +24,7 @@ const updateItemData = ref();
 const deleteItemData = ref();
 const generalQuery = ref();
 let toggleGeneralQuery = false;
+const createRequestResult = ref(null);
 
 const setActiveTable = (table) => {
   toggleGeneralQuery = false;
@@ -41,7 +42,15 @@ const setActiveTable = (table) => {
       null,
       2
   );
+
+  createRequestResult.value = null;
 };
+
+const createRequestOptions = ref({
+  method: 'POST',
+  url: '',
+  body: '',
+});
 
 const getAllItems = async () => {
   let { body } = await useApi(`/api/${activeTable.value}`).catch((error) => error.data);
@@ -105,6 +114,27 @@ const sendGeneralQuery = async () => {
   }).catch((error) => error.data);
   generalQuery.value = body;
 };
+
+const setCreateRequestOptions = (method, url, body) => {
+  createRequestOptions.value = { method, url, body };
+};
+
+const executeCreateRequest = async () => {
+  let body = "Emptyness";
+
+  if(createRequestOptions.value.method === "GET" ||
+      createRequestOptions.value.method === "DELETE") {
+    body = await useApi(createRequestOptions.value.url, {
+      method: createRequestOptions.value.method,
+    }).catch((error) => error.data);
+  } else {
+    body = await useApi(createRequestOptions.value.url, {
+      method: createRequestOptions.value.method,
+      body: JSON.stringify(createRequestOptions.value.body),
+    }).catch((error) => error.data);
+  }
+  createRequestResult.value = body.body;
+};
 </script>
 
 <template>
@@ -114,6 +144,7 @@ const sendGeneralQuery = async () => {
       {{ table }}
     </v-btn>
     <v-btn @click="showGeneralQuery">General query</v-btn>
+    <v-btn @click="setActiveTable('createRequest')">Create Request</v-btn>
 
     <div v-if="toggleGeneralQuery">
       <h3>General query</h3>
@@ -123,7 +154,7 @@ const sendGeneralQuery = async () => {
       <pre v-if="generalQuery">{{ generalQuery }}</pre>
     </div>
 
-    <div v-if="activeTable && !toggleGeneralQuery">
+    <div v-if="activeTable && !toggleGeneralQuery && activeTable != 'createRequest'">
       <h3>{{ activeTable }}</h3>
       <details>
         <summary>Get all {{ activeTable }}</summary>
@@ -188,6 +219,18 @@ const sendGeneralQuery = async () => {
         <v-btn @click="deleteItem">Delete {{ activeTable }}</v-btn>
         <pre v-if="deleteItemData">{{ deleteItemData }}</pre>
       </details>
+    </div>
+
+    <div v-if="activeTable === 'createRequest'">
+      <h3>Create Request</h3>
+      <v-text-field v-model="createRequestOptions.url" label="URL"></v-text-field>
+      <v-select v-model="createRequestOptions.method" :items="['GET', 'POST', 'PUT', 'PATCH', 'DELETE']" label="Method"></v-select>
+      <v-textarea
+          v-if="createRequestOptions.method !== 'GET' && createRequestOptions.method !== 'DELETE'"
+          v-model="createRequestOptions.body" label="Request Body" rows="5"></v-textarea>
+      <br>
+      <v-btn @click="executeCreateRequest">Execute</v-btn>
+      <pre v-if="createRequestResult">{{ createRequestResult }}</pre>
     </div>
   </div>
 </template>
