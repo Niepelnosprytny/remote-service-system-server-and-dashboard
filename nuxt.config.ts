@@ -6,6 +6,6 @@ export default defineNuxtConfig({
         'nuxt-socket-io',
         '@invictus.codes/nuxt-vuetify',
         '@pinia/nuxt',
-        '@pinia-plugin-persistedstate/nuxt',
+        '@pinia-plugin-persistedstate/nuxt'
     ],
 });

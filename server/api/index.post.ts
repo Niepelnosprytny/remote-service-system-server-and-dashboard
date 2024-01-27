@@ -1,5 +1,4 @@
 import pool from '../mysql';
-
 export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event);
