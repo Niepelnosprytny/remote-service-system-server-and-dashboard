@@ -14,6 +14,7 @@ const tables = ref([
   'file',
   'userNotification',
   'reportHandledBy',
+  'deviceToken'
 ]);
 
 const activeTable = ref('user');
