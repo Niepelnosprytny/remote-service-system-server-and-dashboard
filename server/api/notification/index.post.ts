@@ -2,6 +2,13 @@ import pool from '~/server/mysql';
 import admin from 'firebase-admin';
 import * as serviceAccount from '~/sebastian-inc-firebase-adminsdk-4ljw2-6afa8acd52.json';
 
+
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
+}
+
 export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event);
@@ -26,9 +33,20 @@ export default defineEventHandler(async (event) => {
 
             await pool.query(userNotificationQuery, userNotificationValues);
 
-            const firebase = admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
+            const deviceTokensResults = await pool.query("SELECT token FROM device_token WHERE user_id = ?", [userId]);
+            const deviceTokens = deviceTokensResults[0].map(row => row.token);
+
+            if(deviceTokens.length > 0) {
+                const message = {
+                    notification: {
+                        title: body.title,
+                        body: body.content
+                    },
+                    tokens: deviceTokens
+                };
+
+                await admin.messaging().sendEachForMulticast(message);
+            }
         }
 
         return {

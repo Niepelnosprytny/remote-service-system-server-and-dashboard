@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS user_notification (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     notification_id INT NOT NULL,
+    seen BOOLEAN DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (notification_id) REFERENCES notification(id) ON DELETE CASCADE
 );
