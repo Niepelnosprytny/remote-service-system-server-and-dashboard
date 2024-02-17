@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     try {
         const id = getRouterParam(event, 'id');
 
-        const query = `SELECT content, created_at
+        const query = `SELECT content, created_at, report_id, seen
 FROM notification, user, user_notification
 WHERE user_notification.notification_id = notification.id
 AND user_notification.user_id = user.id
