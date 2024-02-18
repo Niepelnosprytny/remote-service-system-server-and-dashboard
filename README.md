@@ -34,9 +34,13 @@ All server endpoints are located in the `/server/api` folder and are used to ope
 
 To access endpoints, you need to use the correct request type. For example, for `index.post.ts`, you need to use a POST request.
 
+For example, to access `/api/comment/index.post.ts`, you need to send `POST` request to `/api/comment`.
+
 All endpoints in `/api` (except for `/api/auth` routes) require a valid JWT token in the "authorization" header to access. Authorization is handled in server middleware.
 
 Endpoints with `[id]` in their names accept an integer parameter in the URL, such as `/api/user/1`.
+
+For example, to access `/api/comment/[id].delete.ts` to delete record with id 1, you need to send `DELETE` request to `/api/comment/1`.
 
 All endpoints return errors if the data passed to them is incorrect or if they cannot perform their intended task.
 
@@ -55,6 +59,7 @@ All endpoints return errors if the data passed to them is incorrect or if they c
   - `index.get.ts`: Accepts a JWT token and returns user data connected with it.
   - `login/index.post.ts`: Accepts an email and plain password, returns a JWT token and user data.
   - `register/index.post.ts`: Accepts email, plain password, name, surname, role, and (optional) employer (client) ID. Creates a new user in the database and returns a JWT token and user data. Plain password is being hashed before inserting.
+- `/api/comment/byReport/[id].get.ts`: Accepts a report ID as a URL parameter and returns data from the comment table for the given report ID.
 - `/api/deviceToken/index.post.ts`: Works like the generic post endpoint, but checks if the same device token already exists. If it does, it updates the record instead of inserting a new one.
 - `/api/file`: Some of these endpoints work on files, so they had to be customized. The function used to save files automatically optimizes videos and images.
   - `[id].delete.ts`: Works like the generic delete endpoint, but also removes the file from the server.
