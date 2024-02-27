@@ -131,7 +131,7 @@ const executeCreateRequest = async () => {
   } else {
     body = await useApi(createRequestOptions.value.url, {
       method: createRequestOptions.value.method,
-      body: JSON.stringify(createRequestOptions.value.body),
+      body: createRequestOptions.value.body,
     }).catch((error) => error.data);
   }
   createRequestResult.value = body.body;

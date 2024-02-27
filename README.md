@@ -70,3 +70,4 @@ All endpoints return errors if the data passed to them is incorrect or if they c
 - `/api/report/index.post.ts`: Works like the generic post endpoint, but accepts an extra parameter, a `users` array that contains user IDs and is used to insert data into the report_handled_by table.
 - `/api/user/[id].patch.ts`: Works like the generic patch endpoint, but hashes the plain password before inserting.
 - `/api/user/index.post.ts`: Returns a message that says to use `/api/auth/register` instead.
+- `/api/userNotification/updateSeen` - Takes `ids` array and `seen` boolean (0 or 1) as parameters. Updates `seen` value for all given `ids`.
