@@ -39,8 +39,11 @@ export default defineEventHandler(async (event) => {
             if(deviceTokens.length > 0) {
                 const message = {
                     notification: {
-                        title: body.title,
+                        title: "Sebastian Inc.",
                         body: body.content
+                    },
+                    data: {
+                        reportId: body.report_id
                     },
                     tokens: deviceTokens
                 };
