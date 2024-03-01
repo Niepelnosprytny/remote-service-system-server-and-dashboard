@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
                         body: body.content
                     },
                     data: {
-                        reportId: body.report_id
+                        reportId: body.report_id.toString()
                     },
                     tokens: deviceTokens
                 };
