@@ -1,5 +1,7 @@
 import {defineStore} from 'pinia';
 import {filename} from "pathe/utils";
+import * as https from "https";
+import * as fs from "fs";
 
 const useFileStore = defineStore('file', {
     state: () => {

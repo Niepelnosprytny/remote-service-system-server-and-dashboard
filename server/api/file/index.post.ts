@@ -20,7 +20,6 @@ export default defineEventHandler(async (event) => {
                 const comment_id = parseInt(formData.find((item) => item.name === 'comment_id').data.toString()) || null;
 
                 const { filetype, filename } = await saveFile(item);
-
                 const query = 'INSERT INTO file (filename, report_id, comment_id, filetype) VALUES (?, ?, ?, ?)';
                 const results = await pool.query(query, [filename, report_id, comment_id, filetype]);
 

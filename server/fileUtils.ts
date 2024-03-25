@@ -4,25 +4,21 @@ import { writeFile, unlink } from 'fs/promises';
 import { join } from "path";
 import * as fileType from "file-type";
 import gm from 'gm';
+export const saveFile = async (file) => {
+    let name = file.name;
+    let mime = file.type;
 
-export const saveFile = async (buffer) => {
-    const type = await fileType.fileTypeFromBuffer(buffer.data);
-    let name = '';
-    let mime = '';
-
-    if (type) {
-        mime = type.mime.split('/')[0];
-
-        if(mime === 'image') {
-            name = await optimizeImage(buffer);
-        } else if(mime === 'video') {
-            name = await optimizeVideo(buffer);
+        if(mime.includes('image')) {
+            mime = 'image';
+            name = await optimizeImage(file);
+        } else if(mime.includes('video')) {
+            mime = 'video'
+            name = await optimizeVideo(file);
         } else {
             mime = 'document';
-            name = v4().replace(/[ @$/\-(),]/g, '_') + '.' + buffer.filename.split('.').pop();
-            await writeFile(join(process.cwd(), 'public', 'files', name), buffer.data);
+            name = v4().replace(/[ @$/\-(),]/g, '_') + '.' + name.split('.').pop();
+            await writeFile(join(process.cwd(), 'public', 'files', name), file.name);
         }
-    }
 
     return {
         filename: name,

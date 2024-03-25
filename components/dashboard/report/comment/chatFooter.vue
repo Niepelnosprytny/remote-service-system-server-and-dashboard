@@ -26,7 +26,7 @@ const sendComment = async function () {
     method: 'POST',
     body: comment,
   }).catch((error) => error.data);
-  if(files.value.length>0) {
+  if (files.value.length > 0) {
     await uploadFile(commentId.body, comment.report_id)
     files.value = []
   }
@@ -36,16 +36,16 @@ const sendComment = async function () {
   loading.value = false
 };
 watch(files, (newValue, oldValue) => {
-  if(oldValue.length==0 || newValue.length == 0){
+  if (oldValue.length == 0 || newValue.length == 0) {
     prepareGallery()
   }
 }, {deep: true})
-const uploadFile = async (comment_id,report_id) => {
+const uploadFile = async (comment_id, report_id) => {
   let form = new FormData()
-  form.append('report_id',report_id)
-  form.append('comment_id',comment_id)
-  files.value.forEach((file)=>{
-    form.append('file',file)
+  form.append('report_id', report_id)
+  form.append('comment_id', comment_id)
+  files.value.forEach((file) => {
+    form.append('file', file)
   })
   let dab = await useApi(`/api/file`, {
     method: 'POST',
@@ -53,21 +53,20 @@ const uploadFile = async (comment_id,report_id) => {
   }).catch((error) => console.log(`Error: ${error}`));
   console.log(dab)
 }
-const prepareGallery = async function (){
+const prepareGallery = async function () {
   galleryHelper.value = []
-  for(let id in files.value){
-    let obj = {url:'',type:'',file:{}}
+  for (let id in files.value) {
+    let obj = {url: '', type: '', file: {}}
     obj.file = files.value[id]
-    if (files.value[id].type.includes('image')){
+    if (files.value[id].type.includes('image')) {
       obj.type = 'image'
-    }
-    else if(files.value[id].type.includes('video')){
+    } else if (files.value[id].type.includes('video')) {
       obj.type = 'video'
-    }else {
+    } else {
       obj.type = 'document'
     }
     let reader = new FileReader();
-    reader.onload = function(){
+    reader.onload = function () {
       obj.url = reader.result
       galleryHelper.value.push(obj)
     };
@@ -104,14 +103,15 @@ const prepareGallery = async function (){
             <source :src="file.url">
             Your browser does not support the video tag.
           </video>
-          <v-btn @click="()=>{files.splice(files.indexOf(file.file),1); galleryHelper.splice(galleryHelper.indexOf(file),1)}">
+          <v-btn
+              @click="()=>{files.splice(files.indexOf(file.file),1); galleryHelper.splice(galleryHelper.indexOf(file),1)}">
             usun
           </v-btn>
         </v-col>
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn  @click="()=>{files=[];dialogControl=false}" outlined color="primary">Cancel</v-btn>
-        <v-btn  @click="()=>{dialogControl=false}" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>{files=[];dialogControl=false}" outlined color="primary">Cancel</v-btn>
+        <v-btn @click="()=>{dialogControl=false}" outlined color="primary">Confirm</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

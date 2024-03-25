@@ -10,14 +10,10 @@ const useNotificationStore = defineStore('notification', {
         async getNotificationList(userId) {
             if(userId) {
                 const notifications =
-                    await useApi('/api', {
-                        method: 'POST',
-                        body: JSON.stringify(`SELECT *
-                                              FROM user_notification,
-                                                   notification
-                                              WHERE user_notification.user_id = ${userId}
-                                                AND user_notification.notification_id = notification.id;`),
+                    await useApi(`/api/notification/byUser/${userId}`, {
+                        method: 'GET',
                     }).catch((error) => error.data);
+                console.log(notifications.body)
                 this.notificationList = notifications.body
             }
         },
