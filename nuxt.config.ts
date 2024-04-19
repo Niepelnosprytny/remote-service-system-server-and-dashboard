@@ -3,6 +3,7 @@
 export default defineNuxtConfig({
     devtools: { enabled: true },
     modules: [
+        '@vueuse/nuxt',
         'nuxt-socket-io',
         '@invictus.codes/nuxt-vuetify',
         '@pinia/nuxt',

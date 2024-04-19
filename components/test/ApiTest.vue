@@ -136,11 +136,14 @@ const executeCreateRequest = async () => {
   }
   createRequestResult.value = body.body;
 };
+
+const { x, y } = useMouse();
 </script>
 
 <template>
   <div>
     <h1>API Tests</h1>
+    <div>pos: {{ x }}, {{ y }}</div>
     <v-btn v-for="table in tables" :key="table" @click="setActiveTable(table)">
       {{ table }}
     </v-btn>
