@@ -5,12 +5,12 @@ import ClientListItem from "~/components/dashboard/client/ClientListItem.vue";
 import AdminPanelListFilters from "~/components/dashboard/AdminPanelListFilters.vue";
 import FilterTypeEnum from "~/enums/modules/FilterTypeEnum";
 import useFilterStore from "~/stores/filterStore";
+import {useWebSocket} from "@vueuse/core";
 
 const store = useClientStore();
 
 const {clientList} = storeToRefs(store);
 await store.updateClientList()
-
 let searchedFilteredList = ref([])
 searchedFilteredList.value = clientList.value
 let filterStore = useFilterStore();
@@ -21,8 +21,13 @@ let sortByName = function (value){
   clientList.value = filterStore.sortByName(clientList.value, sortBool.value)
   searchedFilteredList.value = filterStore.sortByName(searchedFilteredList.value, sortBool.value)
 }
+const {$adminPanelWS} = useNuxtApp();
+watch($adminPanelWS.data, (newValue) => {
+  update()
+})
 let update = async function (){
   await store.updateClientList()
+  $adminPanelWS.send('')
   searchedFilteredList.value = clientList.value
   search(searchText.value)
   sortByName(sortBool.value)

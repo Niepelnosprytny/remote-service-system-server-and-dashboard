@@ -15,7 +15,10 @@ let searchedFilteredList = ref([])
 let searchText = ref('')
 let sortBool = ref(false)
 let roleFilter = ref(null)
-
+const {$adminPanelWS} = useNuxtApp();
+watch($adminPanelWS.data, (newValue) => {
+  update()
+})
 searchedFilteredList.value = userList.value
 let filterByRole = function (value){
   roleFilter.value = value

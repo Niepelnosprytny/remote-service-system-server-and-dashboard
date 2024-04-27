@@ -2,14 +2,21 @@
 import useAuthStore from "~/stores/authStore";
 import {storeToRefs} from "pinia";
 import useNotificationStore from "~/stores/notificationsStore";
-
+import {useWebSocket} from "@vueuse/core";
 const route = useRoute()
 const store = useAuthStore();
-const {user, token} = storeToRefs(store);
+const {user} = storeToRefs(store);
+const {$notifWs} = useNuxtApp()
 
 const notificationStore = useNotificationStore()
-notificationStore.getNotificationList(store.getId())
+notificationStore.getNotificationList()
 const {notificationList} = storeToRefs(notificationStore)
+
+watch($notifWs.data, (newValue) => {
+    notificationStore.getNotificationList()
+})
+
+
 const logout = async () => {
   store.logout();
   await navigateTo('/login');

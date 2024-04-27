@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useLocationStore from "~/stores/locationStore";
 import statusEnum from "~/enums/modules/StatusEnum";
-
+const {$reportListWs} = useNuxtApp();
 const locationStore = useLocationStore()
 const route = useRoute()
 const id = route.params.id;
@@ -11,6 +11,7 @@ const props = defineProps({
   report: {required: true},
 })
 const deleteReport = async function(){
+  $reportListWs.send('delete')
   await useApi(`/api/report/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
@@ -18,10 +19,8 @@ const deleteReport = async function(){
 }
 const editReport = async function(){
   editMode.value = !editMode.value
-  // await useApi(`/api/report/${id}`, {
-  //   method: 'DELETE',
-  // }).catch((error) => error.data);
-  // await navigateTo(`/`);
+  // $reportListWs.send('edit')
+
 }
 const author = await locationStore.getLocation(props.report.id)
 const editMode = ref(false)

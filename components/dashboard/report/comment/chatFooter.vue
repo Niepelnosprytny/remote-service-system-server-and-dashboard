@@ -2,20 +2,29 @@
 import useAuthStore from "~/stores/authStore";
 import useCommentStore from "~/stores/commentStore";
 import useFileStore from "~/stores/fileStore";
+import {useWebSocket} from "@vueuse/core";
+import useNotificationStore from "~/stores/notificationsStore";
 
-
+const notifStore = useNotificationStore()
 const fileStore = useFileStore()
 const authStore = useAuthStore()
+const {$chatWs} = useNuxtApp()
+
 const commentStore = useCommentStore()
 const props = defineProps({
   report: {required: true}
 })
-const loading = ref(false)
+const loading = ref(true)
 const dialogControl = ref(false)
 const files = ref([])
 const galleryHelper = ref([])
 const content = ref('')
+$chatWs.send(JSON.stringify({message: 'init', reportId: props.report.id}))
+const {$notifWs} = useNuxtApp()
+
 const sendComment = async function () {
+  await notifStore.sendNotifications(props.report)
+  $notifWs.send(content.value)
   const comment = {
     content: content.value,
     report_id: props.report.id,
@@ -30,6 +39,7 @@ const sendComment = async function () {
     await uploadFile(commentId.body, comment.report_id)
     files.value = []
   }
+  $chatWs.send(JSON.stringify({message: content.value, reportId: props.report.id}))
   await commentStore.getComments(props.report)
   await fileStore.getFilesForComments(props.report.id)
   content.value = ''
@@ -51,7 +61,6 @@ const uploadFile = async (comment_id, report_id) => {
     method: 'POST',
     body: form
   }).catch((error) => console.log(`Error: ${error}`));
-  console.log(dab)
 }
 const prepareGallery = async function () {
   galleryHelper.value = []
@@ -73,6 +82,11 @@ const prepareGallery = async function () {
     reader.readAsDataURL(files.value[id]);
   }
 }
+watch($chatWs.data, (newValue) => {
+  commentStore.getComments(props.report)
+  fileStore.getFilesForComments(props.report.id)
+})
+loading.value = false
 </script>
 
 <template>
@@ -115,7 +129,6 @@ const prepareGallery = async function () {
       </v-card-actions>
     </v-card>
   </v-dialog>
-
 
 </template>
 

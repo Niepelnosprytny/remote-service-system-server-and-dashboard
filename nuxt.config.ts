@@ -9,4 +9,9 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt'
     ],
+    nitro: {
+        experimental: {
+            websocket: true
+        }
+    }
 });

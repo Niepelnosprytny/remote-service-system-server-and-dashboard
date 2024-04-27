@@ -7,7 +7,10 @@ const props = defineProps({
 })
 const store = useAuthStore();
 const reportStore = useReportStore()
+const {$reportListWs} = useNuxtApp();
+
 const deleteReport = async function (id) {
+  $reportListWs.send('delete')
   await useApi(`/api/report/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);

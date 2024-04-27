@@ -15,6 +15,10 @@ searchedFilteredList.value = locationList.value
 let filterStore = useFilterStore();
 let searchText = ref('')
 let sortBool = ref(false)
+const {$adminPanelWS} = useNuxtApp();
+watch($adminPanelWS.data, (newValue) => {
+  update()
+})
 let sortByName = function (value){
   sortBool.value = value
   locationList.value = filterStore.sortByName(locationList.value, sortBool.value)

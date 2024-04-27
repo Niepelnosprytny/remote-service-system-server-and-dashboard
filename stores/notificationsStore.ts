@@ -1,23 +1,42 @@
 import {defineStore} from 'pinia';
+import useAuthStore from "~/stores/authStore";
 
 const useNotificationStore = defineStore('notification', {
     state: () => {
         return {
             notificationList: [],
+            reportId: '',
+            userId: useAuthStore().getId()
         };
     },
     actions: {
-        async getNotificationList(userId) {
-            if(userId) {
+        async sendNotifications(report) {
+            let userArray = []
+            let arr = await useApi('/api', {
+                    method: 'POST',
+                    body: JSON.stringify(`SELECT report_handled_by.user_id
+                                      FROM report_handled_by
+                                      WHERE report_handled_by.report_id = ${report.id}`),
+                }).catch((error) => error.data);
+            for(let obj in arr.body){
+                userArray.push(arr.body[obj].user_id)
+            }
+            const notification = await useApi('/api/notification', {
+                method: 'POST',
+                body: {report_id: report.id,users: userArray,content: `New comment in ${report.title}`},
+            }).catch((error) => error.data);
+            await this.getNotificationList()
+        },
+        async getNotificationList() {
+            if(this.userId) {
                 const notifications =
-                    await useApi(`/api/notification/byUser/${userId}`, {
+                    await useApi(`/api/notification/byUser/${this.userId}`, {
                         method: 'GET',
                     }).catch((error) => error.data);
-                console.log(notifications.body)
                 this.notificationList = notifications.body
             }
         },
-        async deleteNotification(notification,userId){
+        async deleteNotification(notification){
             const notifications = await useApi('/api', {
                 method: 'POST',
                 body: JSON.stringify(`SELECT *
@@ -34,12 +53,12 @@ const useNotificationStore = defineStore('notification', {
                     method: 'POST',
                     body: JSON.stringify(`DELETE user_notification
                                           FROM user_notification,notification
-                                          WHERE user_notification.user_id = ${userId}
+                                          WHERE user_notification.user_id = ${this.userId}
                                             AND user_notification.notification_id = notification.id
                                             AND notification.report_id = ${notification.report_id};`),
                 }).catch((error) => error.data);
             }
-            await this.getNotificationList(userId)
+            await this.getNotificationList()
         }
 
     }

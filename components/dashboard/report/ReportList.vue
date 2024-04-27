@@ -5,8 +5,11 @@ import ReportListItem from "~/components/dashboard/report/ReportListItem.vue";
 import ReportListFilters from "~/components/dashboard/report/ReportListFilters.vue";
 
 const store = useReportStore();
+const {$reportListWs} = useNuxtApp();
 store.updateReportList()
-
+watch($reportListWs.data, (newValue) => {
+  store.updateReportList()
+})
 const {filteredReportList,reportList} = storeToRefs(store);
 
 </script>

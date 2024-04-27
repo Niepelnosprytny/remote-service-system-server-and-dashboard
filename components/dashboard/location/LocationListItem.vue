@@ -2,6 +2,7 @@
 import rolesEnum from "~/enums/modules/RolesEnum";
 import useLocationStore from "~/stores/locationStore";
 import useClientStore from "~/stores/clientStore";
+const {$adminPanelWS} = useNuxtApp();
 
 const props = defineProps({
   location: { required: true },
@@ -22,6 +23,7 @@ const deleteLocation = async function (id) {
     method: 'DELETE',
   }).catch((error) => error.data);
   await props.update()
+  $adminPanelWS.send('delete')
 }
 const editLocation = async function (id) {
   if(location.value.client.id){
@@ -32,6 +34,7 @@ const editLocation = async function (id) {
     body: {street: location.value.street, name: location.value.name, city: location.value.city, postcode: location.value.postcode, client: location.value.client},
   }).catch((error) => error.data);
   await props.update()
+  $adminPanelWS.send('edit')
   dialogControl.value = false
 }
 const editDialog = async function () {

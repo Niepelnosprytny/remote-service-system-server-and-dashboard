@@ -3,6 +3,7 @@ import useUserStore from "~/stores/userStore";
 import rolesEnum from "~/enums/modules/RolesEnum";
 import useClientStore from "~/stores/clientStore";
 
+const {$adminPanelWS} = useNuxtApp();
 const clientStore = useClientStore()
 const {clientList} = storeToRefs(clientStore)
 const roles = Object.keys(rolesEnum).map(key => rolesEnum[key]);
@@ -15,6 +16,7 @@ const deleteUser = async function (id) {
     method: 'DELETE',
   }).catch((error) => error.data);
   await props.update()
+  $adminPanelWS.send('delete')
 }
 let dialogControl = ref(false)
 let user = ref({
@@ -35,6 +37,7 @@ const editUser = async function (id) {
   console.log(dev)
   await props.update()
   dialogControl.value = false
+  $adminPanelWS.send('edit')
 }
 const editDialog = async function () {
   user.value.email = props.user.email

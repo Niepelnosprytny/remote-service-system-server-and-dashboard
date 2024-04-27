@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import rolesEnum from "~/enums/modules/RolesEnum";
 import useClientStore from "~/stores/clientStore";
+const {$adminPanelWS} = useNuxtApp();
 
 const props = defineProps({
   client: {required: true},
@@ -16,6 +17,7 @@ const deleteClient = async function (id) {
     method: 'DELETE',
   }).catch((error) => error.data);
   await props.update()
+  $adminPanelWS.send('delete')
 }
 const editClient = async function (id) {
   await useApi(`/api/client/${id}`, {
@@ -24,6 +26,7 @@ const editClient = async function (id) {
   }).catch((error) => error.data);
   await props.update()
   dialogControl.value = false
+  $adminPanelWS.send('edit')
 }
 const editDialog = function () {
   client.value.name = props.client.name
