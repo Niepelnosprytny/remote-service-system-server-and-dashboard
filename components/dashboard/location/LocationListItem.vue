@@ -3,12 +3,12 @@ import rolesEnum from "~/enums/modules/RolesEnum";
 import useLocationStore from "~/stores/locationStore";
 import useClientStore from "~/stores/clientStore";
 const {$adminPanelWS} = useNuxtApp();
-
+const clientStore = useClientStore();
 const props = defineProps({
   location: { required: true },
   update: {required: true}
 })
-const clientStore = useClientStore()
+const client = await clientStore.getClient(props.location.client)
 const {clientList} = storeToRefs(clientStore)
 let dialogControl = ref(false)
 let location = ref({
@@ -50,16 +50,34 @@ const editDialog = async function () {
 
 <template>
   <v-row align="center">
-    <v-col>
+    <v-col cols="3">
       <v-card-text>
-        <p>{{props.location.name}}</p>
+        {{props.location.name}}
       </v-card-text>
     </v-col>
-    <v-spacer></v-spacer>
-    <v-spacer></v-spacer>
+    <v-col cols="2">
+      <v-card-text>
+        {{props.location.street}}
+      </v-card-text>
+    </v-col>
+    <v-col cols="2">
+      <v-card-text>
+        {{props.location.city}}
+      </v-card-text>
+    </v-col>
+    <v-col cols="1">
+      <v-card-text>
+        {{props.location.postcode}}
+      </v-card-text>
+    </v-col>
     <v-col>
+      <v-card-text>
+        {{client.name}}
+      </v-card-text>
+    </v-col>
+    <v-col>
+      <v-btn style="margin-right: 10px" @click="editDialog" icon="mdi-pencil"></v-btn>
       <v-btn @click="deleteLocation(props.location.id)" icon="mdi-trash-can"></v-btn>
-      <v-btn @click="editDialog" icon="mdi-pencil"></v-btn>
     </v-col>
   </v-row>
 

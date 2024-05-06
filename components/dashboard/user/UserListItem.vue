@@ -27,8 +27,12 @@ let user = ref({
   employer: null
 })
 const editUser = async function (id) {
+  console.log(user.value.employer)
   if(user.value.employer.id){
     user.value.employer = user.value.employer.id
+  }
+  if(user.value.employer == 'no employer'){
+    user.value.employer = null
   }
   let dev = await useApi(`/api/user/${id}`, {
     method: 'PATCH',
@@ -52,16 +56,19 @@ const editDialog = async function () {
 
 <template>
   <v-row align="center">
-    <v-col>
-      <v-card-text>
-        <p>{{ props.user.name }}</p>
-      </v-card-text>
+    <v-col cols="3">
+        <v-card-text>{{ props.user.name }} {{ props.user.surname }}</v-card-text>
+    </v-col>
+    <v-col cols="3">
+        <v-card-text>{{ props.user.email}}</v-card-text>
+    </v-col>
+    <v-col cols="3">
+        <v-card-text>{{ rolesEnum[props.user.role] }}</v-card-text>
     </v-col>
     <v-spacer></v-spacer>
-    <v-spacer></v-spacer>
-    <v-col>
+    <v-col cols="2">
+      <v-btn style="margin-right: 10px"  @click="editDialog" icon="mdi-pencil"></v-btn>
       <v-btn @click="deleteUser(props.user.id)" icon="mdi-trash-can"></v-btn>
-      <v-btn @click="editDialog" icon="mdi-pencil"></v-btn>
     </v-col>
   </v-row>
 

@@ -37,13 +37,6 @@ let getCommentFiles = function (id){
 </script>
 
 <template>
-    <v-hover v-slot="{ hover }">
-      <v-card>
-      <v-chip v-if="hover" >dsadasd</v-chip>
-      <v-chip v-else >damn</v-chip>
-      </v-card>
-    </v-hover>
-
   <v-card>
     <v-row v-for="(comment,indexComm) in comments">
       <v-col cols="12" style="background-color: green; margin-bottom: 20px" v-if="comment.created_by == props.author">
@@ -65,7 +58,7 @@ let getCommentFiles = function (id){
               v-on:mouseleave="hoverEvent(null,null)"
               v-if="file.filetype == 'image'" max-width="150" max-height="150"
                  :src="useRequestURL().origin+'/files/'+file.filename">
-            <v-card class="on-hover d-flex" style="align-items: center;justify-content: center;opacity: 0.4; height: 100%; width: 100%" activator="" v-if="hover == index && indexComm == hoverComm">
+            <v-card class="on-hover d-flex" style="align-items: center;justify-content: center;opacity: 0.4; height: 100%; width: 100%" v-if="hover == index && indexComm == hoverComm">
               <v-spacer></v-spacer>
               <v-btn :onclick="()=>{dialogControl=true; currentFile=file}"><v-icon icon="mdi-eye"></v-icon></v-btn>
                 <v-spacer></v-spacer>

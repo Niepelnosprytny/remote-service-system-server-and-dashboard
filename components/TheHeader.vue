@@ -29,48 +29,43 @@ const notificationRedirect = async (notification) => {
 </script>
 
 <template>
-  <v-toolbar style="padding-right: 15px;">
+  <v-toolbar class="header">
     <v-spacer></v-spacer>
-    <v-card style="margin-right: 25px">
+    <v-card class="headerButtons"  style="margin-right: 25px">
       <NuxtLink v-if="route.path!=='/'" to="/">
-        <v-btn style="padding-right: 15px">Dashboard</v-btn>
+        <v-btn color="black">Dashboard</v-btn>
       </NuxtLink>
       <NuxtLink v-if="store.isAdmin() && route.path == '/'" to="/admin">
-        <v-btn>Admin panel</v-btn>
+        <v-btn color="black">Admin panel</v-btn>
       </NuxtLink>
     </v-card>
-    <v-card style="margin-right: 15px">
-      <v-btn  disabled="true" v-if="notificationList.length==0">
+    <v-card class="headerButtons" style="margin-right: 15px">
+      <v-btn disabled v-if="notificationList.length==0">
         <v-icon>mdi-bell</v-icon>
       </v-btn>
       <v-btn v-else>
         <v-icon>mdi-bell-badge</v-icon>
+        {{notificationList.length}}
         <v-menu activator="parent">
-          <v-list>
-            <v-list-item v-for="notification in notificationList" @click="notificationRedirect(notification)">
-              <p>
+          <v-list style="background-color: #fffaf3; padding: 0; max-width: 350px;  max-height: 600px">
+            <v-list-item style="margin-bottom: 5px" class="headerButtons" v-for="notification in notificationList" @click="notificationRedirect(notification)">
+              <v-card-text>
                 {{ notification.content }}
-              </p>
+              </v-card-text>
             </v-list-item>
           </v-list>
         </v-menu>
       </v-btn>
     </v-card>
-    <v-card>
-      <v-btn
-          color="primary"
-      >
-        <p>
+    <v-card  class="headerButtons">
+      <v-btn>
           <v-icon style="padding-right: 5px">mdi-account</v-icon>
           {{ `${user.name} ${user.surname}` }}
-        </p>
         <v-menu activator="parent">
-          <v-list>
-            <v-list-item @click="logout">
-              <p>
+          <v-list class="headerButtons" style="padding: 0">
+            <v-list-item class="headerButtons" @click="logout">
                 <v-icon style="padding-right: 5px">mdi-logout</v-icon>
                 Logout
-              </p>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -78,8 +73,20 @@ const notificationRedirect = async (notification) => {
     </v-card>
 
   </v-toolbar>
-  <div>
 
-  </div>
 
 </template>
+<style>
+.header{
+  box-shadow: 0px 11px 27px -16px rgba(66, 68, 90, 1);
+  z-index: 20;
+  position: fixed;
+  top: 0;
+  background-color: #fffb92;
+  padding-right: 15px;
+  background-image: linear-gradient(270deg, rgba(255, 251, 146, 1) 0%, rgba(173, 189, 70, 1) 100%);
+}
+.headerButtons{
+  background-color: #fffaf3
+}
+</style>

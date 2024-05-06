@@ -8,9 +8,16 @@ if(!store.isLoggedIn()&&route.path!=='/login'){
 }
 </script>
 <template>
-  <v-app style="background-color: antiquewhite;">
+  <v-app class="app">
     <TheHeader v-if="store.isLoggedIn()" />
     <slot />
     <TheFooter v-if="store.isLoggedIn()" />
   </v-app>
 </template>
+
+<style>
+.app{
+  padding-top: 60px;
+  background-color: #ffbb00;
+}
+</style>

@@ -17,18 +17,18 @@ const {user, token} = storeToRefs(authStore);
 const tab = ref('users')
 </script>
 <template>
-    <v-card>
+    <v-card style="margin: 25px 25px 0 25px; border-bottom-right-radius: 0; border-bottom-left-radius: 0">
       <v-tabs
           v-model="tab"
           color="deep-purple-accent-4"
           align-tabs="center"
       >
-        <v-tab value="users">Users</v-tab>
-        <v-tab value="locations">Locations</v-tab>
-        <v-tab value="clients">Clients</v-tab>
+        <v-tab style="width: 33%" value="users">Users</v-tab>
+        <v-tab style="width: 33%" value="locations">Locations</v-tab>
+        <v-tab style="width: 33%" value="clients">Clients</v-tab>
       </v-tabs>
+    </v-card>
 
-      <v-card>
         <v-window v-model="tab">
           <v-window-item  value="users">
             <user-list></user-list>
@@ -42,10 +42,10 @@ const tab = ref('users')
             <client-list></client-list>
           </v-window-item>
         </v-window>
-      </v-card>
-    </v-card>
 </template>
 
-<style scoped>
+<style>
+.listBox{
 
+}
 </style>

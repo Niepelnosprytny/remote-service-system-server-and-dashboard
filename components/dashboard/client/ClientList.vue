@@ -46,11 +46,15 @@ let search = function (value){
 
 <template>
   <admin-panel-list-filters :update="update" @sortByName="sortByName" @searchData="search" :filter-type="FilterTypeEnum.CLIENT"></admin-panel-list-filters>
-<v-col v-for="cl in searchedFilteredList">
+<v-card class="listBox">
+  <v-col style="padding-bottom: 0;" v-for="cl in searchedFilteredList">
+    <v-card style="padding-bottom: 15px;padding-top: 15px">
   <client-list-item :update="update" :client="cl"></client-list-item>
+    </v-card>
 </v-col>
+</v-card>
 </template>
 
 <style scoped>
-
+.listBox{}
 </style>

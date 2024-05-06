@@ -16,13 +16,17 @@ const {filteredReportList,reportList} = storeToRefs(store);
 
 <template>
   <report-list-filters></report-list-filters>
-  <v-card style=";margin: 0 25px 25px 25px; padding: 15px">
-<v-col style="margin-top: 10px; margin-bottom: 10px" v-for="rep in filteredReportList">
+  <v-card class="listBox">
+<v-col style="padding-bottom: 5px" v-for="rep in filteredReportList">
   <report-list-item :report="rep"></report-list-item>
 </v-col>
   </v-card>
 </template>
 
-<style scoped>
-
+<style>
+.listBox{
+  background-color: #fffaf3;
+  margin: 0 25px 25px 25px;
+  padding: 15px
+}
 </style>

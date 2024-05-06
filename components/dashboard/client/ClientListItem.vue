@@ -37,15 +37,13 @@ const editDialog = function () {
 <template>
   <v-row align="center">
     <v-col>
-      <v-card-text>
-        <p>{{ props.client.name }}</p>
-      </v-card-text>
+        <v-card-text>{{ props.client.name }}</v-card-text>
     </v-col>
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
-    <v-col>
+    <v-col cols="2">
+      <v-btn style="margin-right: 10px" @click="editDialog" icon="mdi-pencil"></v-btn>
       <v-btn @click="deleteClient(props.client.id)" icon="mdi-trash-can"></v-btn>
-      <v-btn @click="editDialog" icon="mdi-pencil"></v-btn>
     </v-col>
   </v-row>
   <v-dialog
