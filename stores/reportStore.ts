@@ -5,7 +5,8 @@ const useReportStore = defineStore('report', {
     state: () => {
         return {
             reportList: [],
-            filteredReportList: []
+            filteredReportList: [],
+            report: null
         };
     },
     actions: {
@@ -23,7 +24,10 @@ const useReportStore = defineStore('report', {
             this.reportList = info.body;
             this.filteredReportList = info.body
         },
-
+        async getReportById(id){
+            const info = await useApi(`/api/report/${id}`).catch((error) => error.data);
+            this.report = info.body
+        }
     }
 });
 

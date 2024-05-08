@@ -23,6 +23,7 @@ $chatWs.send(JSON.stringify({message: 'init', reportId: props.report.id}))
 const {$notifWs} = useNuxtApp()
 
 const sendComment = async function () {
+  loading.value = true
   await notifStore.sendNotifications(props.report)
   $notifWs.send(content.value)
   const comment = {
@@ -46,7 +47,8 @@ const sendComment = async function () {
   loading.value = false
 };
 watch(files, (newValue, oldValue) => {
-  if (oldValue.length == 0 || newValue.length == 0) {
+  if (newValue !== oldValue && newValue.length <= 5) {
+    console.log(newValue.length)
     prepareGallery()
   }
 }, {deep: true})
@@ -90,40 +92,75 @@ loading.value = false
 </script>
 
 <template>
-  <v-chip @click="()=>{files.splice(files.indexOf(file),1);}" v-for="file in files">{{ file.name }}</v-chip>
-  <v-text-field
-      :disabled="loading"
-      v-model="content"
-      label="Comment"
-  ></v-text-field>
-  <v-btn :disabled="loading" @click="sendComment" icon="mdi-send-variant"></v-btn>
-  <v-btn :disabled="loading" @click="()=>{dialogControl=true;prepareGallery()}" icon="mdi-attachment"></v-btn>
+  <v-card style="padding: 5px 10px 0 10px; height: 16%;background-color: dodgerblue">
+    <v-row class="h-full" style="padding-top: 10px; height: 100%">
+      <v-col cols="12" style="margin-bottom: 7px; padding-bottom: 0;">
+        <v-chip style="max-width: 19%; margin-right: 1%" @click="()=>{files.splice(files.indexOf(file),1);}"
+                v-for="file in files">{{ file.name }}
+        </v-chip>
+      </v-col>
+      <v-col cols="12" style="padding-bottom: 0; padding-top: 4px">
+        <v-text-field
+            style="position: relative;"
+            :disabled="loading"
+            v-model="content"
+            label="Comment"
+            :append-inner-icon="'mdi-send-variant'"
+            prepend-inner-icon="mdi-attachment"
+            type="text"
+            variant="filled"
+            clearable
+            @click:append-inner="sendComment"
+            @click:clear="()=>{comment = ''}"
+            @click:prepend-inner="()=>{dialogControl=true;prepareGallery()}"
+        >
+        </v-text-field>
+      </v-col>
+    </v-row>
 
+
+  </v-card>
   <v-dialog
       v-model="dialogControl"
-      width="800">
-    <v-card>
-      <v-card-title class="headline black" primary-title>
+      width="1000">
+    <v-card style="padding: 15px;width: 70vw; height: 80vh">
+      <v-card-title style="height: 10%" primary-title>
         add attachments
       </v-card-title>
-      <v-card-text class="pa-5">
-        <v-form id="galleryForm" enctype="multipart/form-data">
-          <v-file-input chips="true" v-model="files" multiple="true" prepend-icon="mdi-attachment"></v-file-input>
-        </v-form>
-        <v-col v-for="file in galleryHelper">
-          <v-chip v-if="file.type == 'document'">{{ file.file.name }}</v-chip>
-          <v-img v-if="file.type == 'image'" :src="file.url"></v-img>
-          <video v-if="file.type == 'video'" width="320" height="240" controls>
+      <v-form id="galleryForm" enctype="multipart/form-data">
+        <v-file-input accept="image/*,video/*,.doc,.pdf" prepend-inner-icon="mdi-attachment" chips v-model="files"
+                      multiple prepend-icon=""
+                      clearable></v-file-input>
+      </v-form>
+      <v-row style="overflow-y: auto; height: 80%">
+        <v-col cols="4" v-for="file in galleryHelper">
+          <v-row align="center" style="padding: 0;">
+            <v-col cols="10">
+              <v-chip style="margin-bottom: 10px">{{ file.file.name }}</v-chip>
+            </v-col>
+            <v-col cols="2">
+              <v-icon icon="mdi-trash-can"
+                      @click="()=>{files.splice(files.indexOf(file.file),1); galleryHelper.splice(galleryHelper.indexOf(file),1)}">
+              </v-icon>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+          <v-card style="min-height: 200px; height: 100%; width: 100%" v-if="file.type == 'document'">
+            <v-icon size="80" v-if="file.type == 'document'" style="height: 100%; width: 100%; overflow: auto">
+              mdi-file-document-outline
+            </v-icon>
+          </v-card>
+          <v-img style="" v-if="file.type == 'image'" :src="file.url"></v-img>
+          <video v-if="file.type == 'video'" style="max-height: 210px; height: auto; width: 100%" controls>
             <source :src="file.url">
             Your browser does not support the video tag.
           </video>
-          <v-btn
-              @click="()=>{files.splice(files.indexOf(file.file),1); galleryHelper.splice(galleryHelper.indexOf(file),1)}">
-            usun
-          </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
-      </v-card-text>
-      <v-card-actions class="pa-5">
+      </v-row>
+      <v-card-actions>
         <v-btn @click="()=>{files=[];dialogControl=false}" outlined color="primary">Cancel</v-btn>
         <v-btn @click="()=>{dialogControl=false}" outlined color="primary">Confirm</v-btn>
       </v-card-actions>

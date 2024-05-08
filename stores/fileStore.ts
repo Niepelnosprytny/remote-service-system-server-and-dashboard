@@ -20,12 +20,12 @@ const useFileStore = defineStore('file', {
                 });
             this.files = fileArr
         },
-        async getFilesForReport(report) {
+        async getFilesForReport(reportId) {
             let fileArr = []
             const files = await useApi(`/api/file`).catch((error) => error.data)
-            files.forEach((file) => {
-                if (file.report_id == report.id) {
-                    fileArr.push(file.filename)
+            files.body.forEach((file) => {
+                if (file.report_id == reportId && file.comment_id == null) {
+                    fileArr.push(file)
                 }
             });
             return fileArr

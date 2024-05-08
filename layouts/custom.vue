@@ -10,14 +10,15 @@ if(!store.isLoggedIn()&&route.path!=='/login'){
 <template>
   <v-app class="app">
     <TheHeader v-if="store.isLoggedIn()" />
+    <div style="padding:70px 20px 20px 20px">
     <slot />
+    </div>
     <TheFooter v-if="store.isLoggedIn()" />
   </v-app>
 </template>
 
 <style>
 .app{
-  padding-top: 60px;
   background-color: #ffbb00;
 }
 </style>

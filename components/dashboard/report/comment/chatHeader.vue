@@ -8,9 +8,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <div>
-      <p>{{props.author.email}}</p>
-    </div>
+  <v-card style="text-align: center; height: 6%; background-color: dodgerblue; border-bottom-left-radius: 0;border-bottom-right-radius: 0">
+      <v-card-text>{{props.author.email}}</v-card-text>
+  </v-card>
 </template>
 
 <style scoped>
