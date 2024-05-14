@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useCommentStore from "~/stores/commentStore";
 import useFileStore from "~/stores/fileStore";
+import {getElementById} from "domutils";
 
 const props = defineProps({
   report: {required: true},
@@ -21,6 +22,7 @@ let hoverEvent = function (index, indexComm) {
 }
 let dialogControl = ref(false);
 let currentFile = ref(null);
+
 let getCommentFiles = function (id) {
   let arr = []
   files.value.forEach((file) => {
@@ -30,11 +32,22 @@ let getCommentFiles = function (id) {
   });
   return arr
 }
+const scrollToEnd = async function () {
+  // const element = document.getElementById('commentBody')
+  // console.log(element)
+  // element.scrollTop = element.offsetHeight + element.scrollHeight
+}
+await scrollToEnd()
 </script>
 
 <template>
-  <v-card style="height: 78%; overflow-y: auto">
-    <v-row style="padding: 20px" v-for="(comment,indexComm) in comments">
+  <v-card id="commentBody" style="max-height: 60dvh;overflow-y: auto">
+    <v-row v-if="comments.length==0">
+      <v-col style="text-align: center;">
+        <v-card-text>Brak komentarzy.</v-card-text>
+      </v-col>
+    </v-row>
+    <v-row v-else style="padding: 20px" v-for="(comment,indexComm) in comments">
       <v-col cols="12" v-if="comment.created_by == props.author">
         <v-card-text class="bubble right">
           {{ comment.content }}
@@ -129,18 +142,19 @@ let getCommentFiles = function (id) {
   border-radius: calc(var(--r) + var(--t))/var(--r);
   mask: radial-gradient(100% 100% at var(--_p) 0, #0000 99%, #000 102%) var(--_p) 100%/var(--t) var(--t) no-repeat,
   linear-gradient(#000 0 0) padding-box;
-  background: linear-gradient(135deg, #FE6D00, #1384C5) border-box;
   color: #fff;
 }
 
 .left {
   --_p: 0;
+  background: #c77f89 border-box;
   border-bottom-left-radius: 0 0;
   place-self: start;
 }
 
 .right {
   --_p: 100%;
+  background: #7db3b4 border-box;
   border-bottom-right-radius: 0 0;
   place-self: end;
 }

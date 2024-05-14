@@ -10,7 +10,7 @@ if(!store.isLoggedIn()&&route.path!=='/login'){
 <template>
   <v-app class="app">
     <TheHeader v-if="store.isLoggedIn()" />
-    <div style="padding:70px 20px 20px 20px">
+    <div style="justify-content: center;align-content: center;height: 100% ;padding:70px 20px 20px 20px">
     <slot />
     </div>
     <TheFooter v-if="store.isLoggedIn()" />
@@ -19,6 +19,6 @@ if(!store.isLoggedIn()&&route.path!=='/login'){
 
 <style>
 .app{
-  background-color: #ffbb00;
+  background-color: white;
 }
 </style>

@@ -14,7 +14,7 @@ export default defineWebSocketHandler({
         console.log('error on WS', peer, error)
     },
     message(peer, message) {
-        console.log('message on notif WS', peer, message)
+        console.log('message on admin WS', peer, message)
         peer.publish(room, uuidv4())
     }
 })

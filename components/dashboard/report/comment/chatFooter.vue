@@ -48,8 +48,9 @@ const sendComment = async function () {
 };
 watch(files, (newValue, oldValue) => {
   if (newValue !== oldValue && newValue.length <= 5) {
-    console.log(newValue.length)
     prepareGallery()
+  }else{
+    galleryHelper.value = []
   }
 }, {deep: true})
 const uploadFile = async (comment_id, report_id) => {
@@ -83,28 +84,45 @@ const prepareGallery = async function () {
     };
     reader.readAsDataURL(files.value[id]);
   }
+  console.log(galleryHelper.value)
 }
 watch($chatWs.data, (newValue) => {
   commentStore.getComments(props.report)
   fileStore.getFilesForComments(props.report.id)
 })
+const chatRules = [
+  (e) => {
+    if (e) return true
+    return ''
+  },
+  (e) => {
+    if (e.length<=255) return true
+    return 'Wiadomość nie może mieć więcej niz 255 znaków'
+  },
+]
+const fileRules = [
+  (e) => {
+    if (e.length<=5) return true
+    return 'Nie można wysłać więcej niż 5 załączników'
+  },
+]
 loading.value = false
 </script>
 
 <template>
-  <v-card style="padding: 5px 10px 0 10px; height: 16%;background-color: dodgerblue">
-    <v-row class="h-full" style="padding-top: 10px; height: 100%">
+  <v-card style="justify-content: center; padding: 5px 10px 0 10px; min-height: 5dvh;; overflow-y: auto; background-color: #f7f7f7">
       <v-col cols="12" style="margin-bottom: 7px; padding-bottom: 0;">
         <v-chip style="max-width: 19%; margin-right: 1%" @click="()=>{files.splice(files.indexOf(file),1);}"
-                v-for="file in files">{{ file.name }}
+                v-for="(file) in files" v-if="files.length<=5"><div >{{ file.name }}</div>
         </v-chip>
       </v-col>
       <v-col cols="12" style="padding-bottom: 0; padding-top: 4px">
         <v-text-field
+            :rules="chatRules"
             style="position: relative;"
             :disabled="loading"
             v-model="content"
-            label="Comment"
+            label="Komentarz"
             :append-inner-icon="'mdi-send-variant'"
             prepend-inner-icon="mdi-attachment"
             type="text"
@@ -116,8 +134,6 @@ loading.value = false
         >
         </v-text-field>
       </v-col>
-    </v-row>
-
 
   </v-card>
   <v-dialog
@@ -125,10 +141,10 @@ loading.value = false
       width="1000">
     <v-card style="padding: 15px;width: 70vw; height: 80vh">
       <v-card-title style="height: 10%" primary-title>
-        add attachments
+        Dodaj załączniki
       </v-card-title>
       <v-form id="galleryForm" enctype="multipart/form-data">
-        <v-file-input accept="image/*,video/*,.doc,.pdf" prepend-inner-icon="mdi-attachment" chips v-model="files"
+        <v-file-input :rules="fileRules" bg-color="#f7f7f7" style="margin-bottom: 15px" accept="image/*,video/*,.doc,.pdf" prepend-inner-icon="mdi-attachment" chips v-model="files"
                       multiple prepend-icon=""
                       clearable></v-file-input>
       </v-form>
@@ -154,15 +170,14 @@ loading.value = false
           <v-img style="" v-if="file.type == 'image'" :src="file.url"></v-img>
           <video v-if="file.type == 'video'" style="max-height: 210px; height: auto; width: 100%" controls>
             <source :src="file.url">
-            Your browser does not support the video tag.
           </video>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
       <v-card-actions>
-        <v-btn @click="()=>{files=[];dialogControl=false}" outlined color="primary">Cancel</v-btn>
-        <v-btn @click="()=>{dialogControl=false}" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>{files=[];dialogControl=false}" outlined color="black">Anuluj</v-btn>
+        <v-btn @click="()=>{dialogControl=false}" outlined color="black">Potwierdź</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

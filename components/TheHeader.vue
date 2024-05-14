@@ -32,11 +32,11 @@ const notificationRedirect = async (notification) => {
   <v-toolbar class="header">
     <v-spacer></v-spacer>
     <v-card class="headerButtons"  style="margin-right: 25px">
-      <NuxtLink v-if="route.path!=='/'" to="/">
-        <v-btn color="black">Dashboard</v-btn>
+      <NuxtLink v-if="route.path!=='/'" replace to="/">
+        <v-btn color="black">Lista zgłoszeń</v-btn>
       </NuxtLink>
       <NuxtLink v-if="store.isAdmin() && route.path == '/'" to="/admin">
-        <v-btn color="black">Admin panel</v-btn>
+        <v-btn color="black">Panel administratora</v-btn>
       </NuxtLink>
     </v-card>
     <v-card class="headerButtons" style="margin-right: 15px">
@@ -65,7 +65,7 @@ const notificationRedirect = async (notification) => {
           <v-list class="headerButtons" style="padding: 0">
             <v-list-item class="headerButtons" @click="logout">
                 <v-icon style="padding-right: 5px">mdi-logout</v-icon>
-                Logout
+                Wyloguj
             </v-list-item>
           </v-list>
         </v-menu>
@@ -78,13 +78,12 @@ const notificationRedirect = async (notification) => {
 </template>
 <style>
 .header{
-  box-shadow: 0px 11px 27px -16px rgba(66, 68, 90, 1);
+  box-shadow: 0 11px 27px -16px rgba(66, 68, 90, 1);
   z-index: 20;
   position: fixed;
   top: 0;
-  background-color: #fffb92;
+  background-color: #007a92;
   padding-right: 15px;
-  background-image: linear-gradient(270deg, rgba(255, 251, 146, 1) 0%, rgba(173, 189, 70, 1) 100%);
 }
 .headerButtons{
   background-color: #fffaf3

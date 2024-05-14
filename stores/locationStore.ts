@@ -13,11 +13,17 @@ const useLocationStore = defineStore('location', {
         },
         async updateLocationList() {
             const info = await useApi(`/api/location`).catch((error) => error.data)
+            console.log(info)
+            if(info){
             this.locationList = info.body;
+            }
         },
         async getLocation(locationId){
             let del = await useApi(`/api/location/${locationId}`).catch((error) => error.data);
-            return del.body
+            if(del){
+                return del.body
+            }
+            return del
         },
 
     }

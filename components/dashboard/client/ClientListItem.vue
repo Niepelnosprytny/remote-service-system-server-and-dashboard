@@ -35,6 +35,7 @@ const editDialog = function () {
 </script>
 
 <template>
+  <v-card style="padding-bottom: 15px;padding-top: 15px">
   <v-row align="center">
     <v-col>
         <v-card-text>{{ props.client.name }}</v-card-text>
@@ -46,22 +47,23 @@ const editDialog = function () {
       <v-btn @click="deleteClient(props.client.id)" icon="mdi-trash-can"></v-btn>
     </v-col>
   </v-row>
+  </v-card>
   <v-dialog
       v-model="dialogControl"
       width="500">
     <v-card>
       <v-card-title class="headline black" primary-title>
-        Edit Client
+        Edytuj Klienta
       </v-card-title>
       <v-card-text class="pa-5">
         <v-form ref="sendForm">
-          <v-text-field v-model="client.name" label="Name"></v-text-field>
+          <v-text-field v-model="client.name" label="Nazwa"></v-text-field>
         </v-form>
 
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn  @click="()=>dialogControl=false" outlined color="primary">Cancel</v-btn>
-        <v-btn  @click="editClient(props.client.id)" outlined color="primary">Confirm</v-btn>
+        <v-btn  @click="()=>dialogControl=false" outlined color="black">Cancel</v-btn>
+        <v-btn  @click="editClient(props.client.id)" outlined color="black">Confirm</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

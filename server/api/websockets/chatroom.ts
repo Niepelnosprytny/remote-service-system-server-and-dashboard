@@ -11,6 +11,7 @@ export default defineWebSocketHandler({
         console.log('error on WS', peer, error)
     },
     message(peer, message) {
+        console.log('message on chatroom WS', peer, message)
         let info = JSON.parse(message.text())
         peer.subscribe(info.reportId)
         peer.publish(info.reportId, info.message+uuidv4())

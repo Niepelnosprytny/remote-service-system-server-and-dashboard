@@ -5,6 +5,7 @@ const useClientStore = defineStore('client', {
     state: () => {
         return {
             clientList: [],
+            clientListEdit: [],
             filteredClientList: []
         };
     },
@@ -17,11 +18,14 @@ const useClientStore = defineStore('client', {
             const info = await useApi(`/api/client`).catch((error) => error.data)
             if (info) {
                 this.clientList = info.body;
+                this.clientListEdit = []
+                this.clientListEdit.unshift({name: 'brak', id: null});
+                this.clientListEdit.push(...info.body);
             }
         },
         async getClient(id) {
             if(id === null){
-                return 'no employer'
+                return 'brak'
             }
             const client = await useApi(`/api/client/${id}`).catch((error) => error.data)
             return client.body

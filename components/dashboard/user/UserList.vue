@@ -55,14 +55,28 @@ let update = async function () {
   sortByName(sortBool.value)
   filterByRole(roleFilter.value)
 }
+const numberOfLoads = ref(1)
+const helper = ref(numberOfLoads.value*7)
+const scroll = function (e) {
+  const {scrollTop, offsetHeight, scrollHeight} = e.target
+  if ((scrollTop + offsetHeight) >= scrollHeight) {
+    if(numberOfLoads.value*7<=searchedFilteredList.value.length){
+      numberOfLoads.value++
+      helper.value = numberOfLoads.value*7
+    }
+  }
+}
 </script>
 
 <template>
   <admin-panel-list-filters :update="update" @sortByName="sortByName" @roleFilter="filterByRole" @searchData="search"
                             :filter-type="FilterTypeEnum.USER"></admin-panel-list-filters>
-  <v-card class="listBox">
-    <v-col style="padding-bottom: 0;" v-for="us in searchedFilteredList">
-      <v-card style="padding-bottom: 15px;padding-top: 15px">
+  <v-card @scroll="scroll" class="listBox" style=" justify-content: center; height: 65vh; overflow-y: auto;">
+    <v-col style="text-align: center" v-if="searchedFilteredList.length == 0">
+      <v-card-text>Brak użytkowników.</v-card-text>
+    </v-col>
+    <v-col style="padding-bottom: 0;" v-for="(us,index) in searchedFilteredList">
+      <v-card v-if="index<=helper" style="padding-bottom: 15px;padding-top: 15px">
         <user-list-item :update="update" :user="us"></user-list-item>
       </v-card>
     </v-col>

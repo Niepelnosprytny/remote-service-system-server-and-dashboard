@@ -13,39 +13,43 @@ import UserList from "~/components/dashboard/user/UserList.vue";
 const authStore = useAuthStore();
 
 const {user, token} = storeToRefs(authStore);
-
-const tab = ref('users')
+const tab = ref('0')
+const tabs = [
+  {id: 1, name: 'użytkownicy'},
+  {id: 2, name: 'lokacje'},
+  {id: 3, name: 'klienci'}
+]
 </script>
 <template>
-    <v-card style="margin: 25px 25px 0 25px; border-bottom-right-radius: 0; border-bottom-left-radius: 0">
-      <v-tabs
-          v-model="tab"
-          color="deep-purple-accent-4"
-          align-tabs="center"
-      >
-        <v-tab style="width: 33%" value="users">Users</v-tab>
-        <v-tab style="width: 33%" value="locations">Locations</v-tab>
-        <v-tab style="width: 33%" value="clients">Clients</v-tab>
-      </v-tabs>
-    </v-card>
+  <div style="height: 85vh;">
+  <v-card style="border-bottom-right-radius: 0;margin-left: 25px; margin-right: 25px; border-bottom-left-radius: 0">
+    <v-tabs
+        v-model="tab"
+        color="#a82e3f"
+        align-tabs="center"
+    >
+      <v-tab style="width: 34%" v-for="tab of tabs" :key="tab.id">{{ tab.name }}</v-tab>
+    </v-tabs>
+  </v-card>
 
-        <v-window v-model="tab">
-          <v-window-item  value="users">
-            <user-list></user-list>
-          </v-window-item>
+  <v-window v-model="tab">
+    <v-window-item value="0" eager>
+      <user-list></user-list>
+    </v-window-item>
 
-          <v-window-item value="locations">
-            <location-list></location-list>
-          </v-window-item>
+    <v-window-item value="1" eager>
+      <location-list></location-list>
+    </v-window-item>
 
-          <v-window-item value="clients">
-            <client-list></client-list>
-          </v-window-item>
-        </v-window>
+    <v-window-item value="2" eager>
+      <client-list></client-list>
+    </v-window-item>
+  </v-window>
+  </div>
 </template>
 
 <style>
-.listBox{
+.listBox {
 
 }
 </style>

@@ -49,8 +49,8 @@ const editReport = async function () {
 </script>
 
 <template>
-  <v-card style="height: 80vh; margin: 20px;">
-    <v-container style="text-align: center; height: 10%">
+  <v-card style="max-height: 80dvh; margin: 20px;">
+    <v-container style="text-align: center;">
     <v-row >
       <v-col cols="4">
         <v-card-text style="border-bottom: 1px dashed black;">Zgłoszenie {{ props.report.id }}</v-card-text>
@@ -64,7 +64,7 @@ const editReport = async function () {
       </v-col>
     </v-row>
     </v-container>
-    <v-container style="border-bottom: 1px dashed black; height: 55%">
+    <v-container style="border-bottom: 1px dashed black; height: 55%; overflow-y: auto">
       <v-row>
         <v-col v-if="editMode" style="text-align: center;height: 5%;" cols="12">
           <v-text-field v-model="report.title"></v-text-field>
@@ -78,7 +78,7 @@ const editReport = async function () {
           <v-card-text style="border-bottom: 1px dashed black;">{{ client.name }}</v-card-text>
         </v-col>
         <v-col cols="6">
-          <v-card-text style="border-bottom: 1px dashed black;">{{ location.city }} {{ location.postcode }} ul. {{ location.street }}</v-card-text>
+          <v-card-text style="border-bottom: 1px dashed black; overflow-x: auto">{{ location.city }} {{ location.postcode }} ul. {{ location.street }}</v-card-text>
         </v-col>
       </v-row>
       <v-row>
@@ -137,8 +137,7 @@ const editReport = async function () {
       </v-col>
     </v-row>
     </v-container>
-    <v-container style="padding: 10px; height: 10%">
-    <v-row >
+    <v-container style="padding: 10px">
       <v-col style="text-align: right;">
         <v-btn style="margin: 5px" v-if="!editMode && !deleteMode"
                @click="()=>{editMode = !editMode; report.status = props.report.status; report.content = props.report.content; report.title = props.report.title}"
@@ -152,7 +151,6 @@ const editReport = async function () {
         <v-btn style="margin: 5px" v-if="deleteMode" @click="deleteReport" icon="mdi-check"></v-btn>
         <v-btn style="margin: 5px" v-if="deleteMode" @click="()=>{deleteMode = !deleteMode;}" icon="mdi-cancel"></v-btn>
       </v-col>
-    </v-row>
     </v-container>
   </v-card>
 </template>

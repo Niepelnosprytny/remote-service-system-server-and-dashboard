@@ -3,16 +3,15 @@ import rolesEnum from "~/enums/modules/RolesEnum";
 import filterTypeEnum from "~/enums/modules/FilterTypeEnum";
 import useClientStore from "~/stores/clientStore";
 import useUserStore from "~/stores/userStore";
-import useLocationStore from "~/stores/locationStore";
 
 const clientDialogControl = ref(false)
 const userDialogControl = ref(false)
 const locationDialogControl = ref(false)
 const userStore = useUserStore()
-const locationStore = useLocationStore()
 const clientStore = useClientStore()
-const {clientList} = storeToRefs(clientStore)
+const {clientList, clientListEdit} = storeToRefs(clientStore)
 const roles = Object.keys(rolesEnum).map(key => rolesEnum[key]);
+const rolesEdit = Object.keys(rolesEnum).map(key => rolesEnum[key]);
 roles.unshift('wszystkie')
 const props = defineProps({
   filterType: {required: true},
@@ -21,6 +20,49 @@ const props = defineProps({
 const search = ref('');
 let role = ref('wszystkie');
 let sortByName = ref(false);
+
+const mainRules = [
+  (e) => {
+    if (e) return true
+    return 'To pole jest wymagane'
+  },
+]
+const clientRules = [
+  (e) => {
+    if (e) return true
+    return 'To pole jest wymagane'
+  },
+]
+const passRules = [
+  (value) => {
+    if (value) return true
+    return 'To pole jest wymagane'
+  },
+  (value) => {
+    if (value.length>=9) return true
+    return 'Hasło musi mieć przynajmniej 9 znaków'
+  },
+  (value) => {
+    if (value.length<=19) return true
+    return 'Hasło nie może mieć więcej niż 19 znaków'
+  },
+  (value) =>{
+    if(/[A-Z]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[#?!@$%^&*-]/.test(value)) return true
+    return 'Hasło musi mieć przynajmniej 1 wielką literę, 1 mała literę, 1 cyfre i znak specjalny'
+  }
+]
+
+const mailRules = [
+  (e) => {
+    if (e) return true
+    return 'E-mail jest wymagany'
+  },
+  (e) => {
+    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(e)) return true
+    return 'E-mail jest nieprawidłowy'
+  },
+]
+const sendForm = ref(null)
 let client = ref({
   name: null
 })
@@ -39,30 +81,39 @@ let user = ref({
   role: null,
   employer: null
 })
+
 const newClient = async function () {
-  const dev = await useApi(`/api/client`, {
-    method: 'POST',
-    body: {name: client.value.name},
-  }).catch((error) => error.data);
-  clientDialogControl.value = false
-  await props.update()
+  const validation = await sendForm.value.validate()
+  if(validation.valid) {
+    const dev = await useApi(`/api/client`, {
+      method: 'POST',
+      body: {name: client.value.name},
+    }).catch((error) => error.data);
+    clientDialogControl.value = false
+    await props.update()
+  }
 }
+
+// defineExpose({
+//   sendForm
+// })
 const newUser = async function () {
-  const dev = await useApi(`/api/auth/register`, {
-    method: 'POST',
-    body: {
-      email: user.value.email,
-      name: user.value.name,
-      password: user.value.password,
-      surname: user.value.surname,
-      role: Object.entries(rolesEnum).find(([key, val]) => val === user.value.role)?.[0],
-      employer: user.value.employer
-    },
-  }).catch((error) => error.data);
-  userDialogControl.value = false
-  await props.update()
+  const validation = await sendForm.value.validate()
+  if(validation.valid){
+    await userStore.newUser(user.value.email, user.value.name, user.value.password, user.value.surname, user.value.role, user.value.employer)
+    user.value.name = null
+    user.value.email = null
+    user.value.surname = null
+    user.value.password = null
+    user.value.role = null
+    user.value.employer = null
+    userDialogControl.value = false
+    await props.update()
+  }
 }
 const newLocation = async function () {
+  const validation = await sendForm.value.validate()
+  if(validation.valid){
   const dev = await useApi(`/api/location`, {
     method: 'POST',
     body: {
@@ -75,6 +126,7 @@ const newLocation = async function () {
   }).catch((error) => error.data);
   locationDialogControl.value = false
   await props.update()
+    }
 }
 const toggleUser = async function () {
   clientDialogControl.value = true
@@ -99,30 +151,32 @@ let sort = async function () {
   <v-card class="listBox" style="margin-bottom: 20px;">
     <v-row align="center" style="max-height: 200px">
       <v-col cols="5" style="padding-bottom: 0">
-          <v-text-field v-model="search" placeholder="szukaj"><v-icon>mdi-magnify</v-icon></v-text-field>
+        <v-text-field v-model="search" placeholder="Szukaj">
+          <v-icon>mdi-magnify</v-icon>
+        </v-text-field>
       </v-col>
       <v-col cols="3" style="padding-bottom: 0" v-if="props.filterType == filterTypeEnum.USER">
-        <v-select v-model="role" :items="roles" label="roles" ></v-select>
+        <v-select v-model="role" :items="roles" label="Role"></v-select>
       </v-col>
 
       <v-col style="text-align: center" cols="2">
-        <v-btn @click="sort">sort by name</v-btn>
+        <v-btn @click="sort">Sortuj alfabetycznie</v-btn>
       </v-col>
       <v-spacer></v-spacer>
 
       <v-col style="text-align: center" cols="2" v-if="props.filterType == filterTypeEnum.USER">
-        <v-btn @click="()=>userDialogControl=true" >
-          new user
+        <v-btn @click="()=>userDialogControl=true">
+          nowy użytkownik
         </v-btn>
       </v-col>
       <v-col style="text-align: center" cols="2" v-if="props.filterType == filterTypeEnum.LOCATION">
         <v-btn @click="()=>locationDialogControl=true">
-          new location
+          nowa lokacja
         </v-btn>
       </v-col>
       <v-col style="text-align: center" cols="2" v-if="props.filterType == filterTypeEnum.CLIENT">
         <v-btn @click="toggleUser()">
-          new client
+          nowy klient
         </v-btn>
       </v-col>
     </v-row>
@@ -135,17 +189,17 @@ let sort = async function () {
       width="500">
     <v-card>
       <v-card-title class="headline black" primary-title>
-        New Client
+        Nowy klient
       </v-card-title>
       <v-card-text class="pa-5">
         <v-form ref="sendForm">
-          <v-text-field v-model="client.name" label="Name"></v-text-field>
+          <v-text-field :rules="mainRules" v-model="client.name" label="Nazwa"></v-text-field>
         </v-form>
 
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn @click="()=>clientDialogControl=false" outlined color="primary">Cancel</v-btn>
-        <v-btn @click="newClient()" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>clientDialogControl=false" outlined color="black">Anuluj</v-btn>
+        <v-btn @click="newClient()" outlined color="black">Potwierdź</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -157,24 +211,24 @@ let sort = async function () {
       width="500">
     <v-card>
       <v-card-title class="headline black" primary-title>
-        New User
+        Nowy użytkownik
       </v-card-title>
       <v-card-text class="pa-5">
         <v-form ref="sendForm">
-          <v-text-field v-model="user.email" label="E-mail"></v-text-field>
-          <v-text-field v-model="user.name" label="Name"></v-text-field>
-          <v-text-field v-model="user.surname" label="Surname"></v-text-field>
-          <v-text-field v-model="user.password" label="Pssword"></v-text-field>
-          <v-select v-model="user.role" :items="roles" label="Roles"></v-select>
-          <v-select v-model="user.employer" :items="clientList" item-title="name" item-value="id"
-                    label="Employer"></v-select>
+          <v-text-field style="padding-bottom: 10px" :rules="mailRules" v-model="user.email" label="E-mail"></v-text-field>
+          <v-text-field style="padding-bottom: 10px" :rules="mainRules" v-model="user.name" label="Imię"></v-text-field>
+          <v-text-field style="padding-bottom: 10px" :rules="mainRules" v-model="user.surname" label="Nazwisko"></v-text-field>
+          <v-text-field style="margin-bottom: 15px" :rules="passRules" v-model="user.password" label="Hasło"></v-text-field>
+          <v-select style="padding-bottom: 10px" :rules="mainRules" v-model="user.role" :items="rolesEdit" label="Rola"></v-select>
+          <v-select style="padding-bottom: 10px" :rules="clientList" v-model="user.employer" :items="clientListEdit" item-title="name" item-value="id"
+                    label="Klient"></v-select>
 
         </v-form>
 
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn @click="()=>userDialogControl=false" outlined color="primary">Cancel</v-btn>
-        <v-btn @click="newUser()" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>userDialogControl=false" outlined color="black">Cancel</v-btn>
+        <v-btn @click="newUser()" outlined color="black">Confirm</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -185,22 +239,22 @@ let sort = async function () {
       width="500">
     <v-card>
       <v-card-title class="headline black" primary-title>
-        New Location
+        Nowa lokacja
       </v-card-title>
       <v-card-text class="pa-5">
-        <v-form ref="sendForm">
-          <v-text-field v-model="location.name" label="Name"></v-text-field>
-          <v-text-field v-model="location.street" label="Street"></v-text-field>
-          <v-text-field v-model="location.city" label="City"></v-text-field>
-          <v-text-field v-model="location.postcode" label="Postcode"></v-text-field>
-          <v-select v-model="location.client" :items="clientList" item-title="name" item-value="id"
-                    label="Client"></v-select>
+        <v-form validate-on="input" ref="sendForm">
+          <v-text-field :rules="mainRules" v-model="location.name" label="Nazwa"></v-text-field>
+          <v-text-field :rules="mainRules" v-model="location.street" label="Ulica"></v-text-field>
+          <v-text-field :rules="mainRules" v-model="location.city" label="Miasto"></v-text-field>
+          <v-text-field :rules="mainRules" v-model="location.postcode" label="Kod pocztowy"></v-text-field>
+          <v-select :rules="clientRules" v-model="location.client" :items="clientList" item-title="name" item-value="id"
+                    label="Klient"></v-select>
         </v-form>
 
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn @click="()=>locationDialogControl=false" outlined color="primary">Cancel</v-btn>
-        <v-btn @click="newLocation()" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>locationDialogControl=false" outlined color="black">Anuluj</v-btn>
+        <v-btn @click="newLocation()" outlined color="black">Potwierdź</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

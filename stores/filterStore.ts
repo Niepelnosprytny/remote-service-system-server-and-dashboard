@@ -103,7 +103,7 @@ const useFilterStore = defineStore('filter', {
             }
             return filteredList
         },
-        clearFilters() {
+        async clearFilters() {
             this.filtered = false
             this.filters.status = null
             this.filters.reportClient = null

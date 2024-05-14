@@ -88,21 +88,21 @@ const editDialog = async function () {
       width="500">
     <v-card>
       <v-card-title class="headline black" primary-title>
-        Edit Location
+        Edytuj lokacje
       </v-card-title>
       <v-card-text class="pa-5">
         <v-form ref="sendForm">
-          <v-text-field v-model="location.name" label="Name"></v-text-field>
-          <v-text-field v-model="location.street" label="Street"></v-text-field>
-          <v-text-field v-model="location.city" label="City"></v-text-field>
-          <v-text-field v-model="location.postcode" label="Postcode"></v-text-field>
-          <v-select v-model="location.client" :items="clientList" label="Client" item-title="name" item-value="id" ></v-select>
+          <v-text-field v-model="location.name" label="Nazwa"></v-text-field>
+          <v-text-field v-model="location.street" label="Ulica"></v-text-field>
+          <v-text-field v-model="location.city" label="Miasto"></v-text-field>
+          <v-text-field v-model="location.postcode" label="Kod pocztowy"></v-text-field>
+          <v-select v-model="location.client" :items="clientList" label="Klient" item-title="name" item-value="id" ></v-select>
         </v-form>
 
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn @click="()=>dialogControl=false" outlined color="primary">Cancel</v-btn>
-        <v-btn @click="editLocation(props.location.id)" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>dialogControl=false" outlined color="primary">Anuluj</v-btn>
+        <v-btn @click="editLocation(props.location.id)" outlined color="primary">Potwierdź</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

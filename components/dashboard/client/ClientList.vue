@@ -6,9 +6,9 @@ import AdminPanelListFilters from "~/components/dashboard/AdminPanelListFilters.
 import FilterTypeEnum from "~/enums/modules/FilterTypeEnum";
 import useFilterStore from "~/stores/filterStore";
 import {useWebSocket} from "@vueuse/core";
+import LocationListItem from "~/components/dashboard/location/LocationListItem.vue";
 
 const store = useClientStore();
-
 const {clientList} = storeToRefs(store);
 await store.updateClientList()
 let searchedFilteredList = ref([])
@@ -16,7 +16,8 @@ searchedFilteredList.value = clientList.value
 let filterStore = useFilterStore();
 let searchText = ref('')
 let sortBool = ref(false)
-let sortByName = function (value){
+const loading = ref(false)
+let sortByName = function (value) {
   sortBool.value = value
   clientList.value = filterStore.sortByName(clientList.value, sortBool.value)
   searchedFilteredList.value = filterStore.sortByName(searchedFilteredList.value, sortBool.value)
@@ -25,36 +26,53 @@ const {$adminPanelWS} = useNuxtApp();
 watch($adminPanelWS.data, (newValue) => {
   update()
 })
-let update = async function (){
+let update = async function () {
   await store.updateClientList()
   $adminPanelWS.send('')
   searchedFilteredList.value = clientList.value
   search(searchText.value)
   sortByName(sortBool.value)
 }
-let search = function (value){
+let search = function (value) {
   searchText.value = value.toLowerCase()
-  if (value.length>0) {
+  if (value.length > 0) {
     searchedFilteredList.value = clientList.value.filter(p => {
       return p.name.toLowerCase().includes(searchText.value)
     })
-  }else{
+  } else {
     searchedFilteredList.value = clientList.value
+  }
+}
+const numberOfLoads = ref(1)
+const helper = ref(numberOfLoads.value*6)
+const scroll = function (e) {
+  const {scrollTop, offsetHeight, scrollHeight} = e.target
+  if ((scrollTop + offsetHeight) >= scrollHeight) {
+    if(numberOfLoads.value*7<=searchedFilteredList.value.length){
+      numberOfLoads.value++
+      helper.value = numberOfLoads.value*7
+    }
   }
 }
 </script>
 
 <template>
-  <admin-panel-list-filters :update="update" @sortByName="sortByName" @searchData="search" :filter-type="FilterTypeEnum.CLIENT"></admin-panel-list-filters>
-<v-card class="listBox">
-  <v-col style="padding-bottom: 0;" v-for="cl in searchedFilteredList">
-    <v-card style="padding-bottom: 15px;padding-top: 15px">
-  <client-list-item :update="update" :client="cl"></client-list-item>
-    </v-card>
-</v-col>
-</v-card>
+  <admin-panel-list-filters :update="update" @sortByName="sortByName" @searchData="search"
+                            :filter-type="FilterTypeEnum.CLIENT"></admin-panel-list-filters>
+  <v-card @scroll="scroll" class="listBox" style=" justify-content: center; height: 65vh; overflow-y: auto;">
+    <v-container style="text-align: center" v-if="loading">
+      <v-progress-circular indeterminate></v-progress-circular>
+    </v-container>
+    <v-col style="text-align: center" v-if="searchedFilteredList.length == 0">
+      <v-card-text>Brak klientów.</v-card-text>
+    </v-col>
+    <v-col style="padding-bottom: 0;" v-for="(cl,index) in searchedFilteredList">
+        <client-list-item v-if="index<=helper" :update="update" :client="cl"></client-list-item>
+    </v-col>
+  </v-card>
 </template>
 
 <style scoped>
-.listBox{}
+.listBox {
+}
 </style>

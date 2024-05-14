@@ -5,7 +5,7 @@ import useClientStore from "~/stores/clientStore";
 
 const {$adminPanelWS} = useNuxtApp();
 const clientStore = useClientStore()
-const {clientList} = storeToRefs(clientStore)
+const {clientListEdit} = storeToRefs(clientStore)
 const roles = Object.keys(rolesEnum).map(key => rolesEnum[key]);
 const props = defineProps({
   user: {required: true},
@@ -28,10 +28,11 @@ let user = ref({
 })
 const editUser = async function (id) {
   console.log(user.value.employer)
+  console.log('employer')
   if(user.value.employer.id){
     user.value.employer = user.value.employer.id
   }
-  if(user.value.employer == 'no employer'){
+  if(user.value.employer == 'brak' || !user.value.employer){
     user.value.employer = null
   }
   let dev = await useApi(`/api/user/${id}`, {
@@ -77,21 +78,21 @@ const editDialog = async function () {
       width="500">
     <v-card>
       <v-card-title class="headline black" primary-title>
-        Edit User
+        Edytuj użytkownika
       </v-card-title>
       <v-card-text class="pa-5">
         <v-form ref="sendForm">
           <v-text-field v-model="user.email" label="E-mail"></v-text-field>
-          <v-text-field v-model="user.name" label="Name"></v-text-field>
-          <v-text-field v-model="user.surname" label="Surname"></v-text-field>
-          <v-select v-model="user.role" :items="roles" label="roles" ></v-select>
-          <v-select v-model="user.employer" :items="clientList" label="employer" item-value="id" item-title="name" ></v-select>
+          <v-text-field v-model="user.name" label="Imię"></v-text-field>
+          <v-text-field v-model="user.surname" label="Nazwisko"></v-text-field>
+          <v-select v-model="user.role" :items="roles" label="Rola" ></v-select>
+          <v-select v-model="user.employer" :items="clientListEdit" label="Klient" item-value="id" item-title="name" ></v-select>
         </v-form>
 
       </v-card-text>
       <v-card-actions class="pa-5">
-        <v-btn @click="()=>dialogControl=false" outlined color="primary">Cancel</v-btn>
-        <v-btn @click="editUser(props.user.id)" outlined color="primary">Confirm</v-btn>
+        <v-btn @click="()=>dialogControl=false" outlined color="black">Anuluj</v-btn>
+        <v-btn @click="editUser(props.user.id)" outlined color="black">Potwierdź</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

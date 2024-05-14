@@ -16,7 +16,7 @@ const reportStore = useReportStore();
 reportStore.resetFilters()
 let filters = ref({reportClient: null, user: null, status: null})
 
-const resetFilters = function () {
+const resetFilters = async function () {
   filters.reportClient = null
   filters.user = null
   filters.status = null
@@ -35,21 +35,23 @@ watch(
     },
     {deep: true}
 )
+
 </script>
 
 <template>
   <v-card class="mainFilterFrame">
     <v-row>
       <v-spacer></v-spacer>
+
       <v-col cols="2" style="margin-top: 20px; margin-right: 20px;margin-left: 20px">
-        <v-select bg-color="#fffaf3" v-model="filters.reportClient" label="Client" :items="clientList"
+        <v-select bg-color="#fffaf3" v-model="filters.reportClient" label="Klient" :items="clientList"
                   item-title="name" item-value="id"></v-select>
       </v-col>
       <v-col cols="2">
         <v-select bg-color="#fffaf3" style="margin-top: 20px;" v-model="filters.status" label="Status"
                   :items="status"></v-select>
       </v-col>
-      <v-col cols="2" align-self="center">
+      <v-col cols="2" style="text-align: center" align-self="center">
         <v-btn class="filterButtons" style="margin-left: 25px;margin-right: 25px; overflow-x: auto"
                @click="resetFilters" value="all">wszystkie
         </v-btn>
@@ -66,7 +68,7 @@ watch(
 
 <style scoped>
 .mainFilterFrame {
-  background-image: linear-gradient(188deg, rgba(89, 131, 252, 1) 0%, rgba(41, 53, 86, 1) 100%);
+  background-image: linear-gradient(135deg, #a82e3f 0%, #007A92 100%);
   margin: 25px 25px 10px 25px;
 }
 

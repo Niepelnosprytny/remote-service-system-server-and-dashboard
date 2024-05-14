@@ -14,7 +14,7 @@ const author = await commentStore.getAuthor(props.report.created_by)
 </script>
 
 <template>
-  <v-card style="height: 80vh; margin: 20px;">
+  <v-card style="margin: 20px;">
   <chat-header :author="author"></chat-header>
   <comment-body :report="props.report" :author="author"></comment-body>
   <chat-footer :report="props.report"></chat-footer>

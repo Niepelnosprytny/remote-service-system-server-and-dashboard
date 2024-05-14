@@ -4,22 +4,26 @@ import useAuthStore from '~/stores/authStore';
 const form = ref()
 const loading = ref(false)
 const valid = ref(true)
-const loginRules = [
+const mailRules = [
   () => {
     if (valid.value) return true
-    return 'Nazwa użtkownika lub hasło jest nieprawidłowe'
+    return 'E-mail lub hasło jest nieprawidłowe'
   },
   () => {
     if (credentials.value.email) return true
-    return 'Nazwa użytkownika jest wymagana'
+    return 'E-mail jest wymagany'
+  },
+  () => {
+    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(credentials.value.email)) return true
+    return 'E-mail jest nieprawidłowy'
   },
 ]
 const passRules = [
   () => {
     return !!valid.value;
   },
-  () => {
-    if (credentials.value.password) return true
+  (value) => {
+    if (value) return true
     return 'Hasło jest wymagane'
   },
 ]
@@ -54,23 +58,22 @@ const login = async () => {
 </script>
 
 <template>
-  <v-row style="margin: 0;" align="center" justify="center">
-    <v-card style="background-color: #fffaf3;padding: 15px" min-width="30%" max-width="70%" :loading="loading">
+  <v-row style="margin: 100px;" align="center" justify="center">
+    <v-card style="background-color: #f7f7f7;padding: 15px" min-width="30%" max-width="70%" :loading="loading">
       <v-card-title style="padding: 10px">
         <h3>Logowanie do systemu</h3>
       </v-card-title>
       <v-card-item>
         <v-form ref="form" id="form" validate-on="blur" @submit.prevent="login">
-          <v-text-field style="padding-bottom: 10px;" :rules="loginRules" label="E-mail" type="text" v-model="credentials.email"/>
+          <v-text-field style="padding-bottom: 10px;" :rules="mailRules" label="E-mail" type="text" v-model="credentials.email"/>
           <v-text-field style="padding-bottom: 10px;" :rules="passRules" label="Hasło" type="password" v-model="credentials.password"/>
           <v-card-text style="padding: 0;margin: 0">
-            <router-link to="/">Odzyskiwanie kont użytkowników</router-link>
+            <router-link style="text-decoration: none; color: black" to="/">Odzyskiwanie kont użytkowników</router-link>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn style="background-color: #7fff93; margin-top: 15px; min-width: 30%;" :disabled="loading" type="submit">Zaloguj</v-btn>
+            <v-btn style="background-color: #a82e3f; color: white; margin-top: 15px; min-width: 30%;" :disabled="loading" type="submit"><b>Zaloguj</b></v-btn>
             <v-spacer></v-spacer>
-
           </v-card-actions>
         </v-form>
       </v-card-item>
