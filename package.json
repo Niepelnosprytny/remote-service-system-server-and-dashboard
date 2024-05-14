@@ -15,7 +15,8 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
-    "nuxt": "^3.7.3"
+    "nuxt": "^3.7.3",
+    "nuxt-mail": "^5.0.1"
   },
   "dependencies": {
     "@nuxt/http": "^0.6.4",

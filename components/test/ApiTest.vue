@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 let id = ref(1);
 const json = ref(`{
   "field": "value"
@@ -116,10 +117,6 @@ const sendGeneralQuery = async () => {
   generalQuery.value = body;
 };
 
-const setCreateRequestOptions = (method, url, body) => {
-  createRequestOptions.value = { method, url, body };
-};
-
 const executeCreateRequest = async () => {
   let body = "Emptyness";
 
@@ -138,12 +135,23 @@ const executeCreateRequest = async () => {
 };
 
 const { x, y } = useMouse();
+
+const sendEmail = async () => {
+  const mail = useMail()
+
+  mail.send({
+    from: 'Administrator SebastianInc',
+    subject: 'Odzyskiwanie hasła',
+    text: 'Zresetuj hasło dla użytkownika ',
+  })
+}
 </script>
 
 <template>
   <div>
     <h1>API Tests</h1>
     <div>pos: {{ x }}, {{ y }}</div>
+    <v-btn @click="sendEmail">Wyślij email do admina</v-btn>
     <v-btn v-for="table in tables" :key="table" @click="setActiveTable(table)">
       {{ table }}
     </v-btn>

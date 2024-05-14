@@ -7,11 +7,25 @@ export default defineNuxtConfig({
         'nuxt-socket-io',
         '@invictus.codes/nuxt-vuetify',
         '@pinia/nuxt',
-        '@pinia-plugin-persistedstate/nuxt'
+        '@pinia-plugin-persistedstate/nuxt',
+        "nuxt-mail"
     ],
     nitro: {
         experimental: {
             websocket: true
+        }
+    },
+    mail: {
+        message: {
+          to: process.env.ADMIN_EMAIL
+        },
+        smtp: {
+            host: "smtp.gmail.com",
+            port: 587,
+            auth: {
+                user: process.env.ADMIN_EMAIL,
+                pass: process.env.APP_SPECIFIC_PASSWORD
+            }
         }
     }
 });
