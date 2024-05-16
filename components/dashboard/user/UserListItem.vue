@@ -70,6 +70,7 @@ const editUser = async function (id) {
       method: 'PATCH',
       body: {
         email: user.value.email,
+        salt: null,
         password: user.value.password,
         name: user.value.name,
         surname: user.value.surname,
@@ -77,6 +78,7 @@ const editUser = async function (id) {
         employer: user.value.employer
       },
     }).catch((error) => error.data);
+    console.log(dev)
     await props.update()
     dialogControl.value = false
     $adminPanelWS.send('edit')

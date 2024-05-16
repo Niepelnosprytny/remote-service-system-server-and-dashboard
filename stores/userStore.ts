@@ -23,12 +23,6 @@ const useUserStore = defineStore('user', {
         },
         async newUser(email, name, password, surname, role, employer) {
             const roleHelper = Object.entries(rolesEnum).find(([key, val]) => val === role)?.[0]
-            if (email
-                && name
-                && password
-                && surname
-                && roleHelper
-                && employer) {
                 const dev = await useApi(`/api/auth/register`, {
                     method: 'POST',
                     body: {
@@ -36,13 +30,11 @@ const useUserStore = defineStore('user', {
                         name: name,
                         password: password,
                         surname: surname,
-                        role: Object.entries(rolesEnum).find(([key, val]) => val === role)?.[0],
+                        role: roleHelper,
                         employer: employer
                     },
                 }).catch((error) => error.data);
-            }else{
-                console.log('cos jest puste')
-            }
+
         }
 
     }

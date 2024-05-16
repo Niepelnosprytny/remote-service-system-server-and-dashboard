@@ -16,7 +16,7 @@ export const saveFile = async (file) => {
             name = await optimizeVideo(file);
         } else {
             mime = 'document';
-            // name = v4().replace(/[ @$/\-(),]/g, '_') + '.' + name.split('.').pop();
+            name = v4().replace(/[ @$/\-(),]/g, '_') + '.' + name.split('.').pop();
             await writeFile(join(process.cwd(), 'public', 'files', name), file.data);
         }
 
@@ -28,8 +28,8 @@ export const saveFile = async (file) => {
 
 export const optimizeImage = async (buffer) => {
     try {
-        // const name = v4().replace(/[ @$/\-(),]/g, '_') + '.webp';
-        const name = buffer.filename.substring(0, buffer.filename.lastIndexOf('.')) + '.webp'
+        const name = v4().replace(/[ @$/\-(),]/g, '_') + '.webp';
+        // const name = buffer.filename.substring(0, buffer.filename.lastIndexOf('.')) + '.webp'
         const path = join(process.cwd(), 'public', 'files', name);
 
         const image = gm(buffer.data);

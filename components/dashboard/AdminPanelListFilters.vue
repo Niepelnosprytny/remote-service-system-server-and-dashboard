@@ -166,7 +166,7 @@ let sort = async function () {
       </v-col>
 
       <v-col style="text-align: center" cols="2">
-        <v-btn @click="sort">Sortuj alfabetycznie</v-btn>
+        <v-btn style="" @click="sort">Sortuj</v-btn>
       </v-col>
       <v-spacer></v-spacer>
 
