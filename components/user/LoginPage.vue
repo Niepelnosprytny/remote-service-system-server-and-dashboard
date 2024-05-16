@@ -51,6 +51,7 @@ const login = async () => {
   }else{
     valid.value = false
     await form.value?.validate()
+    console.log(response)
   }}
   loading.value = false
 

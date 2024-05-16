@@ -3,6 +3,7 @@ import useLocationStore from "~/stores/locationStore";
 import statusEnum from "~/enums/modules/StatusEnum";
 import useFileStore from "~/stores/fileStore";
 import useClientStore from "~/stores/clientStore";
+import useNotificationStore from "~/stores/notificationsStore";
 
 const {$reportListWs} = useNuxtApp();
 const locationStore = useLocationStore()
@@ -11,20 +12,24 @@ const route = useRoute()
 const id = route.params.id;
 const dialogControl = ref(false)
 const indexComm = ref()
-const index = ref()
 const currentFile = ref()
 const emits = defineEmits(['update'])
 const statuses = Object.values(statusEnum)
 const props = defineProps({
   report: {required: true},
 })
+
+if(!props.report){
+  await navigateTo(`/`);
+}
 const deleteReport = async function () {
-  $reportListWs.send('delete')
   await useApi(`/api/report/${id}`, {
     method: 'DELETE',
   }).catch((error) => error.data);
+  $reportListWs.send('deleted report')
   await navigateTo(`/`);
 }
+const notifStore = useNotificationStore()
 const fileStore = useFileStore()
 const files = await fileStore.getFilesForReport(props.report.id)
 const location = await locationStore.getLocation(props.report.location_id)
@@ -37,6 +42,9 @@ let report = ref({
   title: null,
 })
 const editReport = async function () {
+  if(report.value.status !== props.report.status) {
+      await notifStore.sendStatusChangeNotifications(props.report,report.value.status)
+  }
   editMode.value = !editMode.value
   await useApi(`/api/report/${props.report.id}`, {
     method: 'PATCH',
@@ -49,7 +57,7 @@ const editReport = async function () {
 </script>
 
 <template>
-  <v-card style="max-height: 80dvh; margin: 20px;">
+  <v-card style="max-height: 80dvh; margin: 20px; overflow: auto">
     <v-container style="text-align: center;">
     <v-row >
       <v-col cols="4">
@@ -84,12 +92,12 @@ const editReport = async function () {
       <v-row>
       <v-col cols="12">
         <v-textarea v-model="report.content" v-if="editMode"></v-textarea>
-        <v-card-text v-else style="overflow-y: auto; max-height: 200px"> {{ props.report.content }}</v-card-text>
+        <v-card-text v-else style="overflow-y: auto; min-height: 220px; max-height: 200px"> {{ props.report.content }}</v-card-text>
       </v-col>
       </v-row>
     </v-container>
-    <v-container style="height: 25%">
-    <v-row style="padding: 0 20px 0 20px; overflow-y: auto">
+    <v-container style="min-height: 120px">
+    <v-row style="padding: 0 20px 0 20px; min-height: 150px; overflow-y: auto">
       <v-col
           cols="3"
           style="margin: 5px; padding: 0"
@@ -137,7 +145,7 @@ const editReport = async function () {
       </v-col>
     </v-row>
     </v-container>
-    <v-container style="padding: 10px">
+    <v-container style="padding: 10px; min-height: 100px">
       <v-col style="text-align: right;">
         <v-btn style="margin: 5px" v-if="!editMode && !deleteMode"
                @click="()=>{editMode = !editMode; report.status = props.report.status; report.content = props.report.content; report.title = props.report.title}"

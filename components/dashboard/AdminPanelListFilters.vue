@@ -4,6 +4,7 @@ import filterTypeEnum from "~/enums/modules/FilterTypeEnum";
 import useClientStore from "~/stores/clientStore";
 import useUserStore from "~/stores/userStore";
 
+const {$adminPanelWS} = useNuxtApp()
 const clientDialogControl = ref(false)
 const userDialogControl = ref(false)
 const locationDialogControl = ref(false)
@@ -51,7 +52,6 @@ const passRules = [
     return 'Hasło musi mieć przynajmniej 1 wielką literę, 1 mała literę, 1 cyfre i znak specjalny'
   }
 ]
-
 const mailRules = [
   (e) => {
     if (e) return true
@@ -89,18 +89,17 @@ const newClient = async function () {
       method: 'POST',
       body: {name: client.value.name},
     }).catch((error) => error.data);
+    client.value.name = null
     clientDialogControl.value = false
     await props.update()
+    $adminPanelWS.send('new Client')
   }
 }
-
-// defineExpose({
-//   sendForm
-// })
 const newUser = async function () {
   const validation = await sendForm.value.validate()
   if(validation.valid){
-    await userStore.newUser(user.value.email, user.value.name, user.value.password, user.value.surname, user.value.role, user.value.employer)
+    const dev = await userStore.newUser(user.value.email, user.value.name, user.value.password, user.value.surname, user.value.role, user.value.employer)
+    console.log(dev)
     user.value.name = null
     user.value.email = null
     user.value.surname = null
@@ -109,6 +108,7 @@ const newUser = async function () {
     user.value.employer = null
     userDialogControl.value = false
     await props.update()
+    $adminPanelWS.send('new Client')
   }
 }
 const newLocation = async function () {
@@ -125,7 +125,13 @@ const newLocation = async function () {
     },
   }).catch((error) => error.data);
   locationDialogControl.value = false
-  await props.update()
+    location.value.name = null
+    location.value.street = null
+    location.value.city = null
+    location.value.postcode = null
+    location.value.client = null
+    await props.update()
+    $adminPanelWS.send('new Client')
     }
 }
 const toggleUser = async function () {
@@ -218,7 +224,7 @@ let sort = async function () {
           <v-text-field style="padding-bottom: 10px" :rules="mailRules" v-model="user.email" label="E-mail"></v-text-field>
           <v-text-field style="padding-bottom: 10px" :rules="mainRules" v-model="user.name" label="Imię"></v-text-field>
           <v-text-field style="padding-bottom: 10px" :rules="mainRules" v-model="user.surname" label="Nazwisko"></v-text-field>
-          <v-text-field style="margin-bottom: 15px" :rules="passRules" v-model="user.password" label="Hasło"></v-text-field>
+          <v-text-field style="margin-bottom: 15px" :rules="passRules" v-model="user.password" type="password" label="Hasło"></v-text-field>
           <v-select style="padding-bottom: 10px" :rules="mainRules" v-model="user.role" :items="rolesEdit" label="Rola"></v-select>
           <v-select style="padding-bottom: 10px" :rules="clientList" v-model="user.employer" :items="clientListEdit" item-title="name" item-value="id"
                     label="Klient"></v-select>

@@ -5,7 +5,7 @@ import { join } from "path";
 import * as fileType from "file-type";
 import gm from 'gm';
 export const saveFile = async (file) => {
-    let name = file.name;
+    let name = file.filename;
     let mime = file.type;
 
         if(mime.includes('image')) {
@@ -16,8 +16,8 @@ export const saveFile = async (file) => {
             name = await optimizeVideo(file);
         } else {
             mime = 'document';
-            name = v4().replace(/[ @$/\-(),]/g, '_') + '.' + name.split('.').pop();
-            await writeFile(join(process.cwd(), 'public', 'files', name), file.name);
+            // name = v4().replace(/[ @$/\-(),]/g, '_') + '.' + name.split('.').pop();
+            await writeFile(join(process.cwd(), 'public', 'files', name), file.data);
         }
 
     return {
@@ -28,12 +28,13 @@ export const saveFile = async (file) => {
 
 export const optimizeImage = async (buffer) => {
     try {
-        const name = v4().replace(/[ @$/\-(),]/g, '_') + '.webp';
+        // const name = v4().replace(/[ @$/\-(),]/g, '_') + '.webp';
+        const name = buffer.filename.substring(0, buffer.filename.lastIndexOf('.')) + '.webp'
         const path = join(process.cwd(), 'public', 'files', name);
 
         const image = gm(buffer.data);
 
-        image.resize(720);
+        image.resize(1028);
 
         await new Promise((resolve, reject) => {
             image.write(path, (error) => {
@@ -52,8 +53,8 @@ export const optimizeImage = async (buffer) => {
 };
 
 export const optimizeVideo = async (buffer) => {
-    const tmpFileName = `${v4().replace(/[ @$/\-(),]/g, '_')}.mp4`;
-    const outputFileName = `${v4().replace(/[ @$/\-(),]/g, '_')}.webm`;
+    const tmpFileName = `${v4().replace(/[ @$/\-(),]/g, '_')}.${buffer.filename.split('.').pop()}`;
+    const outputFileName = `${buffer.filename.substring(0, buffer.filename.lastIndexOf('.'))}.webm`;
 
     const tmpFilePath = join(process.cwd(), 'public', 'files', tmpFileName);
     const outputFilePath = join(process.cwd(), 'public', 'files', outputFileName);

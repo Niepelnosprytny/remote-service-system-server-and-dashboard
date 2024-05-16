@@ -15,8 +15,13 @@ let searchedFilteredList = ref([])
 let searchText = ref('')
 let sortBool = ref(false)
 let roleFilter = ref(null)
+const sorted = ref(false)
 const {$adminPanelWS} = useNuxtApp();
 watch($adminPanelWS.data, (newValue) => {
+  update()
+})
+const comCop = computed(()=>{return userList.value.length})
+watch(comCop, () => {
   update()
 })
 searchedFilteredList.value = userList.value
@@ -51,8 +56,12 @@ let search = function (value) {
 let update = async function () {
   await store.updateUserList()
   searchedFilteredList.value = userList.value
-  search(searchText.value)
-  sortByName(sortBool.value)
+  if(searchText.value.length>0) {
+    search(searchText.value)
+  }
+  if(sorted.value) {
+    sortByName(sortBool.value)
+  }
   filterByRole(roleFilter.value)
 }
 const numberOfLoads = ref(1)
@@ -66,6 +75,7 @@ const scroll = function (e) {
     }
   }
 }
+const control = ref(null)
 </script>
 
 <template>
@@ -75,10 +85,8 @@ const scroll = function (e) {
     <v-col style="text-align: center" v-if="searchedFilteredList.length == 0">
       <v-card-text>Brak użytkowników.</v-card-text>
     </v-col>
-    <v-col style="padding-bottom: 0;" v-for="(us,index) in searchedFilteredList">
-      <v-card v-if="index<=helper" style="padding-bottom: 15px;padding-top: 15px">
-        <user-list-item :update="update" :user="us"></user-list-item>
-      </v-card>
+    <v-col @click="()=>{control = us.id}" style="padding-bottom: 0;" v-for="(us,index) in searchedFilteredList">
+        <user-list-item  v-if="index<=helper"  :index="control" :update="update" :user="us"></user-list-item>
     </v-col>
   </v-card>
 </template>

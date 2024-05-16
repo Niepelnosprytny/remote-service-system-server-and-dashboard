@@ -12,28 +12,28 @@ const useFilterStore = defineStore('filter', {
         };
     },
     actions: {
-        sortByName(list,type){
-            if(type == true){
+        sortByName(list, type) {
+            if (type == true) {
                 return list.sort((a, b) => a.name.localeCompare(b.name))
-            }else if(type == false){
-                return list.sort(function (a, b) {
-                    if (a.name > b.name) {
-                        return -1;
-                    }
-                    if (a.name < b.name) {
-                        return 1;
-                    }
-                    return 0;
-                });
+            } else if (type == false) {
+                var helList = list.sort((a, b) => a.name.localeCompare(b.name))
+                return this.reverseArr(helList)
             }
+        },
+        reverseArr(input) {
+            var ret = [];
+            for (var i = input.length - 1; i >= 0; i--) {
+                ret.push(input[i]);
+            }
+            return ret;
         },
         setFilters(filters) {
             this.filters = filters
         },
-        filterUserListByRole(list, role){
+        filterUserListByRole(list, role) {
             return list.filter((listItem) => listItem.role == role)
         },
-        async searchbarUserFilter(list,search){
+        async searchbarUserFilter(list, search) {
             let filteredList = []
             filteredList = list.filter(item => {
                 return item.name
@@ -71,7 +71,7 @@ const useFilterStore = defineStore('filter', {
                         })
                     })
                     filteredList = secArray
-                }else {
+                } else {
                     this.filtered = true
                 }
                 helperList = filteredList

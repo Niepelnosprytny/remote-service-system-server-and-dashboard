@@ -3,10 +3,14 @@ import ReportDescription from "~/components/dashboard/report/reportView/reportDe
 import CommentBox from "~/components/dashboard/report/comment/commentBox.vue";
 import useReportStore from "~/stores/reportStore";
 
+const {$reportListWs} = useNuxtApp();
 const route = useRoute()
 const id = route.params.id;
 const reportStore = useReportStore()
 await reportStore.getReportById(id)
+watch($reportListWs.data,()=>{
+  update()
+})
 
 const update = async function(){
   await reportStore.getReportById(id)

@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia';
 import rolesEnum from "~/enums/modules/RolesEnum";
 import useClientStore from "~/stores/clientStore";
+import useFilterStore from "~/stores/filterStore";
 
 const useUserStore = defineStore('user', {
     state: () => {
@@ -13,19 +14,21 @@ const useUserStore = defineStore('user', {
             return filter;
         },
         async updateUserList() {
+            console.log('userStore')
+            const filterStore = useFilterStore()
             const info = await useApi(`/api/user`).catch((error) => error.data)
-            this.userList = info.body;
+            if(info) {
+                this.userList = filterStore.reverseArr(info.body);
+            }
         },
         async newUser(email, name, password, surname, role, employer) {
-            const {$adminPanelWS} = useNuxtApp();
-            const clientStore = useClientStore();
-            const clientList = clientStore.clientList
+            const roleHelper = Object.entries(rolesEnum).find(([key, val]) => val === role)?.[0]
             if (email
                 && name
                 && password
                 && surname
-                && Object.entries(rolesEnum).find(([key, val]) => val === role)?.[0]
-                && (clientList.includes(employer) || employer == null)) {
+                && roleHelper
+                && employer) {
                 const dev = await useApi(`/api/auth/register`, {
                     method: 'POST',
                     body: {
@@ -37,7 +40,6 @@ const useUserStore = defineStore('user', {
                         employer: employer
                     },
                 }).catch((error) => error.data);
-                $adminPanelWS.send('new user')
             }else{
                 console.log('cos jest puste')
             }

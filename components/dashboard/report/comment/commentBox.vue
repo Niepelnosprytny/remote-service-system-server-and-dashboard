@@ -4,7 +4,6 @@ import ChatFooter from "~/components/dashboard/report/comment/chatFooter.vue";
 import CommentBody from "~/components/dashboard/report/comment/commentBody.vue";
 import useCommentStore from "~/stores/commentStore";
 const route = useRoute()
-const id = route.params.id;
 const props = defineProps({
   report: {required: true},
 })
