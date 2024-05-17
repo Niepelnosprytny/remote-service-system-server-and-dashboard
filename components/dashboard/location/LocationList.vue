@@ -10,26 +10,38 @@ import ClientListItem from "~/components/dashboard/client/ClientListItem.vue";
 const store = useLocationStore();
 const {locationList} = storeToRefs(store);
 await store.updateLocationList()
-
+const control = ref(null)
+let sorted = ref(false)
 let searchedFilteredList = ref([])
-searchedFilteredList.value = locationList.value
 let filterStore = useFilterStore();
+searchedFilteredList.value = filterStore.reverseArr(locationList.value)
 let searchText = ref('')
 let sortBool = ref(false)
 const {$adminPanelWS} = useNuxtApp();
+const comCop = computed(()=>{return locationList.value.length})
+watch(comCop, () => {
+  update()
+})
 watch($adminPanelWS.data, (newValue) => {
   update()
 })
 let sortByName = function (value) {
+  if(!sorted.value){
+    sorted.value=!sorted.value
+  }
   sortBool.value = value
   locationList.value = filterStore.sortByName(locationList.value, sortBool.value)
   searchedFilteredList.value = filterStore.sortByName(searchedFilteredList.value, sortBool.value)
 }
 let update = async function () {
   await store.updateLocationList()
-  searchedFilteredList.value = locationList.value
-  search(searchText.value)
-  sortByName(sortBool.value)
+  searchedFilteredList.value = filterStore.reverseArr(locationList.value)
+  if(searchText.value.length>0) {
+    search(searchText.value)
+  }
+  if(sorted.value){
+    sortByName(sortBool.value)
+  }
 }
 let search = function (value) {
   searchText.value = value.toLowerCase()
@@ -63,10 +75,8 @@ const scroll = function (e) {
     <v-col style="text-align: center" v-if="searchedFilteredList.length == 0">
       <v-card-text>Brak lokacji.</v-card-text>
     </v-col>
-    <v-col style="padding-bottom: 0" v-for="(loc,index) in searchedFilteredList">
-      <v-card v-if="index<=helper"  style="padding-bottom: 15px;padding-top: 15px">
-        <location-list-item :update="update" :location="loc"></location-list-item>
-      </v-card>
+    <v-col @click="()=>{control=loc.id}"  style="padding-bottom: 0" v-for="(loc,index) in searchedFilteredList">
+        <location-list-item v-if="index<=helper" :index="control" :update="update" :location="loc"></location-list-item>
     </v-col>
   </v-card>
 </template>

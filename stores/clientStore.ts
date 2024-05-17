@@ -16,15 +16,13 @@ const useClientStore = defineStore('client', {
         },
         async updateClientList() {
             const info = await useApi(`/api/client`).catch((error) => error.data)
-            if (info) {
-                this.clientList = info.body;
-                this.clientListEdit = []
-                this.clientListEdit.unshift({name: 'brak', id: null});
-                this.clientListEdit.push(...info.body);
+            if (info.body) {
+                this.clientList = info.body
+                this.clientListEdit = [{name: 'brak', id: null},...info.body]
             }
         },
         async getClient(id) {
-            if(id === null){
+            if (id === null) {
                 return 'brak'
             }
             const client = await useApi(`/api/client/${id}`).catch((error) => error.data)

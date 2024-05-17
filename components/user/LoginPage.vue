@@ -5,16 +5,16 @@ const form = ref()
 const loading = ref(false)
 const valid = ref(true)
 const mailRules = [
-  () => {
-    if (valid.value) return true
+  (e) => {
+    if (e) return true
     return 'E-mail lub hasło jest nieprawidłowe'
   },
-  () => {
-    if (credentials.value.email) return true
+  (e) => {
+    if (e) return true
     return 'E-mail jest wymagany'
   },
-  () => {
-    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(credentials.value.email)) return true
+  (e) => {
+    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(e)) return true
     return 'E-mail jest nieprawidłowy'
   },
 ]
@@ -51,10 +51,35 @@ const login = async () => {
   }else{
     valid.value = false
     await form.value?.validate()
+    console.log(response)
   }}
   loading.value = false
 
 };
+const dialogControl = ref(false)
+
+const messageSendLoading = ref(false)
+const messageSend = ref(false)
+const messageMail = ref('')
+const mailForm = ref(null)
+const sendEmail = async () => {
+  const mail = useMail()
+  const validation = await mailForm.value.validate()
+  console.log(validation)
+  if (validation.valid) {
+    messageSendLoading.value = true
+    mail.send({
+      from: 'Administracja SebastianInc',
+      subject: 'Odzyskiwanie hasła użytkownika',
+      text: `Prośba o zresetowanie hasła użytkownika ${messageMail.value}`,
+    })
+    messageSendLoading.value = false
+    messageSend.value = true
+    dialogControl.value = false
+  }
+
+
+}
 </script>
 
 <template>
@@ -68,7 +93,7 @@ const login = async () => {
           <v-text-field style="padding-bottom: 10px;" :rules="mailRules" label="E-mail" type="text" v-model="credentials.email"/>
           <v-text-field style="padding-bottom: 10px;" :rules="passRules" label="Hasło" type="password" v-model="credentials.password"/>
           <v-card-text style="padding: 0;margin: 0">
-            <router-link style="text-decoration: none; color: black" to="/">Odzyskiwanie kont użytkowników</router-link>
+            <nuxt-link @click="()=>{dialogControl = true}" style="cursor: pointer; text-decoration: none; color: black">Odzyskiwanie kont użytkowników</nuxt-link>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -79,4 +104,40 @@ const login = async () => {
       </v-card-item>
     </v-card>
   </v-row>
+  <v-dialog
+      v-model="dialogControl"
+      width="500">
+    <v-card style="padding: 15px;">
+      <v-card-title style="margin-bottom: 20px" primary-title>
+        Odzyskiwanie hasła użytkownika
+      </v-card-title>
+        <v-row style="overflow-y: auto; height: 80%">
+          <v-col v-if="messageSendLoading" cols="12" style="text-align: center">
+            <v-progress-circular indeterminate></v-progress-circular>
+          </v-col>
+          <v-col cols="12">
+          <v-form ref="mailForm" enctype="multipart/form-data">
+          <v-text-field style=" margin-bottom: 20px; padding: 0 20px 0 20px" :rules="mailRules" v-model="messageMail" label="E-mail"></v-text-field>
+          </v-form>
+          </v-col>
+        </v-row>
+      <v-card-actions>
+        <v-btn @click="()=>{dialogControl=false}" outlined color="black">Anuluj</v-btn>
+        <v-btn @click="sendEmail" outlined color="black">Potwierdź</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-dialog
+      v-model="messageSend"
+      width="500">
+    <v-card style="padding: 15px;">
+      <v-card-text primary-title>
+        Prośba o reset hasła wysłana.
+        Proszę poczekać na odpowiedź na podanym mailu.
+      </v-card-text>
+      <v-card-actions style="justify-content: center">
+        <v-btn @click="()=>{messageSend = !messageSend}" outlined color="black">Potwierdź</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>

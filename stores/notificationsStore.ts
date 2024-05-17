@@ -10,7 +10,7 @@ const useNotificationStore = defineStore('notification', {
         };
     },
     actions: {
-        async sendNotifications(report) {
+        async sendCommentNotifications(report) {
             let userArray = []
             let arr = await useApi('/api', {
                     method: 'POST',
@@ -23,7 +23,24 @@ const useNotificationStore = defineStore('notification', {
             }
             const notification = await useApi('/api/notification', {
                 method: 'POST',
-                body: {report_id: report.id,users: userArray,content: `New comment in ${report.title}`},
+                body: {report_id: report.id,users: userArray,content: `Nowy komentarz w ${report.title}`},
+            }).catch((error) => error.data);
+            await this.getNotificationList()
+        },
+        async sendStatusChangeNotifications(report,status) {
+            let userArray = []
+            let arr = await useApi('/api', {
+                method: 'POST',
+                body: JSON.stringify(`SELECT report_handled_by.user_id
+                                      FROM report_handled_by
+                                      WHERE report_handled_by.report_id = ${report.id}`),
+            }).catch((error) => error.data);
+            for(let obj in arr.body){
+                userArray.push(arr.body[obj].user_id)
+            }
+            const notification = await useApi('/api/notification', {
+                method: 'POST',
+                body: {report_id: report.id,users: userArray,content: `Status raportu ${report.title} został zmieniony na ${status}`},
             }).catch((error) => error.data);
             await this.getNotificationList()
         },

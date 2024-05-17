@@ -3,7 +3,7 @@ import pool from './mysql';
 const getAll = (tableName: string) =>
     defineEventHandler(async () => {
         try {
-            const query = `SELECT *FROM ${tableName}`;
+            const query = `SELECT * FROM ${tableName}`;
 
             const results = await pool.query(query);
 

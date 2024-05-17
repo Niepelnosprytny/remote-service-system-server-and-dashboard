@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import useCommentStore from "~/stores/commentStore";
 import useFileStore from "~/stores/fileStore";
-import {getElementById} from "domutils";
 
 const props = defineProps({
   report: {required: true},
   author: {required: true}
 })
-
+const {$chatWs} = useNuxtApp()
 const fileStore = useFileStore()
 const commentStore = useCommentStore()
 await commentStore.getComments(props.report)
@@ -33,15 +32,27 @@ let getCommentFiles = function (id) {
   return arr
 }
 const scrollToEnd = async function () {
-  // const element = document.getElementById('commentBody')
-  // console.log(element)
-  // element.scrollTop = element.offsetHeight + element.scrollHeight
+  const el = document.getElementById("commentBody");
+  el.scrollTop = el.scrollHeight
 }
-await scrollToEnd()
+watch($chatWs.data, () => {
+scrollToEnd()
+})
+const comCop = computed(()=>{return comments.value.length})
+const fileCop = computed(()=>{return files.value.length})
+watch(comCop, () => {
+  setTimeout(() => scrollToEnd(), 0);
+})
+watch(fileCop, () => {
+  setTimeout(() => scrollToEnd(), 0);
+})
+onMounted(()=>{
+  scrollToEnd()
+})
 </script>
 
 <template>
-  <v-card id="commentBody" style="max-height: 60dvh;overflow-y: auto">
+  <v-card ref="commentBody" id="commentBody" style="max-height: 60dvh;overflow-y: auto">
     <v-row v-if="comments.length==0">
       <v-col style="text-align: center;">
         <v-card-text>Brak komentarzy.</v-card-text>
@@ -110,9 +121,10 @@ await scrollToEnd()
       </v-row>
     </v-row>
   </v-card>
+
   <v-dialog
       v-model="dialogControl"
-      width="500">
+      width="1000">
     <v-card>
       <v-card-title class="headline black d-flex flex-row-reverse" primary-title>
         <v-btn variant="plain" class="align-self-end" @click="()=>dialogControl=false">
@@ -120,7 +132,7 @@ await scrollToEnd()
         </v-btn>
       </v-card-title>
       <v-card-text class="pa-5">
-        <v-img
+        <v-img style="max-height: 800px; max-width: 1000px"
             :src="useRequestURL().origin+'/files/'+currentFile.filename"></v-img>
       </v-card-text>
     </v-card>

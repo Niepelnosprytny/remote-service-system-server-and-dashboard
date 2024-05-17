@@ -12,26 +12,34 @@ const store = useClientStore();
 const {clientList} = storeToRefs(store);
 await store.updateClientList()
 let searchedFilteredList = ref([])
-searchedFilteredList.value = clientList.value
 let filterStore = useFilterStore();
+searchedFilteredList.value = filterStore.reverseArr(clientList.value)
 let searchText = ref('')
+let sorted = ref(false)
 let sortBool = ref(false)
 const loading = ref(false)
 let sortByName = function (value) {
+  if(!sorted.value){
+    sorted.value=!sorted.value
+  }
   sortBool.value = value
   clientList.value = filterStore.sortByName(clientList.value, sortBool.value)
   searchedFilteredList.value = filterStore.sortByName(searchedFilteredList.value, sortBool.value)
 }
+const control = ref(null)
 const {$adminPanelWS} = useNuxtApp();
 watch($adminPanelWS.data, (newValue) => {
   update()
 })
 let update = async function () {
   await store.updateClientList()
-  $adminPanelWS.send('')
-  searchedFilteredList.value = clientList.value
-  search(searchText.value)
-  sortByName(sortBool.value)
+  searchedFilteredList.value = filterStore.reverseArr(clientList.value)
+  if(searchText.value.length>0) {
+    search(searchText.value)
+  }
+  if(sorted.value){
+    sortByName(sortBool.value)
+  }
 }
 let search = function (value) {
   searchText.value = value.toLowerCase()
@@ -66,8 +74,8 @@ const scroll = function (e) {
     <v-col style="text-align: center" v-if="searchedFilteredList.length == 0">
       <v-card-text>Brak klientów.</v-card-text>
     </v-col>
-    <v-col style="padding-bottom: 0;" v-for="(cl,index) in searchedFilteredList">
-        <client-list-item v-if="index<=helper" :update="update" :client="cl"></client-list-item>
+    <v-col @click="()=>{control=cl.id}" style="padding-bottom: 0;" v-for="(cl,index) in searchedFilteredList">
+        <client-list-item v-if="index<=helper" :index="control" :update="update" :client="cl"></client-list-item>
     </v-col>
   </v-card>
 </template>
