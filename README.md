@@ -2,23 +2,24 @@
 
 Server & dashboard for remote service system. The server shall store all necessary data and handle requests, while the dashboard shall allow office employees to respond to malfunction reports and change their state.
 
+Before installation, make sure that you have Yarn package managed installed
+
 To run the project, first create .env file and copy contents from .env.example into it.
 
-When it's done, create SSL keys using this command
+Then use this command to install all dependencies 
 
 ```bash
-openssl req -x509 -newkey rsa:4096 -keyout ./ssl/key.pem -out ./ssl/cert.pem -days 365
+yarn install
 ```
 
-Now, install Docker and Docker Compose if you don't have them already.
-
-Then use this command to create the database with initial tables, populate it with data, install all dependencies, and run the dev server:
+Lastly, start the server using this command
 
 ```bash
-docker compose up
+yarn dev
 ```
 
-Here are example user roles, emails and passwords:
+## Predefined users
+
 - **1**: ROLE_ADMIN - szymon.bulak@example.com - Bułak
 - **2**: ROLE_OFFICE - jacek.wolik@example.com - Wolik
 - **3**: ROLE_USER - bartlomiej.komis@example.com - Komis
@@ -67,7 +68,6 @@ All endpoints return errors if the data passed to them is incorrect or if they c
   - `index.post.ts`: Accepts multipart FormData with a file or files, optional report_id, and optional comment_id, and inserts new file record(s) into the database.
 - `/api/notification/byUser/[id].get.ts`: Accepts a user ID as a URL parameter and returns data from the notification and user_notification tables for the given user ID.
 - `/api/notification/index.post.ts`: Works like the generic post endpoint, but accepts an extra parameter, the `users` array, which contains IDs of users, and sends notifications through FCM. The users array is used to insert records into the user_notification table.
-- `/api/report/index.post.ts`: Works like the generic post endpoint, but accepts an extra parameter, a `users` array that contains user IDs and is used to insert data into the report_handled_by table.
 - `/api/user/[id].patch.ts`: Works like the generic patch endpoint, but hashes the plain password before inserting.
 - `/api/user/index.post.ts`: Returns a message that says to use `/api/auth/register` instead.
 - `/api/userNotification/updateSeen/index.patch.ts` - Takes `ids` array and `seen` boolean (0 or 1) as parameters. Updates `seen` value for all given `ids`.
