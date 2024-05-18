@@ -3,7 +3,6 @@ export default defineNuxtPlugin({
     name: 'WS',
     setup () {
         const host = "ws://localhost:3001";
-        //const host = "wss://sebastianinc.toadres.pl";
 
         const notificationWS = useWebSocket(`${host}/api/websockets/notification`)
         const chatWS = useWebSocket(`${host}/api/websockets/chatroom`)

@@ -26,6 +26,7 @@ logs
 # others
 public/files/*
 sebastian-inc-firebase-adminsdk-4ljw2-6afa8acd52.json
+plugins/weboscket.ts.override
 
 # .gitignore
 !.gitignore
