@@ -335,7 +335,7 @@ SELECT filename, filetype, report_id, comment_id FROM (
     SELECT
         'b72de6d6_f868_4b49_9be5_e361b328dd0c.webp' as filename,
         'image' as filetype,
-        NULL as report_id,
+        8 as report_id,
         6 as comment_id
     UNION ALL
     SELECT
