@@ -58,19 +58,23 @@ onMounted(()=>{
         <v-card-text>Brak komentarzy.</v-card-text>
       </v-col>
     </v-row>
-    <v-row v-else style="padding: 20px" v-for="(comment,indexComm) in comments">
-      <v-col cols="12" v-if="comment.created_by == props.author">
+    <v-row v-else style="padding: 20px;" v-for="(comment,indexComm) in comments">
+      <v-col cols="12" v-if="comment.created_by == props.author.id">
+        <v-row justify="end">
         <v-card-text class="bubble right">
           {{ comment.content }}
         </v-card-text>
-      </v-col>
+        </v-row>
+      </v-col >
       <v-col cols="12" v-else>
+        <v-row justify="start">
         <v-card-text class="bubble left">
           {{ comment.content }}
         </v-card-text>
+        </v-row>
       </v-col>
       <v-row style="margin-top: 10px; margin-left: 10px"
-             :style="{'justify-content': comment.created_by == props.author ? 'right' : 'left'}">
+             :style="{'justify-content': comment.created_by == props.author.id ? 'right' : 'left'}">
         <v-col
             cols="4"
             style="margin: 0 35px 0 25px; padding: 5px;"
@@ -168,7 +172,7 @@ onMounted(()=>{
   --_p: 100%;
   background: #7db3b4 border-box;
   border-bottom-right-radius: 0 0;
-  place-self: end;
+  place-self: flex-end;
 }
 
 </style>
