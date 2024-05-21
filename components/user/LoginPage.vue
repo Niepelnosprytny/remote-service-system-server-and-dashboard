@@ -5,10 +5,20 @@ const form = ref()
 const loading = ref(false)
 const valid = ref(true)
 const mailRules = [
-  (e) => {
-    if (e) return true
+  () => {
+    if (valid.value) return true
     return 'E-mail lub hasło jest nieprawidłowe'
   },
+  (e) => {
+    if (e) return true
+    return 'E-mail jest wymagany'
+  },
+  (e) => {
+    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(e)) return true
+    return 'E-mail jest nieprawidłowy'
+  },
+]
+const forgottenMailRules = [
   (e) => {
     if (e) return true
     return 'E-mail jest wymagany'
@@ -117,7 +127,7 @@ const sendEmail = async () => {
           </v-col>
           <v-col cols="12">
           <v-form ref="mailForm" enctype="multipart/form-data">
-          <v-text-field style=" margin-bottom: 20px; padding: 0 20px 0 20px" :rules="mailRules" v-model="messageMail" label="E-mail"></v-text-field>
+          <v-text-field style=" margin-bottom: 20px; padding: 0 20px 0 20px" :rules="forgottenMailRules" v-model="messageMail" label="E-mail"></v-text-field>
           </v-form>
           </v-col>
         </v-row>

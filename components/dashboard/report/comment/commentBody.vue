@@ -52,10 +52,10 @@ onMounted(()=>{
 </script>
 
 <template>
-  <v-card ref="commentBody" id="commentBody" style="max-height: 60dvh;overflow-y: auto">
+  <v-card ref="commentBody" id="commentBody" style="min-height: 60dvh; max-height: 60dvh;overflow-y: auto">
     <v-row v-if="comments.length==0">
-      <v-col style="text-align: center;">
-        <v-card-text>Brak komentarzy.</v-card-text>
+      <v-col style="padding: 20px; text-align: center;">
+        <v-card-text style="padding: 20px 0 0 0 ;">Brak komentarzy.</v-card-text>
       </v-col>
     </v-row>
     <v-row v-else style="padding: 20px;" v-for="(comment,indexComm) in comments">
