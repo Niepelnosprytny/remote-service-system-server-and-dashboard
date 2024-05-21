@@ -2,6 +2,10 @@
 
 Server & dashboard for remote service system. The server shall store all necessary data and handle requests, while the dashboard shall allow office employees to respond to malfunction reports and change their state.
 
+There are two approaches to run this project, with and without docker.
+
+### Without docker
+
 Before installation, make sure that you have Yarn package managed installed
 
 To run the project, first create .env file and copy contents from .env.example into it.
@@ -16,6 +20,16 @@ Lastly, start the server using this command
 
 ```bash
 yarn dev
+```
+
+### With docker
+
+Before you begin, make sure you have docker and docker-compose installed
+
+In this case, just run this command and you'll be all set up:
+
+```bash
+docker compose up
 ```
 
 ## Predefined users
