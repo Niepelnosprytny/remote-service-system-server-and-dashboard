@@ -2,13 +2,27 @@
 
 Server & dashboard for remote service system. The server shall store all necessary data and handle requests, while the dashboard shall allow office employees to respond to malfunction reports and change their state.
 
+## Setup
+
+To run the project, first create .env file and copy contents from .env.example into it.
+
+If you're planning to upload files, you'll also need to install graphicsmagick and ffmpeg
+
+```bash
+sudo apt update
+```
+
+Then
+
+```bash
+sudo apt install graphicsmagick ffmpeg
+```
+
 There are two approaches to run this project, with and without docker.
 
 ### Without docker
 
 Before installation, make sure that you have Yarn package managed installed
-
-To run the project, first create .env file and copy contents from .env.example into it.
 
 Then use this command to install all dependencies 
 
