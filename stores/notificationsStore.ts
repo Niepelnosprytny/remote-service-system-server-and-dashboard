@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
 import useAuthStore from "~/stores/authStore";
+import notification from "~/server/api/websockets/notification";
 
 const useNotificationStore = defineStore('notification', {
     state: () => {
@@ -50,7 +51,9 @@ const useNotificationStore = defineStore('notification', {
                     await useApi(`/api/notification/byUser/${this.userId}`, {
                         method: 'GET',
                     }).catch((error) => error.data);
-                this.notificationList = notifications.body
+                if(typeof notifications.body !== 'string'){
+                    this.notificationList = notifications.body
+                }
             }
         },
         async deleteNotification(notification){
