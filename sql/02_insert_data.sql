@@ -342,7 +342,7 @@ SELECT filename, filetype, report_id, comment_id FROM (
         '3a7e99c4_84ff_4ace_ace1_1367d495ca3c.pdf' as filename,
         'document' as filetype,
         6 as report_id,
- gi       NULL as comment_id
+        NULL as comment_id
     UNION ALL
     SELECT
         '5a3c03f2_4de7_4ad6_87cd_0315f999cad4.webm' as filename,
