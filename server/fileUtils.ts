@@ -53,8 +53,8 @@ export const optimizeImage = async (file) => {
 };
 
 export const optimizeVideo = async (file) => {
-    const tmpFileName = `${v4().replace(/[ @$/\-(),]/g, '_')}.${file.filename.split('.').pop()}`;
-    const outputFileName = `${file.filename.substring(0, file.filename.lastIndexOf('.'))}.webm`;
+    const tmpFileName = `${file.filename.substring(0, file.filename.lastIndexOf('.'))}.${file.filename.split('.').pop()}`;
+    const outputFileName = v4().replace(/[ @$/\-(),]/g, '_') + '.webm';
 
     const tmpFilePath = join(process.cwd(), 'public', 'files', tmpFileName);
     const outputFilePath = join(process.cwd(), 'public', 'files', outputFileName);

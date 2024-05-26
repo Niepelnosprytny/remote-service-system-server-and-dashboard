@@ -489,17 +489,35 @@ INSERT INTO report_handled_by (report_id, user_id)
 SELECT report_id, user_id FROM (
     SELECT 1 as report_id, 1 as user_id
     UNION ALL
+    SELECT 1 as report_id, 4 as user_id
+    UNION ALL
     SELECT 2 as report_id, 2 as user_id
+    UNION ALL
+    SELECT 2 as report_id, 3 as user_id
+    UNION ALL
+    SELECT 3 as report_id, 6 as user_id
     UNION ALL
     SELECT 4 as report_id, 2 as user_id
     UNION ALL
+    SELECT 4 as report_id, 5 as user_id
+    UNION ALL
+    SELECT 5 as report_id, 7 as user_id
+    UNION ALL
     SELECT 6 as report_id, 2 as user_id
+    UNION ALL
+    SELECT 6 as report_id, 8 as user_id
     UNION ALL
     SELECT 7 as report_id, 2 as user_id
     UNION ALL
+    SELECT 7 as report_id, 3 as user_id
+    UNION ALL
     SELECT 8 as report_id, 1 as user_id
     UNION ALL
+    SELECT 8 as report_id, 3 as user_id
+    UNION ALL
     SELECT 8 as report_id, 2 as user_id
+    UNION ALL
+    SELECT 9 as report_id, 3 as user_id
 ) as source_data
 WHERE NOT EXISTS (
     SELECT NULL
